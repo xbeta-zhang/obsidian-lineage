@@ -207,11 +207,16 @@ export class LineageView extends TextFileView {
     private loadDocumentToStore = () => {
         const { data, frontmatter } = extractFrontmatter(this.data);
 
-        this.documentStore.dispatch({
-            payload: {
-                document: { data: data, frontmatter, position: null },
-            },
-            type: 'DOCUMENT/LOAD_FILE',
-        });
+        const state = this.documentStore.getValue();
+        const existingData = jsonToMarkdown(
+            columnsToJsonTree(state.document.columns, state.document.content),
+        );
+        if (existingData !== data)
+            this.documentStore.dispatch({
+                payload: {
+                    document: { data: data, frontmatter, position: null },
+                },
+                type: 'DOCUMENT/LOAD_FILE',
+            });
     };
 }

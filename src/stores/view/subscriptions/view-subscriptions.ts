@@ -20,6 +20,7 @@ import { resetSearchFuse } from 'src/stores/view/subscriptions/actions/update-se
 import { applyZoom } from 'src/stores/view/subscriptions/effects/apply-zoom';
 import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { isEmptyDocument } from 'src/stores/view/subscriptions/helpers/is-empty-document';
+import { discardChanges } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/cancel-changes';
 
 const viewEffectsAndActions = (
     view: LineageView,
@@ -50,7 +51,12 @@ const viewEffectsAndActions = (
             ? getDocumentEventType(type as DocumentStoreAction['type'])
             : getViewEventType(type as ViewStoreAction['type']);
         if (!e) return;
-
+        if (type === 'DOCUMENT/LOAD_FILE') {
+            // needed when the file was modified externally
+            // to prevent saving a node with an obsolete node-id
+            // ideally the user should confirm this
+            discardChanges(view);
+        }
         // actions
         if (e.creationAndDeletion || e.shape || e.changeHistory) {
             setTreeIndex(viewStore, documentState);

@@ -2,7 +2,6 @@ import { DocumentState, NodeId } from 'src/stores/document/document-state-type';
 import { AlignBranchState } from 'src/stores/view/subscriptions/effects/align-branch/helpers/align-element';
 import { alignParentsAndActiveNode } from 'src/stores/view/subscriptions/effects/align-branch/align-parents-and-active-node';
 import { alignChildGroup } from 'src/stores/view/subscriptions/effects/align-branch/align-child-group';
-import { alignInactiveColumn } from 'src/stores/view/subscriptions/effects/align-branch/align-inactive-column';
 import { ViewState } from 'src/stores/view/view-state-type';
 import { debounce } from 'obsidian';
 
@@ -41,9 +40,9 @@ export const alignBranch = (
                 column.id,
                 behavior,
             );
-        } else {
+        } /*else {
             alignInactiveColumn(column, container, behavior);
-        }
+        }*/
     }
 };
 export const alignBranchDebounced = debounce(alignBranch, 32);

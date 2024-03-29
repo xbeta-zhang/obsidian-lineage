@@ -26,7 +26,7 @@
 </script>
 
 <div
-    class={'preview-container markdown-preview-view'}
+    class={'preview-container markdown-preview-view markdown-preview-section'}
     on:click={onClick}
 	use:markdownPreviewAction={content}
 ></div>

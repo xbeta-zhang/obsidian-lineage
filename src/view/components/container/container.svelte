@@ -17,6 +17,7 @@
         {#each $store.document.columns as column (column.id)}
             <Column {column} />
         {/each}
+    <div style="min-width: 50px;min-height: 10px"></div>
     </div>
 </div>
 
@@ -30,7 +31,6 @@
         align-items: center;
         justify-content: start;
         padding-left: 100px;
-        margin-right: 50px;
         overflow-y: hidden;
         overflow-x: auto;
     }
