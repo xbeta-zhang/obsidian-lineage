@@ -7,6 +7,8 @@ export class InlineEditor {
     private containerEl: HTMLElement;
     private nodeId: string | null = null;
     private target: HTMLElement | null = null;
+    private appliedExternalCursor = false;
+
     constructor(private view: LineageView) {}
 
     get activeNode() {
@@ -21,6 +23,11 @@ export class InlineEditor {
         return this.inlineView.editor.getCursor();
     }
 
+    overrideCursor(line: number, ch: number) {
+        this.appliedExternalCursor = true;
+        this.setCursor(line, ch);
+    }
+
     setContent(content: string) {
         this.inlineView.setViewData(content, true);
     }
@@ -30,12 +37,14 @@ export class InlineEditor {
             this.view.documentStore.getValue().document.content[nodeId];
         this.setContent(content?.content || '');
 
-        this.inlineView.editor.setCursor({
-            line: this.inlineView.editor.lastLine(),
-            ch: this.inlineView.editor.getLine(
+        if (!this.appliedExternalCursor)
+            this.setCursor(
                 this.inlineView.editor.lastLine(),
-            ).length,
-        });
+                this.inlineView.editor.getLine(
+                    this.inlineView.editor.lastLine(),
+                ).length,
+            );
+        this.appliedExternalCursor = false;
         target.append(this.containerEl);
         this.inlineView.editor.focus();
         AdjustHeight(target)();
@@ -68,5 +77,9 @@ export class InlineEditor {
                 { history: false },
             );
         }
+    }
+
+    private setCursor(line: number, ch: number) {
+        this.inlineView.editor.setCursor(line, ch);
     }
 }
