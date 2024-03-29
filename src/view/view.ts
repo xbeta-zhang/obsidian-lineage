@@ -50,7 +50,6 @@ export class LineageView extends TextFileView {
             viewReducer,
             this.onViewStoreError as OnError<ViewStoreAction>,
         );
-        this.inlineEditor = new InlineEditor(this);
     }
 
     get isActive() {
@@ -171,7 +170,10 @@ export class LineageView extends TextFileView {
             this.createStore();
         }
         this.loadDocumentToStore();
-        await this.inlineEditor.loadFile(this.file);
+        if (!this.inlineEditor) {
+            this.inlineEditor = new InlineEditor(this);
+            await this.inlineEditor.onload();
+        }
         this.component = new Component({
             target: this.contentEl,
             props: {
