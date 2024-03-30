@@ -29,6 +29,7 @@ export const defaultViewState = (): ViewState => ({
             childGroups: new Set<string>(),
         },
         activeNode: '',
+        activeNodeOfGroup: {},
     },
     navigationHistory: {
         items: [],

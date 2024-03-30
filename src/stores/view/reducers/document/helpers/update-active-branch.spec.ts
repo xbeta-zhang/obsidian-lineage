@@ -99,6 +99,7 @@ describe('update-tree-state', () => {
             input.activeBranch,
             activeNodeId,
             input.document.columns,
+            {},
         );
         expect(input.activeBranch).toEqual(output.activeBranch);
     });

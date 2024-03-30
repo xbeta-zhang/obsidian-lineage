@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { findNextActiveNodeOnKeyboardNavigation as findNext } from 'src/stores/view/reducers/document/helpers/find-next-node/find-next-active-node-on-keyboard-navigation';
+import { ActiveNodeOfGroup } from 'src/stores/view/view-state-type';
 
 const c0 = 'cAKE';
 const c1 = 'cNHU';
@@ -80,85 +81,89 @@ const input = {
     ],
     state: {},
 };
+const gs: ActiveNodeOfGroup = {
+    [n1_2_1]: n1_2_1_2,
+    [n3_2_2]: n3_2_2_2,
+};
 describe('find next active node after deletion', () => {
     it('1', () => {
-        expect(findNext(input.columns, n1, 'up')).toEqual(null);
-        expect(findNext(input.columns, n1, 'left')).toEqual(null);
-        expect(findNext(input.columns, n1, 'down')).toEqual(n2);
-        expect(findNext(input.columns, n1, 'right')).toEqual(n1_1);
+        expect(findNext(input.columns, n1, 'up', gs)).toEqual(null);
+        expect(findNext(input.columns, n1, 'left', gs)).toEqual(null);
+        expect(findNext(input.columns, n1, 'down', gs)).toEqual(n2);
+        expect(findNext(input.columns, n1, 'right', gs)).toEqual(n1_1);
     });
     it('2', () => {
-        expect(findNext(input.columns, n2, 'up')).toEqual(n1);
-        expect(findNext(input.columns, n2, 'left')).toEqual(null);
-        expect(findNext(input.columns, n2, 'down')).toEqual(n3);
-        expect(findNext(input.columns, n2, 'right')).toEqual(n2_1);
+        expect(findNext(input.columns, n2, 'up', gs)).toEqual(n1);
+        expect(findNext(input.columns, n2, 'left', gs)).toEqual(null);
+        expect(findNext(input.columns, n2, 'down', gs)).toEqual(n3);
+        expect(findNext(input.columns, n2, 'right', gs)).toEqual(n2_1);
     });
 
     it('3', () => {
-        expect(findNext(input.columns, n3, 'up')).toEqual(n2);
-        expect(findNext(input.columns, n3, 'left')).toEqual(null);
-        expect(findNext(input.columns, n3, 'down')).toEqual(null);
-        expect(findNext(input.columns, n3, 'right')).toEqual(n3_1);
+        expect(findNext(input.columns, n3, 'up', gs)).toEqual(n2);
+        expect(findNext(input.columns, n3, 'left', gs)).toEqual(null);
+        expect(findNext(input.columns, n3, 'down', gs)).toEqual(null);
+        expect(findNext(input.columns, n3, 'right', gs)).toEqual(n3_1);
     });
 
     it('1.1', () => {
-        expect(findNext(input.columns, n1_1, 'up')).toEqual(null);
-        expect(findNext(input.columns, n1_1, 'left')).toEqual(n1);
-        expect(findNext(input.columns, n1_1, 'down')).toEqual(n1_2);
-        expect(findNext(input.columns, n1_1, 'right')).toEqual(n1_1_1);
+        expect(findNext(input.columns, n1_1, 'up', gs)).toEqual(null);
+        expect(findNext(input.columns, n1_1, 'left', gs)).toEqual(n1);
+        expect(findNext(input.columns, n1_1, 'down', gs)).toEqual(n1_2);
+        expect(findNext(input.columns, n1_1, 'right', gs)).toEqual(n1_1_1);
     });
     it('3.1', () => {
-        expect(findNext(input.columns, n3_1, 'up')).toEqual(n2_2);
-        expect(findNext(input.columns, n3_1, 'left')).toEqual(n3);
-        expect(findNext(input.columns, n3_1, 'down')).toEqual(n3_2);
-        expect(findNext(input.columns, n3_1, 'right')).toEqual(n3_1_1);
+        expect(findNext(input.columns, n3_1, 'up', gs)).toEqual(n2_2);
+        expect(findNext(input.columns, n3_1, 'left', gs)).toEqual(n3);
+        expect(findNext(input.columns, n3_1, 'down', gs)).toEqual(n3_2);
+        expect(findNext(input.columns, n3_1, 'right', gs)).toEqual(n3_1_1);
     });
 
     it('1.1.1', () => {
-        expect(findNext(input.columns, n1_1_1, 'up')).toEqual(null);
-        expect(findNext(input.columns, n1_1_1, 'left')).toEqual(n1_1);
-        expect(findNext(input.columns, n1_1_1, 'down')).toEqual(n1_1_2);
-        expect(findNext(input.columns, n1_1_1, 'right')).toEqual(n1_1_1_1);
+        expect(findNext(input.columns, n1_1_1, 'up', gs)).toEqual(null);
+        expect(findNext(input.columns, n1_1_1, 'left', gs)).toEqual(n1_1);
+        expect(findNext(input.columns, n1_1_1, 'down', gs)).toEqual(n1_1_2);
+        expect(findNext(input.columns, n1_1_1, 'right', gs)).toEqual(n1_1_1_1);
     });
     it('1.2.1', () => {
-        expect(findNext(input.columns, n1_2_1, 'up')).toEqual(n1_1_2);
-        expect(findNext(input.columns, n1_2_1, 'left')).toEqual(n1_2);
-        expect(findNext(input.columns, n1_2_1, 'down')).toEqual(n1_2_2);
-        expect(findNext(input.columns, n1_2_1, 'right')).toEqual(n1_2_1_1);
+        expect(findNext(input.columns, n1_2_1, 'up', gs)).toEqual(n1_1_2);
+        expect(findNext(input.columns, n1_2_1, 'left', gs)).toEqual(n1_2);
+        expect(findNext(input.columns, n1_2_1, 'down', gs)).toEqual(n1_2_2);
+        expect(findNext(input.columns, n1_2_1, 'right', gs)).toEqual(n1_2_1_2);
     });
 
     it('2.1.1', () => {
-        expect(findNext(input.columns, n2_1_1, 'up')).toEqual(n1_2_2);
-        expect(findNext(input.columns, n2_1_1, 'left')).toEqual(n2_1);
-        expect(findNext(input.columns, n2_1_1, 'down')).toEqual(n3_1_1);
-        expect(findNext(input.columns, n2_1_1, 'right')).toEqual(n2_1_1_1);
+        expect(findNext(input.columns, n2_1_1, 'up', gs)).toEqual(n1_2_2);
+        expect(findNext(input.columns, n2_1_1, 'left', gs)).toEqual(n2_1);
+        expect(findNext(input.columns, n2_1_1, 'down', gs)).toEqual(n3_1_1);
+        expect(findNext(input.columns, n2_1_1, 'right', gs)).toEqual(n2_1_1_1);
     });
 
     it('3.2.2', () => {
-        expect(findNext(input.columns, n3_2_2, 'up')).toEqual(n3_2_1);
-        expect(findNext(input.columns, n3_2_2, 'left')).toEqual(n3_2);
-        expect(findNext(input.columns, n3_2_2, 'down')).toEqual(null);
-        expect(findNext(input.columns, n3_2_2, 'right')).toEqual(n3_2_2_1);
+        expect(findNext(input.columns, n3_2_2, 'up', gs)).toEqual(n3_2_1);
+        expect(findNext(input.columns, n3_2_2, 'left', gs)).toEqual(n3_2);
+        expect(findNext(input.columns, n3_2_2, 'down', gs)).toEqual(null);
+        expect(findNext(input.columns, n3_2_2, 'right', gs)).toEqual(n3_2_2_2);
     });
 
     // resume here
     it('1.1.1.1', () => {
-        expect(findNext(input.columns, n1_1_1_1, 'up')).toEqual(null);
-        expect(findNext(input.columns, n1_1_1_1, 'left')).toEqual(n1_1_1);
-        expect(findNext(input.columns, n1_1_1_1, 'down')).toEqual(n1_1_2_1);
-        expect(findNext(input.columns, n1_1_1_1, 'right')).toEqual(null);
+        expect(findNext(input.columns, n1_1_1_1, 'up', gs)).toEqual(null);
+        expect(findNext(input.columns, n1_1_1_1, 'left', gs)).toEqual(n1_1_1);
+        expect(findNext(input.columns, n1_1_1_1, 'down', gs)).toEqual(n1_1_2_1);
+        expect(findNext(input.columns, n1_1_1_1, 'right', gs)).toEqual(null);
     });
 
     it('3.1.2.1', () => {
-        expect(findNext(input.columns, n3_1_2_1, 'up')).toEqual(n3_1_1_2);
-        expect(findNext(input.columns, n3_1_2_1, 'left')).toEqual(n3_1_2);
-        expect(findNext(input.columns, n3_1_2_1, 'down')).toEqual(n3_1_2_2);
-        expect(findNext(input.columns, n3_1_2_1, 'right')).toEqual(null);
+        expect(findNext(input.columns, n3_1_2_1, 'up', gs)).toEqual(n3_1_1_2);
+        expect(findNext(input.columns, n3_1_2_1, 'left', gs)).toEqual(n3_1_2);
+        expect(findNext(input.columns, n3_1_2_1, 'down', gs)).toEqual(n3_1_2_2);
+        expect(findNext(input.columns, n3_1_2_1, 'right', gs)).toEqual(null);
     });
     it('3.2.2.2', () => {
-        expect(findNext(input.columns, n3_2_2_2, 'up')).toEqual(n3_2_2_1);
-        expect(findNext(input.columns, n3_2_2_2, 'left')).toEqual(n3_2_2);
-        expect(findNext(input.columns, n3_2_2_2, 'down')).toEqual(null);
-        expect(findNext(input.columns, n3_2_2_2, 'right')).toEqual(null);
+        expect(findNext(input.columns, n3_2_2_2, 'up', gs)).toEqual(n3_2_2_1);
+        expect(findNext(input.columns, n3_2_2_2, 'left', gs)).toEqual(n3_2_2);
+        expect(findNext(input.columns, n3_2_2_2, 'down', gs)).toEqual(null);
+        expect(findNext(input.columns, n3_2_2_2, 'right', gs)).toEqual(null);
     });
 });

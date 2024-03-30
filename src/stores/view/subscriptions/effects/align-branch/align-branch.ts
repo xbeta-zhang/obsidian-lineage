@@ -1,4 +1,4 @@
-import { DocumentState, NodeId } from 'src/stores/document/document-state-type';
+import { DocumentState } from 'src/stores/document/document-state-type';
 import { AlignBranchState } from 'src/stores/view/subscriptions/effects/align-branch/helpers/align-element';
 import { alignParentsAndActiveNode } from 'src/stores/view/subscriptions/effects/align-branch/align-parents-and-active-node';
 import { alignChildGroup } from 'src/stores/view/subscriptions/effects/align-branch/align-child-group';
@@ -17,26 +17,19 @@ export const alignBranch = (
     const localState: AlignBranchState = {
         columns: new Set<string>(),
     };
-    alignParentsAndActiveNode(
-        documentState,
-        viewState,
-        container,
-        localState,
-        behavior,
-    );
+    alignParentsAndActiveNode(viewState, container, localState, behavior);
 
     for (const column of documentState.document.columns) {
         if (localState.columns.has(column.id)) continue;
 
-        const childGroups = column.groups.filter((g) =>
+        const childGroup = column.groups.find((g) =>
             viewState.document.activeBranch.childGroups.has(g.parentId),
         );
-        if (childGroups.length > 0) {
+        if (childGroup) {
             alignChildGroup(
-                documentState,
                 viewState,
                 container,
-                childGroups,
+                childGroup,
                 column.id,
                 behavior,
             );
@@ -46,9 +39,3 @@ export const alignBranch = (
     }
 };
 export const alignBranchDebounced = debounce(alignBranch, 32);
-export const lastActiveNodeOfGroups: {
-    [columnId: string]: {
-        groupId: NodeId;
-        nodeId: NodeId;
-    };
-} = {};

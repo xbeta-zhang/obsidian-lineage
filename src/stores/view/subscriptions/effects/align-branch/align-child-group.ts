@@ -1,31 +1,25 @@
-import {
-    DocumentState,
-    NodeGroup,
-} from 'src/stores/document/document-state-type';
+import { NodeGroup } from 'src/stores/document/document-state-type';
 import { alignElement } from 'src/stores/view/subscriptions/effects/align-branch/helpers/align-element';
 import { getNodeElement } from 'src/stores/view/subscriptions/effects/align-branch/helpers/get-node-element';
 import { ViewState } from 'src/stores/view/view-state-type';
-import { lastActiveNodeOfGroups } from 'src/stores/view/subscriptions/effects/align-branch/align-branch';
 
 export const alignChildGroup = (
-    documentState: DocumentState,
     viewState: ViewState,
     container: HTMLElement,
-    childGroups: NodeGroup[],
+    childGroup: NodeGroup,
     columnId: string,
     behavior?: ScrollBehavior,
 ) => {
-    const lastActiveNodeOfGroup = lastActiveNodeOfGroups[columnId];
-    const groupWithPreviousActiveNode =
-        lastActiveNodeOfGroup &&
-        childGroups.find((g) => lastActiveNodeOfGroup.groupId === g.parentId);
+    const activeNodeOfGroup =
+        viewState.document.activeNodeOfGroup[childGroup.parentId];
+
     const columnElement = getNodeElement(container, columnId);
     if (!columnElement) return;
-    let element: HTMLElement | null = null;
-    if (groupWithPreviousActiveNode) {
-        element = getNodeElement(columnElement, lastActiveNodeOfGroup.nodeId);
+    let nodeElement: HTMLElement | null = null;
+    if (activeNodeOfGroup) {
+        nodeElement = getNodeElement(columnElement, activeNodeOfGroup);
     }
-    if (element) alignElement(container, element, behavior);
+    if (nodeElement) alignElement(container, nodeElement, behavior);
     else {
         const elements: HTMLElement[] = [];
         if (columnElement) {

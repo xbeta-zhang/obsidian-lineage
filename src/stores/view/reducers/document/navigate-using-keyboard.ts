@@ -4,7 +4,7 @@ import {
 } from 'src/stores/document/document-state-type';
 import { AllDirections } from 'src/stores/document/document-store-actions';
 import { updateActiveNode } from 'src/stores/view/reducers/document/helpers/update-active-node';
-import { findNextActiveNode } from 'src/stores/view/reducers/document/helpers/find-next-node/find-next-active-node';
+import { findNextActiveNodeOnKeyboardNavigation } from 'src/stores/view/reducers/document/helpers/find-next-node/find-next-active-node-on-keyboard-navigation';
 import { DocumentViewState } from 'src/stores/view/view-state-type';
 
 export type ChangeActiveNodeAction = {
@@ -20,10 +20,11 @@ export const navigateUsingKeyboard = (
     navigationHistory: NavigationHistory,
     action: ChangeActiveNodeAction,
 ) => {
-    const nextNode = findNextActiveNode(
+    const nextNode = findNextActiveNodeOnKeyboardNavigation(
         action.payload.columns,
         state.activeNode,
-        action,
+        action.payload.direction,
+        state.activeNodeOfGroup,
     );
     if (nextNode) {
         updateActiveNode(state, nextNode, navigationHistory);

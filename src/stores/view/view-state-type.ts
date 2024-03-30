@@ -9,12 +9,17 @@ import {
     EditingState,
 } from 'src/stores/view/default-view-state';
 
+export type ActiveNodeOfGroup = {
+    [groupId: string]: string;
+};
+
 export type DocumentViewState = {
     treeIndex: TreeIndexDict;
     editing: EditingState;
     activeBranch: ActiveBranch;
     dnd: DNDState;
     activeNode: string;
+    activeNodeOfGroup: ActiveNodeOfGroup;
 };
 export type ViewState = {
     search: {
