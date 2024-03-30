@@ -1,6 +1,9 @@
 import { DocumentStoreAction } from 'src/stores/document/document-store-actions';
 
-const contentEvents = new Set<ActionType>(['DOCUMENT/SET_NODE_CONTENT']);
+const contentEvents = new Set<ActionType>([
+    'DOCUMENT/SET_NODE_CONTENT',
+    'DOCUMENT/FORMAT_HEADINGS',
+]);
 
 const creationAndDeletionEvents = new Set<ActionType>([
     'DOCUMENT/INSERT_NODE',

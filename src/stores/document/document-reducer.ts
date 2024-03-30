@@ -17,6 +17,7 @@ import {
     UndoableAction,
 } from 'src/stores/document/document-store-actions';
 import { defaultDocumentState } from 'src/stores/document/default-document-state';
+import { formatHeadings } from 'src/stores/document/reducers/content/format-content/format-headings';
 
 const updateDocumentState = (
     state: DocumentState,
@@ -65,6 +66,9 @@ const updateDocumentState = (
         redoAction(state.document, state.history);
     } else if (action.type === 'FS/SET_FILE_PATH') {
         state.file.path = action.payload.path;
+    } else if (action.type === 'DOCUMENT/FORMAT_HEADINGS') {
+        formatHeadings(state.document.content, state.document.columns);
+        activeNodeId = state.history.context.activeNodeId;
     }
 
     const eventType = getDocumentEventType(action.type);

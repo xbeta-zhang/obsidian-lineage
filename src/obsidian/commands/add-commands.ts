@@ -76,6 +76,20 @@ const createCommands = (plugin: Lineage) => {
         },
     });
 
+    commands.push({
+        name: lang.format_headings,
+        icon: 'heading1',
+        checkCallback: (checking) => {
+            const view = plugin.app.workspace.getActiveViewOfType(LineageView);
+            if (view) {
+                if (checking) return true;
+                else
+                    view.documentStore.dispatch({
+                        type: 'DOCUMENT/FORMAT_HEADINGS',
+                    });
+            }
+        },
+    });
     return commands;
 };
 

@@ -8,6 +8,7 @@ import { DropAction } from 'src/stores/document/reducers/drop-node/drop-node';
 import { DeleteNodeAction } from 'src/stores/document/reducers/delete-node/delete-node';
 import { MoveNodeAction } from 'src/stores/document/reducers/move-node/move-node';
 import { MergeNodeAction } from 'src/stores/document/reducers/merge-node/merge-node';
+import { FormatHeadingsAction } from 'src/stores/document/reducers/content/format-content/format-headings';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -36,7 +37,8 @@ export type DocumentAction =
     | SetFilePathAction
     | DeleteNodeAction
     | MoveNodeAction
-    | MergeNodeAction;
+    | MergeNodeAction
+    | FormatHeadingsAction;
 
 export type HistoryAction = UndoRedoAction | SelectSnapshotAction;
 export type UndoableAction =
@@ -46,4 +48,5 @@ export type UndoableAction =
     | DropAction
     | MoveNodeAction
     | MergeNodeAction
-    | LoadDocumentAction;
+    | LoadDocumentAction
+    | FormatHeadingsAction;

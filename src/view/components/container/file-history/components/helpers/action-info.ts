@@ -4,6 +4,7 @@ import {
     FileOutput,
     FilePlus,
     FileUp,
+    Heading1,
     Merge,
 } from 'lucide-svelte';
 import { UndoableAction } from 'src/stores/document/document-store-actions';
@@ -19,4 +20,5 @@ export const actionInfo: Partial<
     'DOCUMENT/DELETE_NODE': { label: 'Deleted a node', icon: FileMinus },
     'DOCUMENT/MOVE_NODE': { label: 'Moved a node', icon: FileOutput },
     'DOCUMENT/MERGE_NODE': { label: 'Merged a node', icon: Merge },
+    'DOCUMENT/FORMAT_HEADINGS': { label: 'Formatted headings', icon: Heading1 },
 };

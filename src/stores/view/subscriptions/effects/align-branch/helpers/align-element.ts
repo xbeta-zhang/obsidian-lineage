@@ -5,6 +5,10 @@ import {
 } from 'src/stores/view/subscriptions/effects/align-branch/helpers/restore-zoom';
 
 export type AlignBranchState = { columns: Set<string> };
+
+const THRESHOLD = 20;
+const PADDING = 100;
+
 export const alignElement = (
     container: HTMLElement,
     elements: HTMLElement | HTMLElement[],
@@ -33,15 +37,15 @@ export const alignElement = (
                 elementRect.right <= containerRect.right;
             if (!isHorizontallyVisible) {
                 let scrollLeft = 0;
-                const padding = 100;
-                if (elementRect.left < containerRect.left + padding) {
+
+                if (elementRect.left < containerRect.left + PADDING) {
                     scrollLeft =
-                        elementRect.left - (containerRect.left + padding);
-                } else if (elementRect.right > containerRect.right - padding) {
+                        elementRect.left - (containerRect.left + PADDING);
+                } else if (elementRect.right > containerRect.right - PADDING) {
                     scrollLeft =
-                        elementRect.right - (containerRect.right - padding);
+                        elementRect.right - (containerRect.right - PADDING);
                 }
-                if (Math.abs(scrollLeft) > 5)
+                if (Math.abs(scrollLeft) > THRESHOLD)
                     container.scrollBy({
                         left: scrollLeft,
                         behavior,
@@ -54,7 +58,7 @@ export const alignElement = (
             const scrollTop =
                 verticalMiddle -
                 (elementRect.top - containerRect.top + elementRect.height / 2);
-            if (Math.abs(scrollTop) > 5)
+            if (Math.abs(scrollTop) > THRESHOLD)
                 column.scrollBy({
                     top: scrollTop * -1,
                     behavior,

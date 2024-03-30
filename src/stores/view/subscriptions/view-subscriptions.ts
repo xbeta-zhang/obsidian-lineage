@@ -116,6 +116,7 @@ const viewEffectsAndActions = (
                 documentStore.getValue(),
                 viewState,
                 container,
+                type === 'DOCUMENT/MOVE_NODE' ? 'instant' : undefined,
             );
         }
     }
