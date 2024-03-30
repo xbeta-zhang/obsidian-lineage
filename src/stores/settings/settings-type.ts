@@ -13,4 +13,7 @@ export type Settings = {
     hotkeys: {
         customHotkeys: CustomHotkeys;
     };
+    view: {
+        fontSize: number;
+    };
 };

@@ -26,6 +26,12 @@ export type SettingsActions =
           payload: {
               customHotkeys: CustomHotkeys;
           };
+      }
+    | {
+          type: 'SET_FONT_SIZE';
+          payload: {
+              fontSize: number;
+          };
       };
 
 const updateState = (store: Settings, action: SettingsActions) => {
@@ -38,6 +44,8 @@ const updateState = (store: Settings, action: SettingsActions) => {
         store.documents[action.payload.newPath] = true;
     } else if (action.type === 'SET_CUSTOM_HOTKEYS') {
         store.hotkeys.customHotkeys = action.payload.customHotkeys;
+    } else if (action.type === 'SET_FONT_SIZE') {
+        store.view.fontSize = action.payload.fontSize;
     }
 };
 export const settingsReducer = (

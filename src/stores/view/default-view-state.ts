@@ -11,6 +11,7 @@ export const defaultViewState = (): ViewState => ({
     ui: {
         showHistorySidebar: false,
         showHelpSidebar: false,
+        showSettingsSidebar: false,
         zoomLevel: 1,
     },
     document: {

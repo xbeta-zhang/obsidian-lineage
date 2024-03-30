@@ -1,6 +1,6 @@
 import { TFile } from 'obsidian';
 import Lineage from 'src/main';
-import { fileViewTypeCache } from 'src/obsidian/patches/set-view-state';
+import { fileViewTypeCache } from 'src/stores/settings/subscriptions/effects/update-file-view-type-cache';
 import { updatePath } from 'src/view/helpers/stores-cache';
 
 export const registerFileRenameEvent = (plugin: Lineage) => {

@@ -1,6 +1,6 @@
 import { lang } from 'src/lang/lang';
 import { TFile, TFolder } from 'obsidian';
-import { fileViewTypeCache } from 'src/obsidian/patches/set-view-state';
+import { fileViewTypeCache } from 'src/stores/settings/subscriptions/effects/update-file-view-type-cache';
 import Lineage from 'src/main';
 import { createNewFile } from 'src/obsidian/commands/helpers/create-new-file';
 import { openFile } from 'src/obsidian/commands/helpers/open-file';

@@ -21,6 +21,7 @@ import { applyZoom } from 'src/stores/view/subscriptions/effects/apply-zoom';
 import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { isEmptyDocument } from 'src/stores/view/subscriptions/helpers/is-empty-document';
 import { discardChanges } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/cancel-changes';
+import { applyFontSize } from 'src/stores/view/subscriptions/effects/apply-font-size';
 
 const viewEffectsAndActions = (
     view: LineageView,
@@ -135,8 +136,17 @@ export const viewSubscriptions = (view: LineageView) => {
         },
     );
 
+    const unsubFromSettings = view.plugin.settings.subscribe(
+        (state, action, isInitialRun) => {
+            if (isInitialRun || (action && action.type === 'SET_FONT_SIZE')) {
+                applyFontSize(view, state.view.fontSize);
+            }
+        },
+    );
+
     return () => {
         unsubFromDocument();
         unsubFromView();
+        unsubFromSettings();
     };
 };

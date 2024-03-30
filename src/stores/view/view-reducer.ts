@@ -33,11 +33,17 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
     } else if (action.type === 'SEARCH/TOGGLE_INPUT') {
         toggleSearchInput(state);
     } else if (action.type === 'UI/TOGGLE_HISTORY_SIDEBAR') {
-        state.ui.showHelpSidebar = false;
         state.ui.showHistorySidebar = !state.ui.showHistorySidebar;
+        state.ui.showHelpSidebar = false;
+        state.ui.showSettingsSidebar = false;
     } else if (action.type === 'UI/TOGGLE_HELP_SIDEBAR') {
         state.ui.showHistorySidebar = false;
         state.ui.showHelpSidebar = !state.ui.showHelpSidebar;
+        state.ui.showSettingsSidebar = false;
+    } else if (action.type === 'UI/TOGGLE_SETTINGS_SIDEBAR') {
+        state.ui.showHistorySidebar = false;
+        state.ui.showHelpSidebar = false;
+        state.ui.showSettingsSidebar = !state.ui.showSettingsSidebar;
     } else if (action.type === 'UI/CHANGE_ZOOM_LEVEL') {
         changeZoomLevel(state, action.payload);
     } else if (action.type === 'UI/SET_TREE_INDEX') {

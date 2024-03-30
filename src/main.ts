@@ -1,9 +1,6 @@
 import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { FILE_VIEW_TYPE, LineageView } from './view/view';
-import {
-    setViewState,
-    subscribeDocumentsTypeCacheToSettings,
-} from 'src/obsidian/patches/set-view-state';
+import { setViewState } from 'src/obsidian/patches/set-view-state';
 import { around } from 'monkey-around';
 import {
     SettingsActions,
@@ -20,9 +17,12 @@ import { addCommands } from 'src/obsidian/commands/add-commands';
 import { loadCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/load-commands';
 import { saveCustomHotkeys } from 'src/stores/hotkeys/effects/plugin/save-custom-hotkeys';
 import { checkForHotkeyConflicts } from 'src/stores/hotkeys/effects/plugin/check-for-hotkey-conflicts';
+import { settingsSubscriptions } from 'src/stores/settings/subscriptions/settings-subscriptions';
+
+export type SettingsStore = Store<Settings, SettingsActions>;
 
 export default class Lineage extends Plugin {
-    settings: Store<Settings, SettingsActions>;
+    settings: SettingsStore;
 
     async onload() {
         await this.loadSettings();
@@ -52,7 +52,7 @@ export default class Lineage extends Plugin {
         this.settings.subscribe(() => {
             this.saveSettings();
         });
-        subscribeDocumentsTypeCacheToSettings(this);
+        settingsSubscriptions(this);
     }
 
     private registerEvents() {

@@ -28,7 +28,8 @@ export type ViewUIAction =
     | ChangeZoomLevelAction
     | ToggleHelpSidebarAction
     | ToggleHistorySidebarAction
-    | SetTreeIndex;
+    | SetTreeIndex
+    | ToggleSettingsSidebarAction;
 
 export type ViewDocumentAction =
     | DisableEditModeAction
@@ -41,6 +42,9 @@ type ToggleHistorySidebarAction = {
 };
 type ToggleHelpSidebarAction = {
     type: 'UI/TOGGLE_HELP_SIDEBAR';
+};
+type ToggleSettingsSidebarAction = {
+    type: 'UI/TOGGLE_SETTINGS_SIDEBAR';
 };
 type SetActiveNodeAction = {
     type: 'DOCUMENT/SET_ACTIVE_NODE';

@@ -9,26 +9,33 @@
     import Breadcrumbs from './breadcrumbs/breadcrumbs.svelte';
     import NavigationHistory from './navigation-history/navigation-history.svelte';
     import SearchBar from './search-bar/search-bar.svelte';
+    import Settings from './settings/settings.svelte';
 
     export let plugin: Lineage;
     export let view: LineageView;
-    const documentStore = view.documentStore
+    const documentStore = view.documentStore;
     const viewStore = view.viewStore;
     setContext('plugin', plugin);
     setContext('view', view);
 </script>
 
-<div
-    class={`lineage-main ${$viewStore.search.searching ? "is-loading":""}`}
->
+<div class={`lineage-main ${$viewStore.search.searching ? 'is-loading' : ''}`}>
     <Breadcrumbs />
     <NavigationHistory />
-    <ControlsBar documentHistory={$documentStore.history} path={$documentStore.file.path} />
+    <ControlsBar
+        documentHistory={$documentStore.history}
+        path={$documentStore.file.path}
+    />
     <Container />
     {#if $viewStore.ui.showHistorySidebar && $documentStore.file.path}
-        <FileHistory documentHistory={$documentStore.history} path={$documentStore.file.path} />
+        <FileHistory
+            documentHistory={$documentStore.history}
+            path={$documentStore.file.path}
+        />
     {:else if $viewStore.ui.showHelpSidebar}
         <Hotkeys />
+    {:else if $viewStore.ui.showSettingsSidebar}
+        <Settings />
     {/if}
     <SearchBar />
 </div>
