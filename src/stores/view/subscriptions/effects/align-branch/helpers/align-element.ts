@@ -27,16 +27,26 @@ export const alignElement = (
         ).getBoundingClientRect();
 
         if (mode === 'horizontal' || mode === 'both') {
-            const horizontalMiddle = containerRect.width / 2;
-            const scrollLeft =
-                horizontalMiddle -
-                (elementRect.left - containerRect.left + elementRect.width / 2);
-
-            if (Math.abs(scrollLeft) > 5)
-                container.scrollBy({
-                    left: scrollLeft * -1,
-                    behavior,
-                });
+            // only scroll horizontally if the element is not fully visible
+            const isHorizontallyVisible =
+                elementRect.left >= containerRect.left &&
+                elementRect.right <= containerRect.right;
+            if (!isHorizontallyVisible) {
+                let scrollLeft = 0;
+                const padding = 100;
+                if (elementRect.left < containerRect.left + padding) {
+                    scrollLeft =
+                        elementRect.left - (containerRect.left + padding);
+                } else if (elementRect.right > containerRect.right - padding) {
+                    scrollLeft =
+                        elementRect.right - (containerRect.right - padding);
+                }
+                if (Math.abs(scrollLeft) > 5)
+                    container.scrollBy({
+                        left: scrollLeft,
+                        behavior,
+                    });
+            }
         }
 
         if (mode === 'vertical' || mode === 'both') {
