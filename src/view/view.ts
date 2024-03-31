@@ -213,7 +213,7 @@ export class LineageView extends TextFileView {
         const existingData = jsonToMarkdown(
             columnsToJsonTree(state.document.columns, state.document.content),
         );
-        if (existingData !== data)
+        if (!existingData || existingData !== data)
             this.documentStore.dispatch({
                 payload: {
                     document: { data: data, frontmatter, position: null },

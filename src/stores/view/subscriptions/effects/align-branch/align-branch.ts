@@ -26,13 +26,7 @@ export const alignBranch = (
             viewState.document.activeBranch.childGroups.has(g.parentId),
         );
         if (childGroup) {
-            alignChildGroup(
-                viewState,
-                container,
-                childGroup,
-                column.id,
-                behavior,
-            );
+            alignChildGroup(viewState, container, column.id, behavior);
         } /*else {
             alignInactiveColumn(column, container, behavior);
         }*/

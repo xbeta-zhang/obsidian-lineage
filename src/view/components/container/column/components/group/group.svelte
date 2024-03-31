@@ -56,6 +56,7 @@
         width: fit-content;
         gap: 4px;
         padding: 8px;
+        margin-bottom: 2px;
     }
     .group:last-child {
         margin-bottom: 0;

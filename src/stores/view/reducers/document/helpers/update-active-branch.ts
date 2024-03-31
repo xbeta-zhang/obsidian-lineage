@@ -31,4 +31,12 @@ export const updateActiveBranch = (
     activeBranch.group = group.parentId;
     activeBranch.column = columns[findNodeColumn(columns, activeNodeId)].id;
     activeNodeOfGroup[group.parentId] = activeNodeId;
+    for (const group in activeNodeOfGroup) {
+        if (
+            activeNodeOfGroup[group] === activeNodeId &&
+            group !== activeBranch.group
+        ) {
+            delete activeNodeOfGroup[group];
+        }
+    }
 };
