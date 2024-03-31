@@ -1,9 +1,14 @@
-import { MarkdownView } from 'obsidian';
+import { MarkdownView, TFile } from 'obsidian';
 import { LineageView } from 'src/view/view';
 import { AdjustHeight } from 'src/view/actions/inline-editor/expandable-textarea-action';
 
+const noop = async () => {};
+
+export type InlineMarkdownView = MarkdownView & {
+    __setViewData__: MarkdownView['setViewData'];
+};
 export class InlineEditor {
-    private inlineView: MarkdownView;
+    private inlineView: InlineMarkdownView;
     private containerEl: HTMLElement;
     private nodeId: string | null = null;
     private target: HTMLElement | null = null;
@@ -29,7 +34,7 @@ export class InlineEditor {
     }
 
     setContent(content: string) {
-        this.inlineView.setViewData(content, true);
+        this.inlineView.__setViewData__(content, true);
     }
 
     loadNode(target: HTMLElement, nodeId: string) {
@@ -69,13 +74,30 @@ export class InlineEditor {
             containerEl: this.containerEl,
             app: this.view.plugin.app,
             workspace,
-        } as never);
+        } as never) as InlineMarkdownView;
+        this.inlineView.save = noop;
+        this.inlineView.requestSave = noop;
+        this.inlineView.__setViewData__ = this.inlineView.setViewData;
+        this.inlineView.setViewData = noop;
 
         if (this.inlineView.getMode() === 'preview') {
             await this.inlineView.setState(
                 { mode: 'source' },
                 { history: false },
             );
+        }
+    }
+
+    async loadFile(file: TFile) {
+        this.inlineView.file = file;
+        await this.inlineView.onLoadFile(file);
+    }
+
+    async unloadFile() {
+        const file = this.inlineView.file;
+        if (file) {
+            this.inlineView.file = null;
+            await this.inlineView.onUnloadFile(file);
         }
     }
 
