@@ -7,5 +7,6 @@ export const DEFAULT_SETTINGS = (): Settings => ({
     },
     view: {
         fontSize: 16,
+        theme: {},
     },
 });

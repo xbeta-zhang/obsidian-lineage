@@ -1,12 +1,13 @@
-.theme-dark {
+.lineage-main {
     --lineage-accent: #55b1ae;
+}
+.theme-dark {
     --background-container: #373d4c;
     --background-active-node: var(--background-primary);
     --background-active-parent: #5b637a;
     --background-inactive-node: var(--background-container);
 }
 .theme-light {
-    --lineage-accent: #55b1ae;
     --background-container: #899cb3;
     --background-active-node: var(--background-primary);
     --background-active-parent: #cedbeb;

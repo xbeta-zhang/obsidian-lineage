@@ -8,6 +8,10 @@ export type CustomHotkeys = {
         secondary?: Hotkey;
     };
 };
+export type Theme = {
+    containerBg?: string;
+    activeBranchBg?: string;
+};
 export type Settings = {
     documents: Record<string, true>;
     hotkeys: {
@@ -15,5 +19,6 @@ export type Settings = {
     };
     view: {
         fontSize: number;
+        theme: Theme;
     };
 };

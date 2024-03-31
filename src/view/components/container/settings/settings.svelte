@@ -26,7 +26,7 @@
 
 
         & .setting-item {
-            padding: 0;
+            padding: 10px 0;
         }
     }
 </style>
