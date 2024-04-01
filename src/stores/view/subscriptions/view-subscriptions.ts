@@ -26,6 +26,8 @@ import { applyContainerBg } from 'src/stores/view/subscriptions/effects/css-vari
 import { applyActiveBranchBg } from 'src/stores/view/subscriptions/effects/css-variables/apply-active-branch-bg';
 import { applyCardWidth } from 'src/stores/view/subscriptions/effects/css-variables/apply-card-width';
 import { applyCardHeight } from 'src/stores/view/subscriptions/effects/css-variables/apply-card-height';
+import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
+import { getUsedHotkeys } from 'src/obsidian/helpers/get-used-hotkeys';
 
 const viewEffectsAndActions = (
     view: LineageView,
@@ -123,6 +125,15 @@ const viewEffectsAndActions = (
                 container,
                 type === 'DOCUMENT/MOVE_NODE' ? 'instant' : undefined,
             );
+        }
+        if (action.type === 'UI/TOGGLE_HELP_SIDEBAR') {
+            if (viewState.ui.showHelpSidebar)
+                hotkeyStore.dispatch({
+                    type: 'SET_CONFLICTING_HOTKEYS',
+                    payload: {
+                        conflictingHotkeys: getUsedHotkeys(view.plugin),
+                    },
+                });
         }
     }
 };

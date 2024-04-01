@@ -29,6 +29,7 @@ export const moveNode = (columns: Column[], action: MoveNodeAction) => {
         nodeToMove,
         targetNode,
         action.payload.direction,
+        'move',
     );
     cleanAndSortColumns(columns);
 };

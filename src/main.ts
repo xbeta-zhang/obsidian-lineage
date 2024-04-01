@@ -15,8 +15,7 @@ import { registerFileRenameEvent } from 'src/obsidian/events/vault/register-file
 import { registerFileDeleteEvent } from 'src/obsidian/events/vault/register-file-delete-event';
 import { addCommands } from 'src/obsidian/commands/add-commands';
 import { loadCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/load-commands';
-import { saveCustomHotkeys } from 'src/stores/hotkeys/effects/plugin/save-custom-hotkeys';
-import { checkForHotkeyConflicts } from 'src/stores/hotkeys/effects/plugin/check-for-hotkey-conflicts';
+import { hotkeySubscriptions } from 'src/stores/hotkeys/hotkey-subscriptions';
 import { settingsSubscriptions } from 'src/stores/settings/subscriptions/settings-subscriptions';
 
 export type SettingsStore = Store<Settings, SettingsActions>;
@@ -62,7 +61,6 @@ export default class Lineage extends Plugin {
     }
 
     private registerEffects() {
-        checkForHotkeyConflicts(this);
-        saveCustomHotkeys(this);
+        hotkeySubscriptions(this);
     }
 }

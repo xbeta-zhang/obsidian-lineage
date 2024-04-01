@@ -6,7 +6,7 @@ import {
 
 export type AlignBranchState = { columns: Set<string> };
 
-const THRESHOLD = 20;
+const THRESHOLD = 5;
 const PADDING = 100;
 
 export const alignElement = (

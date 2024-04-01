@@ -23,6 +23,7 @@ export const dropNode = (columns: Column[], action: DropAction) => {
         droppedNode,
         targetNode,
         action.payload.position,
+        'drop',
     );
 
     cleanAndSortColumns(columns);

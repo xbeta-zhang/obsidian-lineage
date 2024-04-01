@@ -935,9 +935,10 @@ describe('move-node', () => {
         expect(input.columns).toEqual(output.columns);
     });
     test('*|1|* >*|2|* up', () => {
+        const mov = 'nBcR';
         const action = {
             type: 'DOCUMENT/MOVE_NODE',
-            payload: { direction: 'up', activeNodeId: 'nBcR' },
+            payload: { direction: 'up', activeNodeId: mov },
         } as const;
         const input = {
             columns: [
@@ -949,7 +950,7 @@ describe('move-node', () => {
                     id: 'cN6E',
                     groups: [
                         { nodes: ['nzBV', 'ndry'], parentId: 'nqo0' },
-                        { nodes: ['nBcR', 'npu3'], parentId: 'nJEa' },
+                        { nodes: [mov, 'npu3'], parentId: 'nJEa' },
                     ],
                 },
                 {
@@ -957,7 +958,7 @@ describe('move-node', () => {
                     groups: [
                         { nodes: ['nnDF', 'np8A'], parentId: 'nzBV' },
                         { nodes: ['nio9', 'nX-M'], parentId: 'ndry' },
-                        { nodes: ['nwri', 'nQ8W'], parentId: 'nBcR' },
+                        { nodes: ['nwri', 'nQ8W'], parentId: mov },
                         { nodes: ['n2fS', 'nTXF'], parentId: 'npu3' },
                     ],
                 },
@@ -972,7 +973,7 @@ describe('move-node', () => {
                 {
                     id: 'cN6E',
                     groups: [
-                        { nodes: ['nzBV', 'nBcR', 'ndry'], parentId: 'nqo0' },
+                        { nodes: ['nzBV', 'ndry', mov], parentId: 'nqo0' },
                         { nodes: ['npu3'], parentId: 'nJEa' },
                     ],
                 },
@@ -980,23 +981,24 @@ describe('move-node', () => {
                     id: 'cVnd',
                     groups: [
                         { nodes: ['nnDF', 'np8A'], parentId: 'nzBV' },
-                        { nodes: ['nwri', 'nQ8W'], parentId: 'nBcR' },
                         { nodes: ['nio9', 'nX-M'], parentId: 'ndry' },
+                        { nodes: ['nwri', 'nQ8W'], parentId: mov },
                         { nodes: ['n2fS', 'nTXF'], parentId: 'npu3' },
                     ],
                 },
             ],
             state: {
-                activeNode: 'nBcR',
+                activeNode: mov,
             },
         };
         moveNode(input.columns, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('*|1|* >*|2|* down', () => {
+        const mov = 'nJQr';
         const action = {
             type: 'DOCUMENT/MOVE_NODE',
-            payload: { direction: 'down', activeNodeId: 'nJQr' },
+            payload: { direction: 'down', activeNodeId: mov },
         } as const;
         const input = {
             columns: [
@@ -1008,7 +1010,7 @@ describe('move-node', () => {
                     id: 'cuf2',
                     groups: [
                         { nodes: ['nuIH', 'nr81'], parentId: 'nJae' },
-                        { nodes: ['nJQr', 'n5GS'], parentId: 'nIKd' },
+                        { nodes: [mov, 'n5GS'], parentId: 'nIKd' },
                     ],
                 },
                 {
@@ -1016,7 +1018,7 @@ describe('move-node', () => {
                     groups: [
                         { nodes: ['n-6-', 'nqu1'], parentId: 'nuIH' },
                         { nodes: ['nAaz', 'nryn'], parentId: 'nr81' },
-                        { nodes: ['nNXP', 'njhg'], parentId: 'nJQr' },
+                        { nodes: ['nNXP', 'njhg'], parentId: mov },
                         { nodes: ['nEZv', 'n6wS'], parentId: 'n5GS' },
                     ],
                 },
@@ -1032,7 +1034,7 @@ describe('move-node', () => {
                     id: 'cuf2',
                     groups: [
                         { nodes: ['nuIH', 'nr81'], parentId: 'nJae' },
-                        { nodes: ['n5GS', 'nJQr'], parentId: 'nIKd' },
+                        { nodes: ['n5GS', mov], parentId: 'nIKd' },
                     ],
                 },
                 {
@@ -1041,12 +1043,12 @@ describe('move-node', () => {
                         { nodes: ['n-6-', 'nqu1'], parentId: 'nuIH' },
                         { nodes: ['nAaz', 'nryn'], parentId: 'nr81' },
                         { nodes: ['nEZv', 'n6wS'], parentId: 'n5GS' },
-                        { nodes: ['nNXP', 'njhg'], parentId: 'nJQr' },
+                        { nodes: ['nNXP', 'njhg'], parentId: mov },
                     ],
                 },
             ],
             state: {
-                activeNode: 'nJQr',
+                activeNode: mov,
             },
         };
         moveNode(input.columns, action);
@@ -1177,6 +1179,101 @@ describe('move-node', () => {
             state: {
                 activeNode: 'nsYt',
             },
+        };
+        moveNode(input.columns, action);
+        expect(input.columns).toEqual(output.columns);
+    });
+
+    test('should move node to start of adjacent group', () => {
+        const c0 = 'czGf';
+        const c1 = 'c2-q';
+        const root = 'rgbD';
+        const n1 = 'nhMi';
+        const n2 = 'nem3';
+        const n3 = 'nE_4';
+        const n1_1 = 'ne1p';
+        const mov = 'nGs8';
+        const n2_1 = 'nbAQ';
+        const n2_2 = 'nYxn';
+        const n3_1 = 'nLGp';
+        const n3_2 = 'nMLR';
+        const action = {
+            type: 'DOCUMENT/MOVE_NODE',
+            payload: { direction: 'down', activeNodeId: mov },
+        } as const;
+        const input = {
+            columns: [
+                { id: c0, groups: [{ nodes: [n1, n2, n3], parentId: root }] },
+                {
+                    id: c1,
+                    groups: [
+                        { nodes: [n1_1, mov], parentId: n1 },
+                        { nodes: [n2_1, n2_2], parentId: n2 },
+                        { nodes: [n3_1, n3_2], parentId: n3 },
+                    ],
+                },
+            ],
+        };
+
+        const output = {
+            columns: [
+                { id: c0, groups: [{ nodes: [n1, n2, n3], parentId: root }] },
+                {
+                    id: c1,
+                    groups: [
+                        { nodes: [n1_1], parentId: n1 },
+                        { nodes: [mov, n2_1, n2_2], parentId: n2 },
+                        { nodes: [n3_1, n3_2], parentId: n3 },
+                    ],
+                },
+            ],
+        };
+        moveNode(input.columns, action);
+        expect(input.columns).toEqual(output.columns);
+    });
+    test('should move node to end of adjacent group', () => {
+        const c0 = 'czGf';
+        const c1 = 'c2-q';
+        const root = 'rgbD';
+        const n1 = 'nhMi';
+        const n2 = 'nem3';
+        const n3 = 'nE_4';
+        const n1_1 = 'ne1p';
+        const n1_2 = 'nGs8';
+        const n2_1 = 'nbAQ';
+        const n2_2 = 'nYxn';
+        const mov = 'nLGp';
+        const n3_2 = 'nMLR';
+        const action = {
+            type: 'DOCUMENT/MOVE_NODE',
+            payload: { direction: 'up', activeNodeId: mov },
+        } as const;
+        const input = {
+            columns: [
+                { id: c0, groups: [{ nodes: [n1, n2, n3], parentId: root }] },
+                {
+                    id: c1,
+                    groups: [
+                        { nodes: [n1_1, n1_2], parentId: n1 },
+                        { nodes: [n2_1, n2_2], parentId: n2 },
+                        { nodes: [mov, n3_2], parentId: n3 },
+                    ],
+                },
+            ],
+        };
+
+        const output = {
+            columns: [
+                { id: c0, groups: [{ nodes: [n1, n2, n3], parentId: root }] },
+                {
+                    id: c1,
+                    groups: [
+                        { nodes: [n1_1, n1_2], parentId: n1 },
+                        { nodes: [n2_1, n2_2, mov], parentId: n2 },
+                        { nodes: [n3_2], parentId: n3 },
+                    ],
+                },
+            ],
         };
         moveNode(input.columns, action);
         expect(input.columns).toEqual(output.columns);
