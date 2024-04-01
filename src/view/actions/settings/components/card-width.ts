@@ -1,37 +1,41 @@
 import { SettingsStore } from 'src/main';
 import { Setting } from 'obsidian';
 
-export const FontSize = (
+const DEFAULT_CARD_WIDTH = 400;
+
+export const CardWidth = (
     element: HTMLElement,
     settingsStore: SettingsStore,
 ) => {
     const settingsState = settingsStore.getValue();
     element.empty();
     new Setting(element)
-        .setName('Font size')
+        .setName('Card width')
         .addSlider((cb) => {
-            cb.setValue(settingsState.view.fontSize)
-                .onChange((fontSize) => {
+            const value = settingsState.view.cardWidth || DEFAULT_CARD_WIDTH;
+            cb.setLimits(200, 1000, 1);
+            cb.setValue(value)
+                .onChange((width) => {
                     settingsStore.dispatch({
-                        type: 'SET_FONT_SIZE',
+                        type: 'SET_CARD_WIDTH',
                         payload: {
-                            fontSize,
+                            width,
                         },
                     });
                 })
-                .setLimits(8, 36, 1)
+
                 .setDynamicTooltip();
         })
         .addExtraButton((cb) => {
             cb.setIcon('reset')
                 .onClick(() => {
                     settingsStore.dispatch({
-                        type: 'SET_FONT_SIZE',
+                        type: 'SET_CARD_WIDTH',
                         payload: {
-                            fontSize: 16,
+                            width: undefined,
                         },
                     });
-                    FontSize(element, settingsStore);
+                    CardWidth(element, settingsStore);
                 })
                 .setTooltip('Reset');
         });

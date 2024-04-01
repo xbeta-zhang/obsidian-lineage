@@ -53,6 +53,11 @@
 </div>
 
 <style>
+    :root{
+        --node-width: 400px;
+        --min-node-height: 100px
+    }
+
     .lineage-card {
         width: var(--node-width);
         height: fit-content;

@@ -14,9 +14,3 @@ export const getDefaultTheme = () => {
     const theme = getTheme();
     return theme === 'light' ? lightTheme : darkTheme;
 };
-
-export const cssVariables = {
-    activeBranchBg: '--background-active-parent',
-    containerBg: '--background-container',
-    inactiveNodeBg: '--background-inactive-node',
-};

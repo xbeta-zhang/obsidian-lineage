@@ -1,37 +1,39 @@
 import { SettingsStore } from 'src/main';
 import { Setting } from 'obsidian';
 
-export const FontSize = (
+export const MinCardHeight = (
     element: HTMLElement,
     settingsStore: SettingsStore,
 ) => {
     const settingsState = settingsStore.getValue();
     element.empty();
     new Setting(element)
-        .setName('Font size')
+        .setName('Minimum card height')
         .addSlider((cb) => {
-            cb.setValue(settingsState.view.fontSize)
-                .onChange((fontSize) => {
+            const value = settingsState.view.minimumCardHeight || 100;
+            cb.setLimits(50, 1000, 1);
+            cb.setValue(value)
+                .onChange((height) => {
                     settingsStore.dispatch({
-                        type: 'SET_FONT_SIZE',
+                        type: 'SET_MIN_CARD_HEIGHT',
                         payload: {
-                            fontSize,
+                            height,
                         },
                     });
                 })
-                .setLimits(8, 36, 1)
+
                 .setDynamicTooltip();
         })
         .addExtraButton((cb) => {
             cb.setIcon('reset')
                 .onClick(() => {
                     settingsStore.dispatch({
-                        type: 'SET_FONT_SIZE',
+                        type: 'SET_MIN_CARD_HEIGHT',
                         payload: {
-                            fontSize: 16,
+                            height: undefined,
                         },
                     });
-                    FontSize(element, settingsStore);
+                    MinCardHeight(element, settingsStore);
                 })
                 .setTooltip('Reset');
         });

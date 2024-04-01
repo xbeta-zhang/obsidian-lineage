@@ -43,6 +43,18 @@ export type SettingsActions =
           payload: {
               backgroundColor: string | undefined;
           };
+      }
+    | {
+          type: 'SET_CARD_WIDTH';
+          payload: {
+              width: number | undefined;
+          };
+      }
+    | {
+          type: 'SET_MIN_CARD_HEIGHT';
+          payload: {
+              height: number | undefined;
+          };
       };
 
 const updateState = (store: Settings, action: SettingsActions) => {
@@ -61,6 +73,10 @@ const updateState = (store: Settings, action: SettingsActions) => {
         store.view.theme.containerBg = action.payload.backgroundColor;
     } else if (action.type === 'SET_ACTIVE_BRANCH_BG') {
         store.view.theme.activeBranchBg = action.payload.backgroundColor;
+    } else if (action.type === 'SET_CARD_WIDTH') {
+        store.view.cardWidth = action.payload.width;
+    } else if (action.type === 'SET_MIN_CARD_HEIGHT') {
+        store.view.minimumCardHeight = action.payload.height;
     }
 };
 export const settingsReducer = (

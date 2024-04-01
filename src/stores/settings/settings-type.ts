@@ -20,5 +20,7 @@ export type Settings = {
     view: {
         fontSize: number;
         theme: Theme;
+        cardWidth?: number;
+        minimumCardHeight?: number;
     };
 };

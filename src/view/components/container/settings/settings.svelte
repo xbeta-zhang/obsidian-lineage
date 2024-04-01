@@ -8,7 +8,7 @@
 
 <style>
     .sidebar {
-        width: 350px;
+        width: 400px;
         background-color: var(--background-primary);
         position: absolute;
         right: var(--sidebar-right);

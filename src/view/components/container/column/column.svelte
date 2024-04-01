@@ -20,8 +20,7 @@
 
 <style>
     .column {
-        width: fit-content;
-        min-width: 416px;
+        min-width: fit-content;
         height: 100vh;
         overflow-y: scroll;
         overflow-x: hidden;
@@ -31,6 +30,7 @@
         display: none;
     }
     .column-buffer {
-        height: 60%
+        height: 60%;
+        min-width: 416px;
     }
 </style>

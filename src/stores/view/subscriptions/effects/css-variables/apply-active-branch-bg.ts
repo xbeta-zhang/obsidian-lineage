@@ -1,5 +1,6 @@
 import { LineageView } from 'src/view/view';
-import { cssVariables } from 'src/stores/view/subscriptions/effects/apply-background-color/helpers/get-default-theme';
+
+import { cssVariables } from 'src/stores/view/subscriptions/effects/css-variables/helpers/css-variables';
 
 export const applyActiveBranchBg = (
     view: LineageView,

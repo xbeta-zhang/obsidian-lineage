@@ -21,9 +21,11 @@ import { applyZoom } from 'src/stores/view/subscriptions/effects/apply-zoom';
 import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { isEmptyDocument } from 'src/stores/view/subscriptions/helpers/is-empty-document';
 import { discardChanges } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/cancel-changes';
-import { applyFontSize } from 'src/stores/view/subscriptions/effects/apply-font-size';
-import { applyContainerBg } from 'src/stores/view/subscriptions/effects/apply-container-bg';
-import { applyActiveBranchBg } from 'src/stores/view/subscriptions/effects/apply-active-branch-bg';
+import { applyFontSize } from 'src/stores/view/subscriptions/effects/css-variables/apply-font-size';
+import { applyContainerBg } from 'src/stores/view/subscriptions/effects/css-variables/apply-container-bg';
+import { applyActiveBranchBg } from 'src/stores/view/subscriptions/effects/css-variables/apply-active-branch-bg';
+import { applyCardWidth } from 'src/stores/view/subscriptions/effects/css-variables/apply-card-width';
+import { applyCardHeight } from 'src/stores/view/subscriptions/effects/css-variables/apply-card-height';
 
 const viewEffectsAndActions = (
     view: LineageView,
@@ -144,6 +146,8 @@ export const viewSubscriptions = (view: LineageView) => {
                 applyFontSize(view, state.view.fontSize);
                 applyContainerBg(view, state.view.theme.containerBg);
                 applyActiveBranchBg(view, state.view.theme.activeBranchBg);
+                applyCardWidth(view, state.view.cardWidth);
+                applyCardHeight(view, state.view.cardWidth);
             } else if (action) {
                 if (action.type === 'SET_FONT_SIZE') {
                     applyFontSize(view, state.view.fontSize);
@@ -151,6 +155,10 @@ export const viewSubscriptions = (view: LineageView) => {
                     applyContainerBg(view, state.view.theme.containerBg);
                 } else if (action.type === 'SET_ACTIVE_BRANCH_BG') {
                     applyActiveBranchBg(view, state.view.theme.activeBranchBg);
+                } else if (action.type === 'SET_CARD_WIDTH') {
+                    applyCardWidth(view, state.view.cardWidth);
+                } else if (action.type === 'SET_MIN_CARD_HEIGHT') {
+                    applyCardHeight(view, state.view.minimumCardHeight);
                 }
             }
         },

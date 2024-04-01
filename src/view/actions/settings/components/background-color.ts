@@ -1,6 +1,6 @@
 import { SettingsStore } from 'src/main';
 import { Setting } from 'obsidian';
-import { getDefaultTheme } from 'src/stores/view/subscriptions/effects/apply-background-color/helpers/get-default-theme';
+import { getDefaultTheme } from 'src/stores/view/subscriptions/effects/css-variables/helpers/get-default-theme';
 
 export const BackgroundColor = (
     element: HTMLElement,

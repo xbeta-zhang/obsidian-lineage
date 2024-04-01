@@ -34,7 +34,7 @@
 <style>
     .preview-container {
         width: 100%;
-		min-height: 100px;
+		min-height: var(--min-node-height);
 		max-height: 65vh;
 		font-size: var(--font-text-size);
 		padding: 6px 6px 6px 12px;
