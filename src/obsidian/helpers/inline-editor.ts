@@ -13,6 +13,7 @@ export class InlineEditor {
     private nodeId: string | null = null;
     private target: HTMLElement | null = null;
     private appliedExternalCursor = false;
+    private onChangeSubscriptions: Set<() => void> = new Set();
 
     constructor(private view: LineageView) {}
 
@@ -76,7 +77,7 @@ export class InlineEditor {
             workspace,
         } as never) as InlineMarkdownView;
         this.inlineView.save = noop;
-        this.inlineView.requestSave = noop;
+        this.inlineView.requestSave = this.invokeAndDeleteOnChangeSubscriptions;
         this.inlineView.__setViewData__ = this.inlineView.setViewData;
         this.inlineView.setViewData = noop;
 
@@ -86,6 +87,13 @@ export class InlineEditor {
                 { history: false },
             );
         }
+    }
+
+    onNextChange(subscription: () => void) {
+        this.onChangeSubscriptions.add(subscription);
+        return () => {
+            this.onChangeSubscriptions.delete(subscription);
+        };
     }
 
     async loadFile(file: TFile) {
@@ -100,6 +108,14 @@ export class InlineEditor {
             await this.inlineView.onUnloadFile(file);
         }
     }
+
+    private invokeAndDeleteOnChangeSubscriptions = () => {
+        if (this.onChangeSubscriptions.size)
+            for (const subscription of this.onChangeSubscriptions) {
+                subscription();
+                this.onChangeSubscriptions.delete(subscription);
+            }
+    };
 
     private setCursor(line: number, ch: number) {
         this.inlineView.editor.setCursor(line, ch);

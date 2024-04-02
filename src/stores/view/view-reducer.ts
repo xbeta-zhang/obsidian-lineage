@@ -50,6 +50,10 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
         setTreeIndex(state.document, action.payload.treeIndex);
     } else if (action.type === 'DOCUMENT/ENABLE_EDIT_MODE') {
         enableEditMode(state.document.editing, action);
+    } else if (action.type === 'DOCUMENT/CONFIRM_DISABLE_EDIT') {
+        state.document.editing.disableEditConfirmation = true;
+    } else if (action.type === 'DOCUMENT/RESET_DISABLE_EDIT_CONFIRMATION') {
+        state.document.editing.disableEditConfirmation = false;
     } else if (action.type === 'DOCUMENT/DISABLE_EDIT_MODE') {
         disableEditMode(state.document.editing);
     } else if (action.type === 'SET_DRAG_STARTED') {

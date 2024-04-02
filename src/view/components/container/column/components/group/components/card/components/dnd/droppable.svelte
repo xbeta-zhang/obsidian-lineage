@@ -10,6 +10,7 @@
     export let hasChildren: boolean;
     export let parentId: string;
     export let editing: boolean;
+    export let disableEditConfirmation: boolean;
 
     const setActive = () => {
         if (!editing)
@@ -34,6 +35,13 @@
     class={clx(
         'lineage-card',
         active ? activeStatusClasses[active] : ' inactive-node',
+        disableEditConfirmation
+            ? 'node-border--discard'
+            : editing
+              ? 'node-border--editing'
+              : active === ActiveStatus.node
+                ? 'node-border--active'
+                : undefined,
     )}
     id={nodeId}
     on:click={setActive}
@@ -53,9 +61,9 @@
 </div>
 
 <style>
-    :root{
+    :root {
         --node-width: 400px;
-        --min-node-height: 100px
+        --min-node-height: 100px;
     }
 
     .lineage-card {
@@ -64,5 +72,14 @@
         display: flex;
         position: relative;
         font-size: 16px;
+    }
+    .node-border--active {
+        border-left: 5px var(--lineage-accent) solid;
+    }
+    .node-border--editing {
+        border-left: 5px var(--color-base-70) solid;
+    }
+    .node-border--discard {
+        border-left: 5px var(--color-red) solid;
     }
 </style>

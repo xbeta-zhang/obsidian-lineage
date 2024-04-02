@@ -5,4 +5,5 @@ export type DisableEditModeAction = {
 };
 export const disableEditMode = (editing: ViewState['document']['editing']) => {
     editing.activeNodeId = '';
+    editing.disableEditConfirmation = false;
 };

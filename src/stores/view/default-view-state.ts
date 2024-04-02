@@ -18,6 +18,7 @@ export const defaultViewState = (): ViewState => ({
         treeIndex: {},
         editing: {
             activeNodeId: '',
+            disableEditConfirmation: false,
         },
         activeBranch: {
             group: '',
@@ -54,4 +55,5 @@ export type DNDState = {
 };
 export type EditingState = {
     activeNodeId: string;
+    disableEditConfirmation: boolean;
 };

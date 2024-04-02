@@ -36,7 +36,13 @@ export type ViewDocumentAction =
     | ToggleEditModeAction
     | SetDragStartedAction
     | SetDragCanceled
-    | UpdateActiveBranchAction;
+    | UpdateActiveBranchAction
+    | {
+          type: 'DOCUMENT/CONFIRM_DISABLE_EDIT';
+      }
+    | {
+          type: 'DOCUMENT/RESET_DISABLE_EDIT_CONFIRMATION';
+      };
 type ToggleHistorySidebarAction = {
     type: 'UI/TOGGLE_HISTORY_SIDEBAR';
 };

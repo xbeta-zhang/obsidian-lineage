@@ -25,7 +25,6 @@ import { applyFontSize } from 'src/stores/view/subscriptions/effects/css-variabl
 import { applyContainerBg } from 'src/stores/view/subscriptions/effects/css-variables/apply-container-bg';
 import { applyActiveBranchBg } from 'src/stores/view/subscriptions/effects/css-variables/apply-active-branch-bg';
 import { applyCardWidth } from 'src/stores/view/subscriptions/effects/css-variables/apply-card-width';
-import { applyCardHeight } from 'src/stores/view/subscriptions/effects/css-variables/apply-card-height';
 import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
 import { getUsedHotkeys } from 'src/obsidian/helpers/get-used-hotkeys';
 
@@ -158,7 +157,6 @@ export const viewSubscriptions = (view: LineageView) => {
                 applyContainerBg(view, state.view.theme.containerBg);
                 applyActiveBranchBg(view, state.view.theme.activeBranchBg);
                 applyCardWidth(view, state.view.cardWidth);
-                applyCardHeight(view, state.view.cardWidth);
             } else if (action) {
                 if (action.type === 'SET_FONT_SIZE') {
                     applyFontSize(view, state.view.fontSize);
@@ -168,8 +166,6 @@ export const viewSubscriptions = (view: LineageView) => {
                     applyActiveBranchBg(view, state.view.theme.activeBranchBg);
                 } else if (action.type === 'SET_CARD_WIDTH') {
                     applyCardWidth(view, state.view.cardWidth);
-                } else if (action.type === 'SET_MIN_CARD_HEIGHT') {
-                    applyCardHeight(view, state.view.minimumCardHeight);
                 }
             }
         },

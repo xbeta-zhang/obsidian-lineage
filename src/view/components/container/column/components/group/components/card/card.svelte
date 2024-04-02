@@ -14,12 +14,13 @@
     export let active: ActiveStatus | null;
     export let hasChildren: boolean;
     export let parentId: string;
+    export let disableEditConfirmation: boolean
     const view = getView()
     const store = view.documentStore
 
 </script>
 
-<Droppable {active} {editing} {hasChildren} nodeId={node} {parentId}>
+<Droppable {active}{disableEditConfirmation} {editing} {hasChildren} nodeId={node} {parentId}>
     {#if active===ActiveStatus.node && editing}
         <InlineEditor nodeId={node} />
     {:else}
