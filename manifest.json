@@ -3,7 +3,7 @@
 	"name": "Lineage",
 	"version": "0.3.2-dev",
 	"minAppVersion": "0.15.0",
-	"description": "Gingko-like writing experience.",
+	"description": "Gingko writing experience.",
 	"author": "ycnmhd",
 	"isDesktopOnly": true
 }

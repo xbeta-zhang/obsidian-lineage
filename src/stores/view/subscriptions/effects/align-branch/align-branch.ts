@@ -1,7 +1,7 @@
 import { DocumentState } from 'src/stores/document/document-state-type';
 import { AlignBranchState } from 'src/stores/view/subscriptions/effects/align-branch/helpers/align-element';
 import { alignParentsAndActiveNode } from 'src/stores/view/subscriptions/effects/align-branch/align-parents-and-active-node';
-import { alignChildGroup } from 'src/stores/view/subscriptions/effects/align-branch/align-child-group';
+import { alignChildGroupOfColumn } from 'src/stores/view/subscriptions/effects/align-branch/align-child-group-of-column';
 import { ViewState } from 'src/stores/view/view-state-type';
 import { debounce } from 'obsidian';
 
@@ -17,7 +17,13 @@ export const alignBranch = (
     const localState: AlignBranchState = {
         columns: new Set<string>(),
     };
-    alignParentsAndActiveNode(viewState, container, localState, behavior);
+    alignParentsAndActiveNode(
+        viewState,
+        container,
+        localState,
+        documentState.document.columns,
+        behavior,
+    );
 
     for (const column of documentState.document.columns) {
         if (localState.columns.has(column.id)) continue;
@@ -26,7 +32,7 @@ export const alignBranch = (
             viewState.document.activeBranch.childGroups.has(g.parentId),
         );
         if (childGroup) {
-            alignChildGroup(viewState, container, column.id, behavior);
+            alignChildGroupOfColumn(viewState, container, column.id, behavior);
         } /*else {
             alignInactiveColumn(column, container, behavior);
         }*/

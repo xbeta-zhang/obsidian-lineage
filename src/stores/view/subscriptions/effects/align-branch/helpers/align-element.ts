@@ -14,6 +14,7 @@ export const alignElement = (
     elements: HTMLElement | HTMLElement[],
     behavior: ScrollBehavior = 'smooth',
     mode: 'vertical' | 'horizontal' | 'both' = 'vertical',
+    horizontalChild?: HTMLElement,
 ) => {
     if (!container) return;
     const isArray = Array.isArray(elements);
@@ -32,25 +33,28 @@ export const alignElement = (
 
         if (mode === 'horizontal' || mode === 'both') {
             // only scroll horizontally if the element is not fully visible
-            const isHorizontallyVisible =
-                elementRect.left >= containerRect.left &&
-                elementRect.right <= containerRect.right;
-            if (!isHorizontallyVisible) {
-                let scrollLeft = 0;
+            const leftSideIsVisible =
+                elementRect.left >= containerRect.left + PADDING;
+            const boundingClientRect = horizontalChild
+                ? horizontalChild.getBoundingClientRect()
+                : null;
+            const rightSideIsVisible = boundingClientRect
+                ? boundingClientRect.right <= containerRect.right
+                : elementRect.right <= containerRect.right - PADDING;
 
-                if (elementRect.left < containerRect.left + PADDING) {
-                    scrollLeft =
-                        elementRect.left - (containerRect.left + PADDING);
-                } else if (elementRect.right > containerRect.right - PADDING) {
-                    scrollLeft =
-                        elementRect.right - (containerRect.right - PADDING);
-                }
-                if (Math.abs(scrollLeft) > THRESHOLD)
-                    container.scrollBy({
-                        left: scrollLeft,
-                        behavior,
-                    });
+            let scrollLeft = 0;
+            if (!leftSideIsVisible) {
+                scrollLeft = elementRect.left - (containerRect.left + PADDING);
+            } else if (!rightSideIsVisible) {
+                scrollLeft = boundingClientRect
+                    ? boundingClientRect.right - (containerRect.right - PADDING)
+                    : elementRect.right - (containerRect.right - PADDING);
             }
+            if (Math.abs(scrollLeft) > THRESHOLD)
+                container.scrollBy({
+                    left: scrollLeft,
+                    behavior,
+                });
         }
 
         if (mode === 'vertical' || mode === 'both') {
