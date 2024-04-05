@@ -1,5 +1,16 @@
 import { UndoableAction } from 'src/stores/document/document-store-actions';
 
+export type ClipboardBranch = {
+    sortedChildGroups: NodeGroup[][];
+    content: Content;
+    nodeId: string;
+    mode: 'cut' | 'copy';
+};
+
+export type Clipboard = {
+    branch: ClipboardBranch | null;
+};
+
 export type DocumentState = {
     document: LineageDocument;
     file: {
@@ -8,6 +19,7 @@ export type DocumentState = {
     };
 
     history: DocumentHistory;
+    clipboard: Clipboard;
 };
 
 // document

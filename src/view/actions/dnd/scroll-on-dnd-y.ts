@@ -1,12 +1,10 @@
-import invariant from 'tiny-invariant';
-
 export const scrollOnDndY = (node: HTMLElement) => {
     let verticalScrollTimeout: number;
     let verticalScrollDirection = 0;
     const verticalScrollStep = 10;
     const T = 50;
-    const container = document.getElementById('columns-container');
-    invariant(container);
+    let container: HTMLElement | null = null;
+
     const scrollVertically = (dir: number) => {
         node.scrollTop += dir * verticalScrollStep;
         verticalScrollTimeout = requestAnimationFrame(() =>
@@ -15,6 +13,9 @@ export const scrollOnDndY = (node: HTMLElement) => {
     };
 
     const handleDragEnter = (event: DragEvent) => {
+        if (!container)
+            container = document.getElementById('columns-container');
+        if (!container) return;
         const rect = container.getBoundingClientRect();
         const y = event.clientY - rect.top;
 

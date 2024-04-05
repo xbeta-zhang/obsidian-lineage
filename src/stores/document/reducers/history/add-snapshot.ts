@@ -44,7 +44,11 @@ export const addSnapshot = (
             history.items.splice(history.state.activeIndex, 1);
         }
     }
-    if (action.type !== 'DOCUMENT/INSERT_NODE' && activeSnapshot) {
+    if (
+        action.type !== 'DOCUMENT/INSERT_NODE' &&
+        action.type !== 'DOCUMENT/PASTE_NODE' &&
+        activeSnapshot
+    ) {
         activeSnapshot.data.activeNodeId = activeNodeId;
     }
     const snapshot = createSnapshot(document, action, activeNodeId);

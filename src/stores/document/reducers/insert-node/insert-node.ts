@@ -17,12 +17,12 @@ export type CreateNodeAction = {
 export const insertNode = (
     columns: Column[],
     content: Content,
-    action: CreateNodeAction,
+    action: Pick<CreateNodeAction, 'payload'>,
+    newNodeId = id.node(),
 ) => {
     const payload = action.payload;
     invariant(payload.activeNodeId);
 
-    const newNodeId = id.node();
     if (payload.position === 'right') {
         insertChild(columns, payload.activeNodeId, newNodeId);
     } else {

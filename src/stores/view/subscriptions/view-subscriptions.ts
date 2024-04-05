@@ -63,67 +63,28 @@ const viewEffectsAndActions = (
             // ideally the user should confirm this
             discardChanges(view);
         }
+        const structuralChange =
+            e.createOrDelete || e.dropOrMove || e.changeHistory || e.clipboard;
+        const activeNodeChange = e.activeNode || e.activeNodeHistory;
         // actions
-        if (e.creationAndDeletion || e.shape || e.changeHistory) {
+        if (structuralChange) {
             setTreeIndex(viewStore, documentState);
             setActiveNode(viewStore, documentState);
+        }
+        if (activeNodeChange || structuralChange) {
+            updateActiveBranch(viewStore, documentState);
         }
 
         if (type === 'DOCUMENT/INSERT_NODE' && view.isActive) {
             enableEditMode(viewStore, documentState);
         }
 
-        if (type === 'DOCUMENT/DELETE_NODE') {
+        if (type === 'DOCUMENT/DELETE_NODE' || type === 'DOCUMENT/CUT_NODE') {
             removeObsoleteNavigationItems(viewStore, documentState);
-        }
-
-        if (
-            e.activeNode ||
-            e.activeNodeHistory ||
-            e.creationAndDeletion ||
-            e.shape ||
-            e.changeHistory
-        ) {
-            updateActiveBranch(viewStore, documentState);
         }
 
         if (action.type === 'SEARCH/SET_QUERY') {
             updateSearchResults(documentStore, viewStore);
-        }
-
-        // effects
-        if (!container || !view.isActive) return;
-        if (e.zoom) {
-            applyZoom(container, viewState);
-        }
-        if (e.changeHistory || e.content || e.creationAndDeletion || e.shape) {
-            resetSearchFuse(documentStore);
-            view.saveDocument();
-        }
-        if (
-            action.type === 'DOCUMENT/DISABLE_EDIT_MODE' ||
-            e.changeHistory ||
-            e.content ||
-            e.creationAndDeletion ||
-            e.shape
-        ) {
-            focusContainer(container);
-        }
-        if (
-            e.activeNode ||
-            e.activeNodeHistory ||
-            e.zoom ||
-            e.search ||
-            e.creationAndDeletion ||
-            e.shape ||
-            e.changeHistory
-        ) {
-            alignBranchDebounced(
-                documentStore.getValue(),
-                viewState,
-                container,
-                type === 'DOCUMENT/MOVE_NODE' ? 'instant' : undefined,
-            );
         }
         if (action.type === 'UI/TOGGLE_HELP_SIDEBAR') {
             if (viewState.ui.showHelpSidebar)
@@ -133,6 +94,33 @@ const viewEffectsAndActions = (
                         conflictingHotkeys: getUsedHotkeys(view.plugin),
                     },
                 });
+        }
+        // effects
+        if (!container || !view.isActive) return;
+        if (e.zoom) {
+            applyZoom(container, viewState);
+        }
+        if (e.content || structuralChange) {
+            resetSearchFuse(documentStore);
+            view.saveDocument();
+        }
+        if (
+            action.type === 'DOCUMENT/DISABLE_EDIT_MODE' ||
+            e.changeHistory ||
+            e.content ||
+            e.createOrDelete ||
+            e.dropOrMove ||
+            e.clipboard
+        ) {
+            focusContainer(container);
+        }
+        if (activeNodeChange || e.zoom || e.search || structuralChange) {
+            alignBranchDebounced(
+                documentStore.getValue(),
+                viewState,
+                container,
+                type === 'DOCUMENT/MOVE_NODE' ? 'instant' : undefined,
+            );
         }
     }
 };

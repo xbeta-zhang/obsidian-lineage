@@ -30,6 +30,9 @@ export const hotkeysLang = {
     go_to_end_of_group: 'Go to end of group',
     go_to_beginning_of_column: 'Go to beginning of column',
     go_to_end_of_column: 'Go to end of column',
+    copy_node: 'Copy branch',
+    cut_node: 'Cut branch',
+    paste_node: 'Paste branch',
 };
 export type PluginCommand = {
     check: (view: LineageView) => boolean;
@@ -71,8 +74,9 @@ export const groupedHotkeys = {
         'go_to_beginning_of_column',
         'go_to_end_of_column',
     ]),
-    history: new Set(['undo_change', 'redo_change']),
-    search: new Set(['toggle_search_input']),
+    History: new Set(['undo_change', 'redo_change']),
+    Search: new Set(['toggle_search_input']),
+    Clipboard: new Set(['copy_node', 'cut_node', 'paste_node']),
 } satisfies Record<string, Set<CommandName>>;
 
 export const hotkeysGroups: Record<CommandName, GroupName> = Object.fromEntries(

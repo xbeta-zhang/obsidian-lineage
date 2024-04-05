@@ -1,4 +1,5 @@
 import {
+    ClipboardPaste,
     FileEdit,
     FileMinus,
     FileOutput,
@@ -6,6 +7,7 @@ import {
     FileUp,
     Heading1,
     Merge,
+    Scissors,
 } from 'lucide-svelte';
 import { UndoableAction } from 'src/stores/document/document-store-actions';
 
@@ -21,4 +23,6 @@ export const actionInfo: Partial<
     'DOCUMENT/MOVE_NODE': { label: 'Moved a card', icon: FileOutput },
     'DOCUMENT/MERGE_NODE': { label: 'Merged a card', icon: Merge },
     'DOCUMENT/FORMAT_HEADINGS': { label: 'Formatted headings', icon: Heading1 },
+    'DOCUMENT/CUT_NODE': { label: 'Cut a node', icon: Scissors },
+    'DOCUMENT/PASTE_NODE': { label: 'Pasted a node', icon: ClipboardPaste },
 };

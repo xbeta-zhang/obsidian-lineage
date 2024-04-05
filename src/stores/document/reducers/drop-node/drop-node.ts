@@ -13,7 +13,10 @@ export type DropAction = {
     };
 };
 
-export const dropNode = (columns: Column[], action: DropAction) => {
+export const dropNode = (
+    columns: Column[],
+    action: Pick<DropAction, 'payload'>,
+) => {
     const droppedNode = action.payload.droppedNodeId;
     const targetNode = action.payload.targetNodeId;
     invariant(droppedNode);

@@ -18,6 +18,9 @@ import {
 } from 'src/stores/document/document-store-actions';
 import { defaultDocumentState } from 'src/stores/document/default-document-state';
 import { formatHeadings } from 'src/stores/document/reducers/content/format-content/format-headings';
+import { pasteNode } from 'src/stores/document/reducers/clipboard/paste-node/paste-node';
+import { copyNode } from 'src/stores/document/reducers/clipboard/copy-node/copy-node';
+import { cutNode } from 'src/stores/document/reducers/clipboard/cut-node/cut-node';
 
 const updateDocumentState = (
     state: DocumentState,
@@ -58,6 +61,7 @@ const updateDocumentState = (
         state.document = newState.document;
         state.history = newState.history;
         state.file = newState.file;
+        state.clipboard = newState.clipboard;
     } else if (action.type === 'HISTORY/SELECT_SNAPSHOT') {
         selectSnapshot(state.document, state.history, action);
     } else if (action.type === 'HISTORY/APPLY_PREVIOUS_SNAPSHOT') {
@@ -69,12 +73,33 @@ const updateDocumentState = (
     } else if (action.type === 'DOCUMENT/FORMAT_HEADINGS') {
         formatHeadings(state.document.content, state.document.columns);
         activeNodeId = state.history.context.activeNodeId;
+    } else if (action.type === 'DOCUMENT/PASTE_NODE') {
+        activeNodeId = pasteNode(
+            state.document.columns,
+            state.document.content,
+            state.clipboard,
+            action.payload.targetNodeId,
+        );
+    } else if (action.type === 'DOCUMENT/COPY_NODE') {
+        copyNode(
+            state.document.columns,
+            state.document.content,
+            state.clipboard,
+            action.payload.nodeId,
+        );
+    } else if (action.type === 'DOCUMENT/CUT_NODE') {
+        activeNodeId = cutNode(
+            state.document.columns,
+            state.document.content,
+            state.clipboard,
+            action.payload.nodeId,
+        );
     }
 
     const eventType = getDocumentEventType(action.type);
     const contentShapeCreation =
-        eventType.content || eventType.shape || eventType.creationAndDeletion;
-    if (activeNodeId && contentShapeCreation) {
+        eventType.content || eventType.dropOrMove || eventType.createOrDelete;
+    if (activeNodeId && (contentShapeCreation || eventType.clipboard)) {
         addSnapshot(
             state.document,
             state.history,

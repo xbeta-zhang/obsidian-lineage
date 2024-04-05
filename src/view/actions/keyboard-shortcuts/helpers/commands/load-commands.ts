@@ -11,6 +11,7 @@ import {
     isActiveAndNotEditing,
 } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
 import { historyCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/history-commands';
+import { clipboardCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/clipboard-commands';
 
 export const pluginCommands: {
     current: PluginCommand[] | null;
@@ -25,6 +26,7 @@ export const loadCommands = (plugin: Lineage) => {
         ...createCommands(),
         ...moveCommands(),
         ...mergeCommands(),
+        ...clipboardCommands(),
         ...historyCommands(),
         {
             name: 'delete_card',

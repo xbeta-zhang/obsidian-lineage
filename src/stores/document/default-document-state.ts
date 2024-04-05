@@ -21,4 +21,7 @@ export const defaultDocumentState = (): DocumentState => ({
             activeNodeId: '',
         },
     },
+    clipboard: {
+        branch: null,
+    },
 });
