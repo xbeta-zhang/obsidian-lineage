@@ -95,6 +95,20 @@ const viewEffectsAndActions = (
                     },
                 });
         }
+
+        if (
+            (type === 'DOCUMENT/COPY_NODE' || type === 'DOCUMENT/CUT_NODE') &&
+            documentState.clipboard.branch
+        ) {
+            view.plugin.documents.dispatch({
+                type: 'DOCUMENTS/SET_CLIPBOARD',
+                payload: {
+                    branch: documentState.clipboard.branch,
+                },
+            });
+            documentStore.dispatch({ type: 'DOCUMENTS/CLEAR_CLIPBOARD' });
+        }
+
         // effects
         if (!container || !view.isActive) return;
         if (e.zoom) {

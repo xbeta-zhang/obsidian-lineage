@@ -77,8 +77,7 @@ const updateDocumentState = (
         activeNodeId = pasteNode(
             state.document.columns,
             state.document.content,
-            state.clipboard,
-            action.payload.targetNodeId,
+            action,
         );
     } else if (action.type === 'DOCUMENT/COPY_NODE') {
         copyNode(
@@ -94,6 +93,8 @@ const updateDocumentState = (
             state.clipboard,
             action.payload.nodeId,
         );
+    } else if (action.type === 'DOCUMENTS/CLEAR_CLIPBOARD') {
+        state.clipboard.branch = null;
     }
 
     const eventType = getDocumentEventType(action.type);

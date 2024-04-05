@@ -41,6 +41,8 @@ export const clipboardCommands = () => {
                     payload: {
                         targetNodeId:
                             view.viewStore.getValue().document.activeNode,
+                        branch: view.plugin.documents.getValue().clipboard
+                            .branch,
                     },
                 });
             },

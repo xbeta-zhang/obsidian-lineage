@@ -60,4 +60,9 @@ export type UndoableAction =
 export type DocumentClipboardActions =
     | CopyNodeAction
     | PasteNodeAction
-    | CutNodeAction;
+    | CutNodeAction
+    | ClearClipboard;
+
+export type ClearClipboard = {
+    type: 'DOCUMENTS/CLEAR_CLIPBOARD';
+};

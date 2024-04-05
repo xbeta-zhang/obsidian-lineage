@@ -9,7 +9,6 @@ import { jsonToMarkdown } from 'src/stores/view/helpers/json-to-md/json-to-makdo
 import { OnError, Store } from 'src/helpers/store/store';
 import { defaultDocumentState } from 'src/stores/document/default-document-state';
 import { DocumentState } from 'src/stores/document/document-state-type';
-import { stores } from 'src/view/helpers/stores-cache';
 import { clone } from 'src/helpers/clone';
 import { extractFrontmatter } from 'src/view/helpers/extract-frontmatter';
 import { DocumentStoreAction } from 'src/stores/document/document-store-actions';
@@ -130,7 +129,10 @@ export class LineageView extends TextFileView {
     ) => {
         if (action && action.type === 'DOCUMENT/LOAD_FILE') {
             if (this.file) {
-                delete stores[this.file.path];
+                this.plugin.documents.dispatch({
+                    type: 'DOCUMENTS/DELETE_DOCUMENT',
+                    payload: { path: this.file.path },
+                });
                 setFileViewType(this.plugin, this.file, this.leaf, 'markdown');
             }
         }
@@ -164,7 +166,8 @@ export class LineageView extends TextFileView {
             throw new Error('view does not have a file');
         }
 
-        const fileHasAStore = stores[this.file.path];
+        const fileHasAStore =
+            this.plugin.documents.getValue().documents[this.file.path];
         if (fileHasAStore) {
             this.useExistingStore();
         } else {
@@ -192,7 +195,14 @@ export class LineageView extends TextFileView {
         if (!this.file) {
             throw new Error('view does not have a file');
         }
-        stores[this.file.path] = this.documentStore;
+
+        this.plugin.documents.dispatch({
+            type: 'DOCUMENTS/ADD_DOCUMENT',
+            payload: {
+                path: this.file.path,
+                documentStore: this.documentStore,
+            },
+        });
         this.documentStore.dispatch({
             type: 'FS/SET_FILE_PATH',
             payload: {
@@ -203,7 +213,8 @@ export class LineageView extends TextFileView {
 
     private useExistingStore = () => {
         if (!this.file) return;
-        this.documentStore = stores[this.file.path];
+        this.documentStore =
+            this.plugin.documents.getValue().documents[this.file.path];
     };
 
     private loadDocumentToStore = () => {

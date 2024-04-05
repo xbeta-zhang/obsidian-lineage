@@ -17,15 +17,23 @@ import { addCommands } from 'src/obsidian/commands/add-commands';
 import { loadCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/load-commands';
 import { hotkeySubscriptions } from 'src/stores/hotkeys/hotkey-subscriptions';
 import { settingsSubscriptions } from 'src/stores/settings/subscriptions/settings-subscriptions';
+import { DocumentsState } from 'src/stores/documents/documents-state-type';
+import { DocumentsStoreAction } from 'src/stores/documents/documents-store-actions';
+import { documentsReducer } from 'src/stores/documents/documents-reducer';
+import { DefaultDocumentsState } from 'src/stores/documents/default-documents-state';
 
 export type SettingsStore = Store<Settings, SettingsActions>;
+export type DocumentsStore = Store<DocumentsState, DocumentsStoreAction>;
 
 export default class Lineage extends Plugin {
     settings: SettingsStore;
-
+    documents: DocumentsStore;
     async onload() {
         await this.loadSettings();
-
+        this.documents = new Store<DocumentsState, DocumentsStoreAction>(
+            DefaultDocumentsState(),
+            documentsReducer,
+        );
         this.registerView(
             FILE_VIEW_TYPE,
             (leaf) => new LineageView(leaf, this),

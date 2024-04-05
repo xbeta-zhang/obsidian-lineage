@@ -25,6 +25,7 @@ describe('paste node', () => {
         state.n = 0;
         state.c = 0;
         state.s = 0;
+        __id__.reset();
     });
     test('5 columns', () => {
         const c0 = 'cLbt';
@@ -34,17 +35,17 @@ describe('paste node', () => {
         const c4 = 'c-3';
         const root = 'r3gx';
         const n2 = 'nF0c';
-        const n1 = 'ns5q';
-        const n1_1 = 'nN3y';
-        const n1_2 = 'nUC8';
-        const n1_3 = 'nfN5';
-        const n1_4 = 'nyxT';
-        const n1_1_1 = 'nAWh';
-        const n1_1_2 = 'nDIK';
-        const n1_4_1 = 'nR66';
-        const n1_1_2_1 = 'nwWJ';
-        const n1_1_2_1_1 = 'n74E';
-        const n1_1_2_1_2 = 'ncxO';
+        const n1 = __id__.node();
+        const n1_1 = __id__.node();
+        const n1_2 = __id__.node();
+        const n1_3 = __id__.node();
+        const n1_4 = __id__.node();
+        const n1_1_1 = __id__.node();
+        const n1_1_2 = __id__.node();
+        const n1_4_1 = __id__.node();
+        const n1_1_2_1 = __id__.node();
+        const n1_1_2_1_1 = __id__.node();
+        const n1_1_2_1_2 = __id__.node();
         const input = {
             columns: [{ id: c0, groups: [{ nodes: [n2], parentId: root }] }],
             content: { [n2]: { content: '2' } },
@@ -122,7 +123,9 @@ describe('paste node', () => {
             },
         };
 
-        pasteNode(input.columns, input.content, input_clipboard, targetNodeId);
+        pasteNode(input.columns, input.content, {
+            payload: { targetNodeId, branch: input_clipboard.branch },
+        });
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -143,6 +146,8 @@ describe('paste node', () => {
         const n1_1_2_1 = 'nwWJ';
         const n1_1_2_1_1 = 'n74E';
         const n1_1_2_1_2 = 'ncxO';
+        const n1_4 = __id__.node();
+        const n1_4_1 = __id__.node();
         const input = {
             columns: [
                 { id: c0, groups: [{ nodes: [n2, n1], parentId: root }] },
@@ -188,8 +193,6 @@ describe('paste node', () => {
         };
         const targetNodeId = 'ns5q';
 
-        const n1_4 = 'nyxT';
-        const n1_4_1 = 'nR66';
         const output = {
             columns: [
                 { id: c0, groups: [{ nodes: [n2, n1, n1_4], parentId: root }] },
@@ -227,7 +230,9 @@ describe('paste node', () => {
                 [n1_4_1]: { content: '1.4.1' },
             },
         };
-        pasteNode(input.columns, input.content, input_clipboard, targetNodeId);
+        pasteNode(input.columns, input.content, {
+            payload: { targetNodeId, branch: input_clipboard.branch },
+        });
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -359,7 +364,9 @@ describe('paste node', () => {
                 [n1_2_2_1_2]: { content: '1.2.2.1.2' },
             },
         };
-        pasteNode(input.columns, input.content, input_clipboard, targetNodeId);
+        pasteNode(input.columns, input.content, {
+            payload: { targetNodeId, branch: input_clipboard.branch },
+        });
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });

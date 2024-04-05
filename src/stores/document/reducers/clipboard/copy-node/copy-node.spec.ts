@@ -1,33 +1,9 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import { copyNode } from 'src/stores/document/reducers/clipboard/copy-node/copy-node';
 import { clone } from 'src/helpers/clone';
 import { Clipboard } from 'src/stores/document/document-state-type';
-import { __id__ } from 'src/helpers/test-helpers/__id__';
-
-const state = {
-    n: 0,
-    c: 0,
-    s: 0,
-};
-
-vi.mock('src/helpers/id', () => {
-    return {
-        id: {
-            rootNode: () => 'r-',
-            node: () => 'n-' + state.n++,
-            column: () => 'c-' + state.c++,
-            snapshot: () => 's-' + state.s++,
-        },
-    };
-});
 
 describe('copy node', () => {
-    beforeEach(() => {
-        state.n = 0;
-        state.c = 0;
-        state.s = 0;
-        __id__.reset();
-    });
     test('4 columns', () => {
         const c0 = 'cTrw';
         const c1 = 'cv4O';
@@ -44,15 +20,15 @@ describe('copy node', () => {
         const n1_2_1_1 = 'nHXG';
         const n1_2_1_2 = 'nBli';
         const n2 = 'nFyV';
-        const n3 = __id__.node();
-        const n3_1 = __id__.node();
-        const n3_2 = __id__.node();
-        const n3_1_1 = __id__.node();
-        const n3_1_2 = __id__.node();
-        const n3_2_1 = __id__.node();
-        const n3_1_2_1 = __id__.node();
-        const n3_2_1_1 = __id__.node();
-        const n3_2_1_2 = __id__.node();
+        const n3 = n1;
+        const n3_1 = n1_1;
+        const n3_2 = n1_2;
+        const n3_1_1 = n1_1_1;
+        const n3_1_2 = n1_1_2;
+        const n3_2_1 = n1_2_1;
+        const n3_1_2_1 = n1_1_2_1;
+        const n3_2_1_1 = n1_2_1_1;
+        const n3_2_1_2 = n1_2_1_2;
         const input = {
             columns: [
                 { id: c0, groups: [{ nodes: [n1, n2], parentId: root }] },
@@ -148,18 +124,18 @@ describe('copy node', () => {
         const n2_2 = 'niLR';
         const n2_2_1 = 'nlEl';
         const n2_2_2 = 'nN4M';
-        const n3 = __id__.node();
-        const n3_1 = __id__.node();
-        const n3_2 = __id__.node();
-        const n3_1_1 = __id__.node();
-        const n3_1_2 = __id__.node();
-        const n3_2_1 = __id__.node();
-        const n3_2_2 = __id__.node();
-        const n3_1_2_1 = __id__.node();
-        const n3_1_2_2 = __id__.node();
-        const n3_2_2_1 = __id__.node();
-        const n3_2_2_1_1 = __id__.node();
-        const n3_2_2_1_2 = __id__.node();
+        const n3 = n1;
+        const n3_1 = n1_1;
+        const n3_2 = n1_2;
+        const n3_1_1 = n1_1_1;
+        const n3_1_2 = n1_1_2;
+        const n3_2_1 = n1_2_1;
+        const n3_2_2 = n1_2_2;
+        const n3_1_2_1 = n1_1_2_1;
+        const n3_1_2_2 = n1_1_2_2;
+        const n3_2_2_1 = n1_2_2_1;
+        const n3_2_2_1_1 = n1_2_2_1_1;
+        const n3_2_2_1_2 = n1_2_2_1_2;
         const input = {
             columns: [
                 { id: c0, groups: [{ nodes: [n1, n2], parentId: root }] },
