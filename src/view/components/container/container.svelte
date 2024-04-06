@@ -4,8 +4,8 @@
     import { getView } from 'src/view/components/container/context';
     import { scrollOnDndX } from 'src/view/actions/dnd/scroll-on-dnd-x';
 
-    const view = getView()
-    const store = view.documentStore
+    const view = getView();
+    const store = view.documentStore;
 </script>
 
 <div
@@ -19,7 +19,7 @@
         {#each $store.document.columns as column (column.id)}
             <Column {column} />
         {/each}
-    <div style="min-width: 50px;min-height: 10px"></div>
+        <div style="min-width: 50px;min-height: 10px"></div>
     </div>
 </div>
 
@@ -35,6 +35,9 @@
         padding-left: 100px;
         overflow-y: hidden;
         overflow-x: auto;
+        @media (max-width: 1280px) {
+            padding-left: 10px;
+        }
     }
     .columns {
         display: flex;

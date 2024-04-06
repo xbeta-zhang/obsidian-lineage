@@ -38,12 +38,18 @@ export const alignElement = (
             const boundingClientRect = horizontalChild
                 ? horizontalChild.getBoundingClientRect()
                 : null;
+            const viewPortIsWideEnough =
+                containerRect.width >
+                elementRect.left +
+                    (boundingClientRect
+                        ? boundingClientRect.right
+                        : elementRect.right);
             const rightSideIsVisible = boundingClientRect
                 ? boundingClientRect.right <= containerRect.right
                 : elementRect.right <= containerRect.right - PADDING;
 
             let scrollLeft = 0;
-            if (!leftSideIsVisible) {
+            if (!leftSideIsVisible || !viewPortIsWideEnough) {
                 scrollLeft = elementRect.left - (containerRect.left + PADDING);
             } else if (!rightSideIsVisible) {
                 scrollLeft = boundingClientRect

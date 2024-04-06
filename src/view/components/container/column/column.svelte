@@ -32,6 +32,6 @@
     }
     .column-buffer {
         height: 60%;
-        min-width: 416px;
+        min-width: var(--node-width);
     }
 </style>
