@@ -4,7 +4,6 @@ import { setSearchQuery } from 'src/stores/view/reducers/search/set-search-query
 import { setSearchResults } from 'src/stores/view/reducers/search/set-search-results';
 import { toggleSearchInput } from 'src/stores/view/reducers/search/toggle-search-input';
 import { changeZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
-import { setTreeIndex } from 'src/stores/view/reducers/ui/set-tree-index';
 import { enableEditMode } from 'src/stores/view/reducers/document/enable-edit-mode';
 import { disableEditMode } from 'src/stores/view/reducers/document/disable-edit-mode';
 import { onDragStart } from 'src/stores/view/reducers/document/on-drag-start';
@@ -46,8 +45,6 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
         state.ui.showSettingsSidebar = !state.ui.showSettingsSidebar;
     } else if (action.type === 'UI/CHANGE_ZOOM_LEVEL') {
         changeZoomLevel(state, action.payload);
-    } else if (action.type === 'UI/SET_TREE_INDEX') {
-        setTreeIndex(state.document, action.payload.treeIndex);
     } else if (action.type === 'DOCUMENT/ENABLE_EDIT_MODE') {
         enableEditMode(state.document.editing, action);
     } else if (action.type === 'DOCUMENT/CONFIRM_DISABLE_EDIT') {

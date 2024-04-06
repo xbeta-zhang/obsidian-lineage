@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { formatHeadings } from './format-headings';
 import { Content } from 'src/stores/document/document-state-type';
-import { TreeIndexDict } from 'src/stores/view/subscriptions/helpers/calculate-tree-index';
+import { SectionsDictionary } from 'src/stores/view/subscriptions/helpers/calculate-tree-index';
 
 describe('format headings', () => {
     it('should format headings correctly', () => {
@@ -52,7 +52,7 @@ describe('format headings', () => {
 
     it('should handle empty content or treeIndexDict', () => {
         const emptyContent: Content = {};
-        const emptyTreeIndexDict: TreeIndexDict = {};
+        const emptyTreeIndexDict: SectionsDictionary = {};
 
         formatHeadings(emptyContent, emptyTreeIndexDict);
         expect(emptyContent).toEqual({});

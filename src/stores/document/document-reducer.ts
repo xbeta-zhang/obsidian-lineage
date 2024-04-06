@@ -21,6 +21,8 @@ import { formatHeadings } from 'src/stores/document/reducers/content/format-cont
 import { pasteNode } from 'src/stores/document/reducers/clipboard/paste-node/paste-node';
 import { copyNode } from 'src/stores/document/reducers/clipboard/copy-node/copy-node';
 import { cutNode } from 'src/stores/document/reducers/clipboard/cut-node/cut-node';
+import { updateSectionsDictionary } from 'src/stores/document/reducers/state/update-sections-dictionary';
+import { getIdOfSection } from 'src/stores/view/subscriptions/actions/get-id-of-section';
 
 const updateDocumentState = (
     state: DocumentState,
@@ -71,8 +73,11 @@ const updateDocumentState = (
     } else if (action.type === 'FS/SET_FILE_PATH') {
         state.file.path = action.payload.path;
     } else if (action.type === 'DOCUMENT/FORMAT_HEADINGS') {
-        formatHeadings(state.document.content, state.document.columns);
-        activeNodeId = state.history.context.activeNodeId;
+        formatHeadings(state.document.content, state.sections);
+        activeNodeId = getIdOfSection(
+            state.sections,
+            state.history.context.activeSection,
+        );
     } else if (action.type === 'DOCUMENT/PASTE_NODE') {
         activeNodeId = pasteNode(
             state.document.columns,
@@ -98,11 +103,21 @@ const updateDocumentState = (
     }
 
     const eventType = getDocumentEventType(action.type);
+
+    if (
+        eventType.dropOrMove ||
+        eventType.createOrDelete ||
+        eventType.changeHistory ||
+        eventType.clipboard
+    ) {
+        updateSectionsDictionary(state);
+    }
     const contentShapeCreation =
         eventType.content || eventType.dropOrMove || eventType.createOrDelete;
     if (activeNodeId && (contentShapeCreation || eventType.clipboard)) {
         addSnapshot(
             state.document,
+            state.sections,
             state.history,
             action as UndoableAction,
             activeNodeId,

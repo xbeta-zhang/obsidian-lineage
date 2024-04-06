@@ -1,11 +1,11 @@
 import { Column } from 'src/stores/document/document-state-type';
 
-export type TreeIndexDict = { [nodeId: string]: string };
+export type SectionsDictionary = { [nodeId: string]: string };
 
 export const calculateColumnTreeIndexes = (
     columns: Column[],
-): TreeIndexDict => {
-    const treeIndexDict: TreeIndexDict = {};
+): SectionsDictionary => {
+    const treeIndexDict: SectionsDictionary = {};
     if (columns.length === 0) return treeIndexDict;
 
     for (let nI = 0; nI < columns[0].groups[0].nodes.length; nI++) {

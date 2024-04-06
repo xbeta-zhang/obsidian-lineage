@@ -5,7 +5,10 @@ export const defaultDocumentState = (): DocumentState => ({
         columns: [],
         content: {},
     },
-
+    sections: {
+        id_section: {},
+        section_id: {},
+    },
     file: {
         path: null,
         frontmatter: '',
@@ -18,7 +21,7 @@ export const defaultDocumentState = (): DocumentState => ({
             canGoForward: false,
         },
         context: {
-            activeNodeId: '',
+            activeSection: '',
         },
     },
     clipboard: {

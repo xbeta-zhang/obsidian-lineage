@@ -18,7 +18,7 @@
                 const link = e.target.dataset.href;
                 const path = store.getValue().file.path;
                 if (link && path) {
-                    plugin.app.workspace.openLinkText(link, path, true);
+                    plugin.app.workspace.openLinkText(link, path, 'split');
                 }
             }
         }

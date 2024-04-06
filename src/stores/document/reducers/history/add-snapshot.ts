@@ -5,11 +5,13 @@ import {
     DocumentHistory,
     LineageDocument,
     NodeId,
+    Sections,
 } from 'src/stores/document/document-state-type';
 import { createSnapshot } from 'src/stores/document/reducers/history/helpers/create-snapshot';
 import { UndoableAction } from 'src/stores/document/document-store-actions';
 import { removeOldHistoryItems } from 'src/stores/document/reducers/history/helpers/remove-old-history-items';
 import { removeObsoleteHistoryItems } from 'src/stores/document/reducers/history/helpers/remove-obsolete-history-items';
+import { getSectionOfId } from 'src/stores/view/subscriptions/actions/get-section-of-id';
 
 export type AddSnapshotAction = {
     type: 'HISTORY/ADD_SNAPSHOT';
@@ -23,6 +25,7 @@ export type AddSnapshotAction = {
 
 export const addSnapshot = (
     document: LineageDocument,
+    sections: Sections,
     history: DocumentHistory,
     action: UndoableAction,
     activeNodeId: NodeId,
@@ -44,16 +47,11 @@ export const addSnapshot = (
             history.items.splice(history.state.activeIndex, 1);
         }
     }
-    if (
-        action.type !== 'DOCUMENT/INSERT_NODE' &&
-        action.type !== 'DOCUMENT/PASTE_NODE' &&
-        activeSnapshot
-    ) {
-        activeSnapshot.data.activeNodeId = activeNodeId;
-    }
-    const snapshot = createSnapshot(document, action, activeNodeId);
+    const activeSection = getSectionOfId(sections, activeNodeId);
+
+    const snapshot = createSnapshot(document, action, activeSection);
     items.push(snapshot);
     history.state.activeIndex = items.length - 1;
-    history.context.activeNodeId = activeNodeId;
+    history.context.activeSection = activeSection;
     updateNavigationState(history);
 };

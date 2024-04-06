@@ -9,7 +9,7 @@ export const loadDocumentFromSnapshot = (
     snapshot: Snapshot,
     history: DocumentHistory,
 ) => {
-    history.context.activeNodeId = snapshot.data.activeNodeId;
+    history.context.activeSection = snapshot.data.activeSection;
     document.content = JSON.parse(snapshot.data.content);
     document.columns = JSON.parse(snapshot.data.columns);
 };

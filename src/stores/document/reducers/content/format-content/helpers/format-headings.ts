@@ -1,9 +1,8 @@
 import { Content } from 'src/stores/document/document-state-type';
-import { TreeIndexDict } from 'src/stores/view/subscriptions/helpers/calculate-tree-index';
 
 export const formatHeadings = (
     content: Content,
-    treeIndexDict: TreeIndexDict,
+    treeIndexDict: Record<string, string>,
 ) => {
     for (const nodeId in content) {
         const currentContent = content[nodeId]?.content;

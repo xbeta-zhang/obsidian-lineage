@@ -2,7 +2,6 @@ import { SetSearchQueryAction } from 'src/stores/view/reducers/search/set-search
 import { SetSearchResultsAction } from 'src/stores/view/reducers/search/set-search-results';
 import { ToggleSearchInputAction } from 'src/stores/view/reducers/search/toggle-search-input';
 import { ChangeZoomLevelAction } from 'src/stores/view/reducers/ui/change-zoom-level';
-import { SetTreeIndex } from 'src/stores/view/reducers/ui/set-tree-index';
 import { DisableEditModeAction } from 'src/stores/view/reducers/document/disable-edit-mode';
 import { ToggleEditModeAction } from 'src/stores/view/reducers/document/enable-edit-mode';
 import { SetDragStartedAction } from 'src/stores/view/reducers/document/on-drag-start';
@@ -28,7 +27,6 @@ export type ViewUIAction =
     | ChangeZoomLevelAction
     | ToggleHelpSidebarAction
     | ToggleHistorySidebarAction
-    | SetTreeIndex
     | ToggleSettingsSidebarAction;
 
 export type ViewDocumentAction =

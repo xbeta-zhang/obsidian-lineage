@@ -2,7 +2,6 @@ import {
     NavigationHistory,
     NodeId,
 } from 'src/stores/document/document-state-type';
-import { TreeIndexDict } from 'src/stores/view/subscriptions/helpers/calculate-tree-index';
 import {
     ActiveBranch,
     DNDState,
@@ -14,7 +13,6 @@ export type ActiveNodeOfGroup = {
 };
 
 export type DocumentViewState = {
-    treeIndex: TreeIndexDict;
     editing: EditingState;
     activeBranch: ActiveBranch;
     dnd: DNDState;

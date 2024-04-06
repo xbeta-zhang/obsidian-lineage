@@ -15,7 +15,6 @@ import { setActiveNode } from 'src/stores/view/subscriptions/actions/set-active-
 import { enableEditMode } from 'src/stores/view/subscriptions/actions/enable-edit-mode';
 import { removeObsoleteNavigationItems } from 'src/stores/view/subscriptions/actions/remove-obsolete-navigation-items';
 import { focusContainer } from 'src/stores/view/subscriptions/effects/focus-container';
-import { setTreeIndex } from 'src/stores/view/subscriptions/actions/set-tree-index';
 import { resetSearchFuse } from 'src/stores/view/subscriptions/actions/update-search-results/helpers/reset-search-fuse';
 import { applyZoom } from 'src/stores/view/subscriptions/effects/apply-zoom';
 import { ViewStoreAction } from 'src/stores/view/view-store-actions';
@@ -41,7 +40,6 @@ const viewEffectsAndActions = (
     const container = view.container;
     if (initialRun) {
         // actions
-        setTreeIndex(viewStore, documentState);
         setActiveNode(viewStore, documentState);
         updateActiveBranch(viewStore, documentState);
         if (view.isActive && isEmptyDocument(documentState.document.content)) {
@@ -68,7 +66,6 @@ const viewEffectsAndActions = (
         const activeNodeChange = e.activeNode || e.activeNodeHistory;
         // actions
         if (structuralChange) {
-            setTreeIndex(viewStore, documentState);
             setActiveNode(viewStore, documentState);
         }
         if (activeNodeChange || structuralChange) {

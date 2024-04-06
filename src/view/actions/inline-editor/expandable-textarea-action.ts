@@ -6,19 +6,20 @@ export const AdjustHeight = (el: HTMLElement) => {
     return (e?: KeyboardEvent) => {
         if (!x) {
             x = el.querySelector('.cm-scroller') as HTMLElement;
-            x.style.height = 'auto';
         }
 
         if (!x) return;
-        if (
-            x.scrollHeight !== previousScrollHeight ||
-            (e && deletionKeys.has(e.key))
-        ) {
-            x.style.height = 'auto';
-            previousScrollHeight = x.scrollHeight;
-            el.style.height = previousScrollHeight + 'px';
-            x.style.height = '';
-        }
+        requestAnimationFrame(() => {
+            if (
+                x.scrollHeight !== previousScrollHeight ||
+                (e && deletionKeys.has(e.key))
+            ) {
+                x.style.height = 'auto';
+                previousScrollHeight = x.scrollHeight;
+                el.style.height = previousScrollHeight + 'px';
+                x.style.height = '';
+            }
+        });
     };
 };
 export const expandableTextareaAction = (el: HTMLElement) => {

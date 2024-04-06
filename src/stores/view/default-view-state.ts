@@ -15,7 +15,6 @@ export const defaultViewState = (): ViewState => ({
         zoomLevel: 1,
     },
     document: {
-        treeIndex: {},
         editing: {
             activeNodeId: '',
             disableEditConfirmation: false,
