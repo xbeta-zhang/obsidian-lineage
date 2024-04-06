@@ -145,7 +145,7 @@ export class LineageView extends TextFileView {
         }
     };
 
-    saveDocument = async () => {
+    saveDocument = async (immediate = false) => {
         const state = clone(this.documentStore.getValue());
         const data: string =
             state.file.frontmatter +
@@ -157,7 +157,8 @@ export class LineageView extends TextFileView {
             );
         if (data !== this.data) {
             this.setViewData(data);
-            this.requestSave();
+            if (immediate) await this.save();
+            else this.requestSave();
         }
     };
 

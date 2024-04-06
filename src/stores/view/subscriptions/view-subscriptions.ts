@@ -110,13 +110,15 @@ const viewEffectsAndActions = (
         }
 
         // effects
+        if (e.content || structuralChange) {
+            view.saveDocument(true);
+        }
         if (!container || !view.isActive) return;
         if (e.zoom) {
             applyZoom(container, viewState);
         }
         if (e.content || structuralChange) {
             resetSearchFuse(documentStore);
-            view.saveDocument();
         }
         if (
             action.type === 'DOCUMENT/DISABLE_EDIT_MODE' ||
