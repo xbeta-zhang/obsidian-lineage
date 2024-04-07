@@ -1,12 +1,11 @@
 import { expect, test } from '../helpers/base-test';
 import { text } from '../helpers/general/text';
-import { typeText } from '../helpers/interactions/lineage-view/card/type-text';
 import { addCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/add-card-using-hotkey';
-import { saveCardUsingHotkey } from '../helpers/interactions/lineage-view/hotkeys/save-card-using-hotkey';
 import { getTextsOfColumns } from '../helpers/getters/lineage-view/card/get-texts-of-columns';
 import { selectCard } from '../helpers/interactions/lineage-view/card/select-card';
 import { getCardId } from '../helpers/getters/lineage-view/card/get-card.id';
 import { dragAndDropBelow } from '../helpers/interactions/dom/drag-and-drop-below';
+import { typeTextAndSaveItUsingHotkey } from '../helpers/interactions/lineage-view/card/type-text-and-save-it-using-hotkey';
 
 test('drag and drop', async () => {
     const n1 = text();
@@ -18,33 +17,31 @@ test('drag and drop', async () => {
     const n7 = text();
     const n8 = text();
 
-    await typeText(n1);
+    await typeTextAndSaveItUsingHotkey(n1);
 
     await addCardUsingHotkey('down');
-    await typeText(n2);
+    await typeTextAndSaveItUsingHotkey(n2);
 
     await addCardUsingHotkey('right');
-    await typeText(n3);
+    await typeTextAndSaveItUsingHotkey(n3);
 
     await addCardUsingHotkey('down');
-    await typeText(n4);
+    await typeTextAndSaveItUsingHotkey(n4);
 
     await addCardUsingHotkey('right');
-    await typeText(n5);
+    await typeTextAndSaveItUsingHotkey(n5);
 
     await addCardUsingHotkey('right');
-    await typeText(n6);
-    await saveCardUsingHotkey();
+    await typeTextAndSaveItUsingHotkey(n6);
 
     expect(await getTextsOfColumns()).toEqual([[n1, n2], [n3, n4], [n5], [n6]]);
     await selectCard(1, 0);
 
     await addCardUsingHotkey('right');
-    await typeText(n7);
+    await typeTextAndSaveItUsingHotkey(n7);
 
     await addCardUsingHotkey('right');
-    await typeText(n8);
-    await saveCardUsingHotkey();
+    await typeTextAndSaveItUsingHotkey(n8);
 
     expect(await getTextsOfColumns()).toEqual([
         [n1, n2],

@@ -40,10 +40,10 @@ export const alignElement = (
                 : null;
             const viewPortIsWideEnough =
                 containerRect.width >
-                elementRect.left +
-                    (boundingClientRect
-                        ? boundingClientRect.right
-                        : elementRect.right);
+                (boundingClientRect
+                    ? boundingClientRect.right
+                    : elementRect.right) -
+                    elementRect.left;
             const rightSideIsVisible = boundingClientRect
                 ? boundingClientRect.right <= containerRect.right
                 : elementRect.right <= containerRect.right - PADDING;

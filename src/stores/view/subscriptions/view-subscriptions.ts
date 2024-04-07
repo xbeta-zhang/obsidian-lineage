@@ -108,7 +108,8 @@ const viewEffectsAndActions = (
 
         // effects
         if (e.content || structuralChange) {
-            view.saveDocument(true);
+            const maybeViewIsClosing = !view.isActive;
+            view.saveDocument(maybeViewIsClosing);
         }
         if (!container || !view.isActive) return;
         if (e.zoom) {
