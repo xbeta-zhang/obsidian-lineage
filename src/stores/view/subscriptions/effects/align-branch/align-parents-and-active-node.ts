@@ -1,27 +1,32 @@
-import { DocumentState } from 'src/stores/document/document-state-type';
 import {
     AlignBranchState,
     alignElement,
 } from 'src/stores/view/subscriptions/effects/align-branch/helpers/align-element';
 import { getNodeElement } from 'src/stores/view/subscriptions/effects/align-branch/helpers/get-node-element';
 import { ViewState } from 'src/stores/view/view-state-type';
-import { lastActiveNodeOfGroups } from 'src/stores/view/subscriptions/effects/align-branch/align-branch';
+import { Column } from 'src/stores/document/document-state-type';
 
 export const alignParentsAndActiveNode = (
-    documentState: DocumentState,
     viewState: ViewState,
     container: HTMLElement,
     localState: AlignBranchState,
+    columns: Column[],
     behavior?: ScrollBehavior,
 ) => {
-    const group = viewState.document.activeBranch.group;
-    lastActiveNodeOfGroups[viewState.document.activeBranch.column] = {
-        nodeId: viewState.document.activeNode,
-        groupId: group,
-    };
-    const element = getNodeElement(container, viewState.document.activeNode);
+    const activeNodeId = viewState.document.activeNode;
+    const element = getNodeElement(container, activeNodeId);
     if (element) {
-        const columnId = alignElement(container, element, behavior, 'both');
+        const childGroupElement =
+            viewState.document.activeBranch.childGroups.size > 0
+                ? getNodeElement(container, 'group-' + activeNodeId)
+                : undefined;
+        const columnId = alignElement(
+            container,
+            element,
+            behavior,
+            'both',
+            childGroupElement,
+        );
         if (columnId) localState.columns.add(columnId);
     }
     for (const id of viewState.document.activeBranch.sortedParentNodes) {

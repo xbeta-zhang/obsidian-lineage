@@ -8,13 +8,13 @@ import { UndoableAction } from 'src/stores/document/document-store-actions';
 export const createSnapshot = (
     document: LineageDocument,
     action: UndoableAction,
-    activeNodeId: string,
+    activeSection: string,
 ) => {
     return {
         data: {
             columns: JSON.stringify(document.columns),
             content: JSON.stringify(document.content),
-            activeNodeId,
+            activeSection,
         },
         created: Date.now(),
         id: id.snapshot(),

@@ -1,24 +1,35 @@
-const keys = new Set(['Backspace', 'Enter', 'Delete', ' ', 'v']);
-export const adjustHeight = (el: HTMLElement, x: HTMLElement) => {
-    const height = x.style.height;
-    x.style.height = 'auto';
-    el.style.height = x.scrollHeight + 'px';
-    x.style.height = height;
+const deletionKeys = new Set(['Backspace', 'Delete', 'x', ' ']);
+
+export const AdjustHeight = (el: HTMLElement) => {
+    let previousScrollHeight = 0;
+    let x: HTMLElement;
+    return (e?: KeyboardEvent) => {
+        if (!x) {
+            x = el.querySelector('.cm-scroller') as HTMLElement;
+        }
+
+        if (!x) return;
+        requestAnimationFrame(() => {
+            if (
+                x.scrollHeight !== previousScrollHeight ||
+                (e && deletionKeys.has(e.key))
+            ) {
+                x.style.height = 'auto';
+                previousScrollHeight = x.scrollHeight;
+                el.style.height = previousScrollHeight + 'px';
+                x.style.height = '';
+            }
+        });
+    };
 };
 export const expandableTextareaAction = (el: HTMLElement) => {
-    let x: HTMLElement | null;
-    const listener = (e: KeyboardEvent) => {
-        if (e && !keys.has(e.key)) return;
-        if (!x) x = el.querySelector('.cm-scroller');
-        if (x) {
-            adjustHeight(el, x);
-        }
-    };
-    el.addEventListener('keydown', listener);
+    const adjustHeight = AdjustHeight(el);
+
+    el.addEventListener('keydown', adjustHeight);
 
     return {
         destroy: () => {
-            el.removeEventListener('keydown', listener);
+            el.removeEventListener('keydown', adjustHeight);
         },
     };
 };

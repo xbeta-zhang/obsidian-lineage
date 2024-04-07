@@ -11,7 +11,7 @@ const flattenEditorPosition = (value: string, cursor: EditorPosition) => {
         if (cursor.line === i) {
             return total + cursor.ch;
         } else {
-            total += lines[i].length;
+            total += lines[i].length + 1;
         }
     }
     throw new Error(`invalid cursor line: ${cursor.line} ch: ${cursor.ch}`);

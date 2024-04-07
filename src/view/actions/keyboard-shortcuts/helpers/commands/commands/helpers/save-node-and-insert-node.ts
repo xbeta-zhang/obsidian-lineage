@@ -20,4 +20,9 @@ export const saveNodeAndInsertNode = (
             activeNodeId: view.viewStore.getValue().document.activeNode,
         },
     });
+    if (content) {
+        if (direction === 'down' || direction === 'right') {
+            view.inlineEditor.overrideCursor(0, 0);
+        }
+    }
 };

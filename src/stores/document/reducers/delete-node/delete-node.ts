@@ -20,7 +20,7 @@ export const deleteNode = (
     invariant(nodeId);
 
     const lastNode = isLastRootNode(columns, nodeId);
-    if (lastNode) throw new Error('cannot delete last node');
+    if (lastNode) throw new Error('cannot delete last root node');
 
     const nextNode = findNextActiveNode(columns, nodeId, {
         type: 'DOCUMENT/DELETE_NODE',

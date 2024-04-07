@@ -26,9 +26,10 @@ export const filteredHotkeys = derived(
             'Move cards': [],
             'Merge cards': [],
             'Delete cards': [],
+            Clipboard: [],
             Navigation: [],
-            history: [],
-            search: [],
+            History: [],
+            Search: [],
         } satisfies GroupedHotkeys);
     },
     ['UI/SET_SEARCH_TERM', 'SET_CONFLICTING_HOTKEYS'],

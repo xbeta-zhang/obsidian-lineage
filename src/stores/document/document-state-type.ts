@@ -1,13 +1,30 @@
 import { UndoableAction } from 'src/stores/document/document-store-actions';
 
+export type ClipboardBranch = {
+    sortedChildGroups: NodeGroup[][];
+    content: Content;
+    nodeId: string;
+    mode: 'cut' | 'copy';
+};
+
+export type Clipboard = {
+    branch: ClipboardBranch | null;
+};
+
+export type Sections = {
+    section_id: Record<string, string>;
+    id_section: Record<string, string>;
+};
 export type DocumentState = {
     document: LineageDocument;
+    sections: Sections;
     file: {
         path: string | null;
         frontmatter: string;
     };
 
     history: DocumentHistory;
+    clipboard: Clipboard;
 };
 
 // document
@@ -36,13 +53,13 @@ export type Content = {
 };
 
 // document change history
-export type DocumentHistory = History<Snapshot, { activeNodeId: string }>;
+export type DocumentHistory = History<Snapshot, { activeSection: string }>;
 
 export type Snapshot = {
     data: {
         content: string;
         columns: string;
-        activeNodeId: string;
+        activeSection: string;
     };
     created: number;
     id: string;

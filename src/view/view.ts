@@ -9,7 +9,6 @@ import { jsonToMarkdown } from 'src/stores/view/helpers/json-to-md/json-to-makdo
 import { OnError, Store } from 'src/helpers/store/store';
 import { defaultDocumentState } from 'src/stores/document/default-document-state';
 import { DocumentState } from 'src/stores/document/document-state-type';
-import { stores } from 'src/view/helpers/stores-cache';
 import { clone } from 'src/helpers/clone';
 import { extractFrontmatter } from 'src/view/helpers/extract-frontmatter';
 import { DocumentStoreAction } from 'src/stores/document/document-store-actions';
@@ -50,7 +49,6 @@ export class LineageView extends TextFileView {
             viewReducer,
             this.onViewStoreError as OnError<ViewStoreAction>,
         );
-        this.inlineEditor = new InlineEditor(this);
     }
 
     get isActive() {
@@ -81,6 +79,7 @@ export class LineageView extends TextFileView {
             documentReducer,
             this.onViewStoreError as OnError<DocumentStoreAction>,
         );
+        await this.inlineEditor.unloadFile();
         for (const s of this.onDestroyCallbacks) {
             s();
         }
@@ -130,7 +129,10 @@ export class LineageView extends TextFileView {
     ) => {
         if (action && action.type === 'DOCUMENT/LOAD_FILE') {
             if (this.file) {
-                delete stores[this.file.path];
+                this.plugin.documents.dispatch({
+                    type: 'DOCUMENTS/DELETE_DOCUMENT',
+                    payload: { path: this.file.path },
+                });
                 setFileViewType(this.plugin, this.file, this.leaf, 'markdown');
             }
         }
@@ -143,7 +145,7 @@ export class LineageView extends TextFileView {
         }
     };
 
-    saveDocument = async () => {
+    saveDocument = async (immediate = false) => {
         const state = clone(this.documentStore.getValue());
         const data: string =
             state.file.frontmatter +
@@ -155,7 +157,8 @@ export class LineageView extends TextFileView {
             );
         if (data !== this.data) {
             this.setViewData(data);
-            this.requestSave();
+            if (immediate) await this.save();
+            else this.requestSave();
         }
     };
 
@@ -164,13 +167,18 @@ export class LineageView extends TextFileView {
             throw new Error('view does not have a file');
         }
 
-        const fileHasAStore = stores[this.file.path];
+        const fileHasAStore =
+            this.plugin.documents.getValue().documents[this.file.path];
         if (fileHasAStore) {
             this.useExistingStore();
         } else {
             this.createStore();
         }
         this.loadDocumentToStore();
+        if (!this.inlineEditor) {
+            this.inlineEditor = new InlineEditor(this);
+            await this.inlineEditor.onload();
+        }
         await this.inlineEditor.loadFile(this.file);
         this.component = new Component({
             target: this.contentEl,
@@ -188,7 +196,14 @@ export class LineageView extends TextFileView {
         if (!this.file) {
             throw new Error('view does not have a file');
         }
-        stores[this.file.path] = this.documentStore;
+
+        this.plugin.documents.dispatch({
+            type: 'DOCUMENTS/ADD_DOCUMENT',
+            payload: {
+                path: this.file.path,
+                documentStore: this.documentStore,
+            },
+        });
         this.documentStore.dispatch({
             type: 'FS/SET_FILE_PATH',
             payload: {
@@ -199,17 +214,23 @@ export class LineageView extends TextFileView {
 
     private useExistingStore = () => {
         if (!this.file) return;
-        this.documentStore = stores[this.file.path];
+        this.documentStore =
+            this.plugin.documents.getValue().documents[this.file.path];
     };
 
     private loadDocumentToStore = () => {
         const { data, frontmatter } = extractFrontmatter(this.data);
 
-        this.documentStore.dispatch({
-            payload: {
-                document: { data: data, frontmatter, position: null },
-            },
-            type: 'DOCUMENT/LOAD_FILE',
-        });
+        const state = this.documentStore.getValue();
+        const existingData = jsonToMarkdown(
+            columnsToJsonTree(state.document.columns, state.document.content),
+        );
+        if (!existingData || existingData !== data)
+            this.documentStore.dispatch({
+                payload: {
+                    document: { data: data, frontmatter, position: null },
+                },
+                type: 'DOCUMENT/LOAD_FILE',
+            });
     };
 }

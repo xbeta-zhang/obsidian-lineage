@@ -8,9 +8,19 @@ export type CustomHotkeys = {
         secondary?: Hotkey;
     };
 };
+export type Theme = {
+    containerBg?: string;
+    activeBranchBg?: string;
+};
 export type Settings = {
     documents: Record<string, true>;
     hotkeys: {
         customHotkeys: CustomHotkeys;
+    };
+    view: {
+        fontSize: number;
+        theme: Theme;
+        cardWidth?: number;
+        minimumCardHeight?: number;
     };
 };

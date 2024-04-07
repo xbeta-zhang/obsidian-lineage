@@ -18,7 +18,7 @@
                 const link = e.target.dataset.href;
                 const path = store.getValue().file.path;
                 if (link && path) {
-                    plugin.app.workspace.openLinkText(link, path, true);
+                    plugin.app.workspace.openLinkText(link, path, 'split');
                 }
             }
         }
@@ -26,7 +26,7 @@
 </script>
 
 <div
-    class={'preview-container markdown-preview-view'}
+    class={'preview-container markdown-preview-view markdown-preview-section'}
     on:click={onClick}
 	use:markdownPreviewAction={content}
 ></div>
@@ -34,7 +34,8 @@
 <style>
     .preview-container {
         width: 100%;
-        min-height: 100px;
+		min-height: var(--min-node-height);
+		max-height: 65vh;
 		font-size: var(--font-text-size);
 		padding: 6px 6px 6px 12px;
 		color-scheme: light

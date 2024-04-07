@@ -5,7 +5,7 @@ import { __obsidian__ } from '../../getters/obsidian/load-obsidian';
 const SEL_PALETTE_RESULTS = '.prompt-results';
 const SEL_PALETTE_ITEM = '.suggestion-item';
 
-export const CMD_CREATE_FILE = 'Lineage Dev: Create new file';
+export const CMD_CREATE_FILE = 'Lineage Dev: Create new document';
 export const CMD_CLOSE_OTHER_TABS = 'Close all other tabs';
 export const CMD_CLOSE_THIS_TAB_GROUP = 'Close this tab group';
 export const CMD_CLOSE_CURRENT_TAB = 'Close current tab';

@@ -6,10 +6,12 @@
     import clx from 'classnames';
 
     const view = getView();
-    const viewStore = view.viewStore
+    const viewStore = view.viewStore;
     export let group: NodeGroup;
     let parentNodes: Set<NodeId> = new Set<NodeId>();
-    $: parentNodes = new Set($viewStore.document.activeBranch.sortedParentNodes);
+    $: parentNodes = new Set(
+        $viewStore.document.activeBranch.sortedParentNodes,
+    );
 </script>
 
 {#if group.nodes.length > 0 && ($viewStore.search.query.length === 0 || group.nodes.some( (n) => $viewStore.search.results.has(n), ))}
@@ -40,9 +42,11 @@
                               ? ActiveStatus.sibling
                               : null}
                     editing={$viewStore.document.editing.activeNodeId === node}
-                    hasChildren={$viewStore.document.activeBranch.childGroups.size >
-                        0}
+                    hasChildren={$viewStore.document.activeBranch.childGroups
+                        .size > 0}
                     parentId={group.parentId}
+                    disableEditConfirmation={$viewStore.document.editing.activeNodeId ===
+                        node && $viewStore.document.editing.disableEditConfirmation}
                 />
             {/if}
         {/each}
@@ -56,6 +60,7 @@
         width: fit-content;
         gap: 4px;
         padding: 8px;
+        margin-bottom: 2px;
     }
     .group:last-child {
         margin-bottom: 0;

@@ -16,7 +16,7 @@
             <button
                 aria-label={$documentStore.document.content[parent]?.content || 'Empty parent'}
                 class="breadcrumbs-item"
-                data-tooltip-position="up"
+                data-tooltip-position="top"
                 on:click={() => {
                     viewStore.dispatch({
                         type: 'DOCUMENT/SET_ACTIVE_NODE',
@@ -80,7 +80,7 @@
         border-bottom: none;
     }
     .breadcrumbs-item-text {
-        max-width: 200px;
+        max-width: 300px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

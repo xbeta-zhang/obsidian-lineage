@@ -5,4 +5,8 @@ export const DEFAULT_SETTINGS = (): Settings => ({
     hotkeys: {
         customHotkeys: {},
     },
+    view: {
+        fontSize: 16,
+        theme: {},
+    },
 });

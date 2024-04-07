@@ -2,19 +2,22 @@ import {
     NavigationHistory,
     NodeId,
 } from 'src/stores/document/document-state-type';
-import { TreeIndexDict } from 'src/stores/view/subscriptions/helpers/calculate-tree-index';
 import {
     ActiveBranch,
     DNDState,
     EditingState,
 } from 'src/stores/view/default-view-state';
 
+export type ActiveNodeOfGroup = {
+    [groupId: string]: string;
+};
+
 export type DocumentViewState = {
-    treeIndex: TreeIndexDict;
     editing: EditingState;
     activeBranch: ActiveBranch;
     dnd: DNDState;
     activeNode: string;
+    activeNodeOfGroup: ActiveNodeOfGroup;
 };
 export type ViewState = {
     search: {
@@ -27,6 +30,7 @@ export type ViewState = {
         showHistorySidebar: boolean;
         showHelpSidebar: boolean;
         zoomLevel: number;
+        showSettingsSidebar: boolean;
     };
     document: DocumentViewState;
     navigationHistory: NavigationHistory;

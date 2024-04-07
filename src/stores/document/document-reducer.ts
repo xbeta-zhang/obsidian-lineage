@@ -17,6 +17,12 @@ import {
     UndoableAction,
 } from 'src/stores/document/document-store-actions';
 import { defaultDocumentState } from 'src/stores/document/default-document-state';
+import { formatHeadings } from 'src/stores/document/reducers/content/format-content/format-headings';
+import { pasteNode } from 'src/stores/document/reducers/clipboard/paste-node/paste-node';
+import { copyNode } from 'src/stores/document/reducers/clipboard/copy-node/copy-node';
+import { cutNode } from 'src/stores/document/reducers/clipboard/cut-node/cut-node';
+import { updateSectionsDictionary } from 'src/stores/document/reducers/state/update-sections-dictionary';
+import { getIdOfSection } from 'src/stores/view/subscriptions/actions/get-id-of-section';
 
 const updateDocumentState = (
     state: DocumentState,
@@ -57,6 +63,7 @@ const updateDocumentState = (
         state.document = newState.document;
         state.history = newState.history;
         state.file = newState.file;
+        state.clipboard = newState.clipboard;
     } else if (action.type === 'HISTORY/SELECT_SNAPSHOT') {
         selectSnapshot(state.document, state.history, action);
     } else if (action.type === 'HISTORY/APPLY_PREVIOUS_SNAPSHOT') {
@@ -65,14 +72,52 @@ const updateDocumentState = (
         redoAction(state.document, state.history);
     } else if (action.type === 'FS/SET_FILE_PATH') {
         state.file.path = action.payload.path;
+    } else if (action.type === 'DOCUMENT/FORMAT_HEADINGS') {
+        formatHeadings(state.document.content, state.sections);
+        activeNodeId = getIdOfSection(
+            state.sections,
+            state.history.context.activeSection,
+        );
+    } else if (action.type === 'DOCUMENT/PASTE_NODE') {
+        activeNodeId = pasteNode(
+            state.document.columns,
+            state.document.content,
+            action,
+        );
+    } else if (action.type === 'DOCUMENT/COPY_NODE') {
+        copyNode(
+            state.document.columns,
+            state.document.content,
+            state.clipboard,
+            action.payload.nodeId,
+        );
+    } else if (action.type === 'DOCUMENT/CUT_NODE') {
+        activeNodeId = cutNode(
+            state.document.columns,
+            state.document.content,
+            state.clipboard,
+            action.payload.nodeId,
+        );
+    } else if (action.type === 'DOCUMENTS/CLEAR_CLIPBOARD') {
+        state.clipboard.branch = null;
     }
 
     const eventType = getDocumentEventType(action.type);
+
+    if (
+        eventType.dropOrMove ||
+        eventType.createOrDelete ||
+        eventType.changeHistory ||
+        eventType.clipboard
+    ) {
+        updateSectionsDictionary(state);
+    }
     const contentShapeCreation =
-        eventType.content || eventType.shape || eventType.creationAndDeletion;
-    if (activeNodeId && contentShapeCreation) {
+        eventType.content || eventType.dropOrMove || eventType.createOrDelete;
+    if (activeNodeId && (contentShapeCreation || eventType.clipboard)) {
         addSnapshot(
             state.document,
+            state.sections,
             state.history,
             action as UndoableAction,
             activeNodeId,

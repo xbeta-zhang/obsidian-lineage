@@ -11,12 +11,13 @@ export const defaultViewState = (): ViewState => ({
     ui: {
         showHistorySidebar: false,
         showHelpSidebar: false,
+        showSettingsSidebar: false,
         zoomLevel: 1,
     },
     document: {
-        treeIndex: {},
         editing: {
             activeNodeId: '',
+            disableEditConfirmation: false,
         },
         activeBranch: {
             group: '',
@@ -29,6 +30,7 @@ export const defaultViewState = (): ViewState => ({
             childGroups: new Set<string>(),
         },
         activeNode: '',
+        activeNodeOfGroup: {},
     },
     navigationHistory: {
         items: [],
@@ -52,4 +54,5 @@ export type DNDState = {
 };
 export type EditingState = {
     activeNodeId: string;
+    disableEditConfirmation: boolean;
 };

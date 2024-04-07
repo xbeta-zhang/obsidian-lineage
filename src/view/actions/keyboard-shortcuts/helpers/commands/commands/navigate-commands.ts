@@ -7,7 +7,8 @@ export const navigateCommands = () => {
         {
             name: 'go_right',
             check: isActiveAndNotEditing,
-            callback: (view) => {
+            callback: (view, event) => {
+                event.preventDefault();
                 view.viewStore.dispatch({
                     type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
@@ -24,7 +25,8 @@ export const navigateCommands = () => {
         {
             name: 'go_down',
             check: isActiveAndNotEditing,
-            callback: (view) => {
+            callback: (view, event) => {
+                event.preventDefault();
                 view.viewStore.dispatch({
                     type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
@@ -41,7 +43,8 @@ export const navigateCommands = () => {
         {
             name: 'go_left',
             check: isActiveAndNotEditing,
-            callback: (view) => {
+            callback: (view, event) => {
+                event.preventDefault();
                 view.viewStore.dispatch({
                     type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {
@@ -58,7 +61,8 @@ export const navigateCommands = () => {
         {
             name: 'go_up',
             check: isActiveAndNotEditing,
-            callback: (view) => {
+            callback: (view, event) => {
+                event.preventDefault();
                 view.viewStore.dispatch({
                     type: 'DOCUMENT/NAVIGATE_USING_KEYBOARD',
                     payload: {

@@ -4,7 +4,6 @@ import { setSearchQuery } from 'src/stores/view/reducers/search/set-search-query
 import { setSearchResults } from 'src/stores/view/reducers/search/set-search-results';
 import { toggleSearchInput } from 'src/stores/view/reducers/search/toggle-search-input';
 import { changeZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
-import { setTreeIndex } from 'src/stores/view/reducers/ui/set-tree-index';
 import { enableEditMode } from 'src/stores/view/reducers/document/enable-edit-mode';
 import { disableEditMode } from 'src/stores/view/reducers/document/disable-edit-mode';
 import { onDragStart } from 'src/stores/view/reducers/document/on-drag-start';
@@ -33,17 +32,25 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
     } else if (action.type === 'SEARCH/TOGGLE_INPUT') {
         toggleSearchInput(state);
     } else if (action.type === 'UI/TOGGLE_HISTORY_SIDEBAR') {
-        state.ui.showHelpSidebar = false;
         state.ui.showHistorySidebar = !state.ui.showHistorySidebar;
+        state.ui.showHelpSidebar = false;
+        state.ui.showSettingsSidebar = false;
     } else if (action.type === 'UI/TOGGLE_HELP_SIDEBAR') {
         state.ui.showHistorySidebar = false;
         state.ui.showHelpSidebar = !state.ui.showHelpSidebar;
+        state.ui.showSettingsSidebar = false;
+    } else if (action.type === 'UI/TOGGLE_SETTINGS_SIDEBAR') {
+        state.ui.showHistorySidebar = false;
+        state.ui.showHelpSidebar = false;
+        state.ui.showSettingsSidebar = !state.ui.showSettingsSidebar;
     } else if (action.type === 'UI/CHANGE_ZOOM_LEVEL') {
         changeZoomLevel(state, action.payload);
-    } else if (action.type === 'UI/SET_TREE_INDEX') {
-        setTreeIndex(state.document, action.payload.treeIndex);
     } else if (action.type === 'DOCUMENT/ENABLE_EDIT_MODE') {
         enableEditMode(state.document.editing, action);
+    } else if (action.type === 'DOCUMENT/CONFIRM_DISABLE_EDIT') {
+        state.document.editing.disableEditConfirmation = true;
+    } else if (action.type === 'DOCUMENT/RESET_DISABLE_EDIT_CONFIRMATION') {
+        state.document.editing.disableEditConfirmation = false;
     } else if (action.type === 'DOCUMENT/DISABLE_EDIT_MODE') {
         disableEditMode(state.document.editing);
     } else if (action.type === 'SET_DRAG_STARTED') {
@@ -55,6 +62,7 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
             state.document.activeBranch,
             state.document.activeNode,
             action.payload.columns,
+            state.document.activeNodeOfGroup,
         );
     } else if (action.type === 'NAVIGATION/NAVIGATE_FORWARD') {
         navigateActiveNode(state.document, state.navigationHistory, true);

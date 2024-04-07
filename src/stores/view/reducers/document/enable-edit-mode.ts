@@ -11,4 +11,5 @@ export const enableEditMode = (
     action: ToggleEditModeAction,
 ) => {
     editing.activeNodeId = action.payload.nodeId;
+    editing.disableEditConfirmation = false;
 };

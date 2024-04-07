@@ -1,6 +1,6 @@
 import Lineage from 'src/main';
 import { TFile, WorkspaceLeaf } from 'obsidian';
-import { fileViewTypeCache } from 'src/obsidian/patches/set-view-state';
+import { fileViewTypeCache } from 'src/stores/settings/subscriptions/effects/update-file-view-type-cache';
 import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
 import { getLeafOfFile } from 'src/obsidian/events/workspace/helpers/get-leaf-of-file';
 import { openFile } from 'src/obsidian/commands/helpers/open-file';

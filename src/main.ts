@@ -1,9 +1,6 @@
 import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { FILE_VIEW_TYPE, LineageView } from './view/view';
-import {
-    setViewState,
-    subscribeDocumentsTypeCacheToSettings,
-} from 'src/obsidian/patches/set-view-state';
+import { setViewState } from 'src/obsidian/patches/set-view-state';
 import { around } from 'monkey-around';
 import {
     SettingsActions,
@@ -18,15 +15,25 @@ import { registerFileRenameEvent } from 'src/obsidian/events/vault/register-file
 import { registerFileDeleteEvent } from 'src/obsidian/events/vault/register-file-delete-event';
 import { addCommands } from 'src/obsidian/commands/add-commands';
 import { loadCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/load-commands';
-import { saveCustomHotkeys } from 'src/stores/hotkeys/effects/plugin/save-custom-hotkeys';
-import { checkForHotkeyConflicts } from 'src/stores/hotkeys/effects/plugin/check-for-hotkey-conflicts';
+import { hotkeySubscriptions } from 'src/stores/hotkeys/hotkey-subscriptions';
+import { settingsSubscriptions } from 'src/stores/settings/subscriptions/settings-subscriptions';
+import { DocumentsState } from 'src/stores/documents/documents-state-type';
+import { DocumentsStoreAction } from 'src/stores/documents/documents-store-actions';
+import { documentsReducer } from 'src/stores/documents/documents-reducer';
+import { DefaultDocumentsState } from 'src/stores/documents/default-documents-state';
+
+export type SettingsStore = Store<Settings, SettingsActions>;
+export type DocumentsStore = Store<DocumentsState, DocumentsStoreAction>;
 
 export default class Lineage extends Plugin {
-    settings: Store<Settings, SettingsActions>;
-
+    settings: SettingsStore;
+    documents: DocumentsStore;
     async onload() {
         await this.loadSettings();
-
+        this.documents = new Store<DocumentsState, DocumentsStoreAction>(
+            DefaultDocumentsState(),
+            documentsReducer,
+        );
         this.registerView(
             FILE_VIEW_TYPE,
             (leaf) => new LineageView(leaf, this),
@@ -52,7 +59,7 @@ export default class Lineage extends Plugin {
         this.settings.subscribe(() => {
             this.saveSettings();
         });
-        subscribeDocumentsTypeCacheToSettings(this);
+        settingsSubscriptions(this);
     }
 
     private registerEvents() {
@@ -62,7 +69,6 @@ export default class Lineage extends Plugin {
     }
 
     private registerEffects() {
-        checkForHotkeyConflicts(this);
-        saveCustomHotkeys(this);
+        hotkeySubscriptions(this);
     }
 }

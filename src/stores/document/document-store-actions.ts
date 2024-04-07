@@ -8,6 +8,10 @@ import { DropAction } from 'src/stores/document/reducers/drop-node/drop-node';
 import { DeleteNodeAction } from 'src/stores/document/reducers/delete-node/delete-node';
 import { MoveNodeAction } from 'src/stores/document/reducers/move-node/move-node';
 import { MergeNodeAction } from 'src/stores/document/reducers/merge-node/merge-node';
+import { FormatHeadingsAction } from 'src/stores/document/reducers/content/format-content/format-headings';
+import { CopyNodeAction } from 'src/stores/document/reducers/clipboard/copy-node/copy-node';
+import { CutNodeAction } from 'src/stores/document/reducers/clipboard/cut-node/cut-node';
+import { PasteNodeAction } from 'src/stores/document/reducers/clipboard/paste-node/paste-node';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -36,7 +40,9 @@ export type DocumentAction =
     | SetFilePathAction
     | DeleteNodeAction
     | MoveNodeAction
-    | MergeNodeAction;
+    | MergeNodeAction
+    | FormatHeadingsAction
+    | DocumentClipboardActions;
 
 export type HistoryAction = UndoRedoAction | SelectSnapshotAction;
 export type UndoableAction =
@@ -46,4 +52,17 @@ export type UndoableAction =
     | DropAction
     | MoveNodeAction
     | MergeNodeAction
-    | LoadDocumentAction;
+    | LoadDocumentAction
+    | FormatHeadingsAction
+    | PasteNodeAction
+    | CutNodeAction;
+
+export type DocumentClipboardActions =
+    | CopyNodeAction
+    | PasteNodeAction
+    | CutNodeAction
+    | ClearClipboard;
+
+export type ClearClipboard = {
+    type: 'DOCUMENTS/CLEAR_CLIPBOARD';
+};

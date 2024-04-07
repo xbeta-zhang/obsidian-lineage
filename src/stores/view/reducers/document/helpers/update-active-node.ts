@@ -1,6 +1,7 @@
 import { DocumentViewState } from 'src/stores/view/view-state-type';
 import { addNavigationHistoryItem } from 'src/stores/view/reducers/ui/helpers/add-navigation-history-item';
 import { NavigationHistory } from 'src/stores/document/document-state-type';
+import { disableEditMode } from 'src/stores/view/reducers/document/disable-edit-mode';
 
 export const updateActiveNode = (
     state: DocumentViewState,
@@ -11,5 +12,5 @@ export const updateActiveNode = (
     if (navigationHistory)
         addNavigationHistoryItem(navigationHistory, state.activeNode);
     if (state.editing.activeNodeId && state.editing.activeNodeId !== nodeId)
-        state.editing.activeNodeId = '';
+        disableEditMode(state.editing);
 };

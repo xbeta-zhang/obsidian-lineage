@@ -2,9 +2,10 @@
     import Column from './column/column.svelte';
     import { keyboardShortcuts } from 'src/view/actions/keyboard-shortcuts/keyboard-shortcuts';
     import { getView } from 'src/view/components/container/context';
+    import { scrollOnDndX } from 'src/view/actions/dnd/scroll-on-dnd-x';
 
-    const view = getView()
-    const store = view.documentStore
+    const view = getView();
+    const store = view.documentStore;
 </script>
 
 <div
@@ -12,11 +13,13 @@
     id="columns-container"
     tabindex="0"
     use:keyboardShortcuts={{ view }}
+    use:scrollOnDndX
 >
     <div class="columns">
         {#each $store.document.columns as column (column.id)}
             <Column {column} />
         {/each}
+        <div style="min-width: 50px;min-height: 10px"></div>
     </div>
 </div>
 
@@ -30,9 +33,11 @@
         align-items: center;
         justify-content: start;
         padding-left: 100px;
-        margin-right: 50px;
         overflow-y: hidden;
         overflow-x: auto;
+        @media (max-width: 1280px) {
+            padding-left: 10px;
+        }
     }
     .columns {
         display: flex;

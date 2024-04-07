@@ -6,6 +6,7 @@
         Maximize,
         RedoIcon,
         RotateCcw,
+        Settings,
         UndoIcon,
         ZoomIn,
         ZoomOut
@@ -50,7 +51,9 @@
     const toggleHelp = () => {
         viewStore.dispatch({ type: 'UI/TOGGLE_HELP_SIDEBAR' });
     };
-
+    const toggleSettings = () => {
+        viewStore.dispatch({ type: 'UI/TOGGLE_SETTINGS_SIDEBAR' });
+    };
     const openAsMarkdown = () => {
         const file =
             plugin.app.workspace.getActiveViewOfType(LineageView)?.file;
@@ -105,8 +108,18 @@
             <File class="svg-icon" />
         </button>
         <button
+            aria-label={"Settings"}
+            class="control-item"
+            data-active={$viewStore.ui.showSettingsSidebar}
+            data-tooltip-position="left"
+            on:click={toggleSettings}
+        >
+            <Settings class="svg-icon" />
+        </button>
+        <button
             aria-label="Keyboard shortcuts"
             class="control-item"
+            data-active={$viewStore.ui.showHelpSidebar}
             data-tooltip-position="left"
             on:click={toggleHelp}
         >
@@ -117,6 +130,7 @@
         <button
             aria-label="History"
             class="control-item"
+            data-active={$viewStore.ui.showHistorySidebar}
             data-tooltip-position="left"
             disabled={documentHistory.items.length === 0}
             on:click={() => {
@@ -187,6 +201,9 @@
     button:disabled {
         cursor: not-allowed;
         color: var(--color-base-40);
+    }
+    button[data-active="true"] {
+        background-color: var(--color-base-40);
     }
     .controls-container {
         right: var(--size-4-2);

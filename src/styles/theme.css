@@ -1,12 +1,13 @@
-.theme-dark {
+.lineage-main {
     --lineage-accent: #55b1ae;
+}
+.theme-dark {
     --background-container: #373d4c;
     --background-active-node: var(--background-primary);
     --background-active-parent: #5b637a;
     --background-inactive-node: var(--background-container);
 }
 .theme-light {
-    --lineage-accent: #55b1ae;
     --background-container: #899cb3;
     --background-active-node: var(--background-primary);
     --background-active-parent: #cedbeb;
@@ -21,9 +22,7 @@
     color: var(--text-normal);
 }
 
-.active-node {
-    border-left: 5px var(--lineage-accent) solid;
-}
+
 .active-child:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -35,6 +34,9 @@
 .active-sibling {
     background-color: var(--background-active-parent);
     filter: opacity(0.8);
+    --scrollbar-thumb-bg:var(--text-muted);
+    --scrollbar-active-thumb-bg: var(--text-normal);
+    --scrollbar-bg: var(--background-active-parent);
 }
 .inactive-node {
     filter: opacity(0.2);

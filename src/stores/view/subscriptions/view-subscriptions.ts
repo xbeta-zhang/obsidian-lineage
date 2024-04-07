@@ -15,11 +15,17 @@ import { setActiveNode } from 'src/stores/view/subscriptions/actions/set-active-
 import { enableEditMode } from 'src/stores/view/subscriptions/actions/enable-edit-mode';
 import { removeObsoleteNavigationItems } from 'src/stores/view/subscriptions/actions/remove-obsolete-navigation-items';
 import { focusContainer } from 'src/stores/view/subscriptions/effects/focus-container';
-import { setTreeIndex } from 'src/stores/view/subscriptions/actions/set-tree-index';
 import { resetSearchFuse } from 'src/stores/view/subscriptions/actions/update-search-results/helpers/reset-search-fuse';
 import { applyZoom } from 'src/stores/view/subscriptions/effects/apply-zoom';
 import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { isEmptyDocument } from 'src/stores/view/subscriptions/helpers/is-empty-document';
+import { discardChanges } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/cancel-changes';
+import { applyFontSize } from 'src/stores/view/subscriptions/effects/css-variables/apply-font-size';
+import { applyContainerBg } from 'src/stores/view/subscriptions/effects/css-variables/apply-container-bg';
+import { applyActiveBranchBg } from 'src/stores/view/subscriptions/effects/css-variables/apply-active-branch-bg';
+import { applyCardWidth } from 'src/stores/view/subscriptions/effects/css-variables/apply-card-width';
+import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
+import { getUsedHotkeys } from 'src/obsidian/helpers/get-used-hotkeys';
 
 const viewEffectsAndActions = (
     view: LineageView,
@@ -34,7 +40,6 @@ const viewEffectsAndActions = (
     const container = view.container;
     if (initialRun) {
         // actions
-        setTreeIndex(viewStore, documentState);
         setActiveNode(viewStore, documentState);
         updateActiveBranch(viewStore, documentState);
         if (view.isActive && isEmptyDocument(documentState.document.content)) {
@@ -50,66 +55,85 @@ const viewEffectsAndActions = (
             ? getDocumentEventType(type as DocumentStoreAction['type'])
             : getViewEventType(type as ViewStoreAction['type']);
         if (!e) return;
-
+        if (type === 'DOCUMENT/LOAD_FILE') {
+            // needed when the file was modified externally
+            // to prevent saving a node with an obsolete node-id
+            // ideally the user should confirm this
+            discardChanges(view);
+        }
+        const structuralChange =
+            e.createOrDelete || e.dropOrMove || e.changeHistory || e.clipboard;
+        const activeNodeChange = e.activeNode || e.activeNodeHistory;
         // actions
-        if (e.creationAndDeletion || e.shape || e.changeHistory) {
-            setTreeIndex(viewStore, documentState);
+        if (structuralChange) {
             setActiveNode(viewStore, documentState);
+        }
+        if (activeNodeChange || structuralChange) {
+            updateActiveBranch(viewStore, documentState);
         }
 
         if (type === 'DOCUMENT/INSERT_NODE' && view.isActive) {
             enableEditMode(viewStore, documentState);
         }
 
-        if (type === 'DOCUMENT/DELETE_NODE') {
+        if (type === 'DOCUMENT/DELETE_NODE' || type === 'DOCUMENT/CUT_NODE') {
             removeObsoleteNavigationItems(viewStore, documentState);
-        }
-
-        if (
-            e.activeNode ||
-            e.activeNodeHistory ||
-            e.creationAndDeletion ||
-            e.shape ||
-            e.changeHistory
-        ) {
-            updateActiveBranch(viewStore, documentState);
         }
 
         if (action.type === 'SEARCH/SET_QUERY') {
             updateSearchResults(documentStore, viewStore);
         }
+        if (action.type === 'UI/TOGGLE_HELP_SIDEBAR') {
+            if (viewState.ui.showHelpSidebar)
+                hotkeyStore.dispatch({
+                    type: 'SET_CONFLICTING_HOTKEYS',
+                    payload: {
+                        conflictingHotkeys: getUsedHotkeys(view.plugin),
+                    },
+                });
+        }
+
+        if (
+            (type === 'DOCUMENT/COPY_NODE' || type === 'DOCUMENT/CUT_NODE') &&
+            documentState.clipboard.branch
+        ) {
+            view.plugin.documents.dispatch({
+                type: 'DOCUMENTS/SET_CLIPBOARD',
+                payload: {
+                    branch: documentState.clipboard.branch,
+                },
+            });
+            documentStore.dispatch({ type: 'DOCUMENTS/CLEAR_CLIPBOARD' });
+        }
 
         // effects
+        if (e.content || structuralChange) {
+            const maybeViewIsClosing = !view.isActive;
+            view.saveDocument(maybeViewIsClosing);
+        }
         if (!container || !view.isActive) return;
         if (e.zoom) {
             applyZoom(container, viewState);
         }
-        if (e.changeHistory || e.content || e.creationAndDeletion || e.shape) {
+        if (e.content || structuralChange) {
             resetSearchFuse(documentStore);
-            view.saveDocument();
         }
         if (
             action.type === 'DOCUMENT/DISABLE_EDIT_MODE' ||
             e.changeHistory ||
             e.content ||
-            e.creationAndDeletion ||
-            e.shape
+            e.createOrDelete ||
+            e.dropOrMove ||
+            e.clipboard
         ) {
             focusContainer(container);
         }
-        if (
-            e.activeNode ||
-            e.activeNodeHistory ||
-            e.zoom ||
-            e.search ||
-            e.creationAndDeletion ||
-            e.shape ||
-            e.changeHistory
-        ) {
+        if (activeNodeChange || e.zoom || e.search || structuralChange) {
             alignBranchDebounced(
                 documentStore.getValue(),
                 viewState,
                 container,
+                type === 'DOCUMENT/MOVE_NODE' ? 'instant' : undefined,
             );
         }
     }
@@ -128,8 +152,30 @@ export const viewSubscriptions = (view: LineageView) => {
         },
     );
 
+    const unsubFromSettings = view.plugin.settings.subscribe(
+        (state, action, isInitialRun) => {
+            if (isInitialRun) {
+                applyFontSize(view, state.view.fontSize);
+                applyContainerBg(view, state.view.theme.containerBg);
+                applyActiveBranchBg(view, state.view.theme.activeBranchBg);
+                applyCardWidth(view, state.view.cardWidth);
+            } else if (action) {
+                if (action.type === 'SET_FONT_SIZE') {
+                    applyFontSize(view, state.view.fontSize);
+                } else if (action.type === 'SET_CONTAINER_BG') {
+                    applyContainerBg(view, state.view.theme.containerBg);
+                } else if (action.type === 'SET_ACTIVE_BRANCH_BG') {
+                    applyActiveBranchBg(view, state.view.theme.activeBranchBg);
+                } else if (action.type === 'SET_CARD_WIDTH') {
+                    applyCardWidth(view, state.view.cardWidth);
+                }
+            }
+        },
+    );
+
     return () => {
         unsubFromDocument();
         unsubFromView();
+        unsubFromSettings();
     };
 };

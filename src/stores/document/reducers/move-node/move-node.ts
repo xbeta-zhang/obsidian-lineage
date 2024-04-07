@@ -14,7 +14,10 @@ export type MoveNodeAction = {
     };
 };
 
-export const moveNode = (columns: Column[], action: MoveNodeAction) => {
+export const moveNode = (
+    columns: Column[],
+    action: Pick<MoveNodeAction, 'payload'>,
+) => {
     const nodeToMove = action.payload.activeNodeId;
     invariant(nodeToMove);
 
@@ -29,6 +32,7 @@ export const moveNode = (columns: Column[], action: MoveNodeAction) => {
         nodeToMove,
         targetNode,
         action.payload.direction,
+        'move',
     );
     cleanAndSortColumns(columns);
 };

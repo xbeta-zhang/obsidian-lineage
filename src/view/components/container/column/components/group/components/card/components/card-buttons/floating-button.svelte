@@ -30,7 +30,6 @@
     :root {
         --floating-button-width: 30px;
         --floating-button-height: 30px;
-        --node-width: 400px;
         --floating-button-bg: #dbdbdb;
         --position-tb: -10px;
         --position-lr: -4px;

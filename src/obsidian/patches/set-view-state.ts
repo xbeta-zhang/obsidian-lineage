@@ -1,14 +1,6 @@
 import { ViewState } from 'obsidian';
 import { FILE_VIEW_TYPE } from 'src/view/view';
-import Lineage from 'src/main';
-import { Settings } from 'src/stores/settings/settings-type';
-
-export let fileViewTypeCache: Settings['documents'] = {};
-export const subscribeDocumentsTypeCacheToSettings = (plugin: Lineage) => {
-    plugin.settings.subscribe((v) => {
-        fileViewTypeCache = v.documents;
-    });
-};
+import { fileViewTypeCache } from 'src/stores/settings/subscriptions/effects/update-file-view-type-cache';
 
 export function setViewState(next: () => unknown) {
     return function (state: ViewState, ...rest: unknown[]) {

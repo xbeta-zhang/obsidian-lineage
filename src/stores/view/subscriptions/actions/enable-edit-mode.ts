@@ -1,5 +1,6 @@
 import { ViewStore } from 'src/view/view';
 import { DocumentState } from 'src/stores/document/document-state-type';
+import { getIdOfSection } from 'src/stores/view/subscriptions/actions/get-id-of-section';
 
 export const enableEditMode = (
     viewStore: ViewStore,
@@ -8,7 +9,10 @@ export const enableEditMode = (
     viewStore.dispatch({
         type: 'DOCUMENT/ENABLE_EDIT_MODE',
         payload: {
-            nodeId: documentState.history.context.activeNodeId,
+            nodeId: getIdOfSection(
+                documentState.sections,
+                documentState.history.context.activeSection,
+            ),
         },
     });
 };

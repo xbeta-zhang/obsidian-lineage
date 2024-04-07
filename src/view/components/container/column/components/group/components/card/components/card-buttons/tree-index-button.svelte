@@ -7,7 +7,7 @@
 
     const plugin = getPlugin();
     const view = getView();
-    const viewStore = view.viewStore;
+    const documentStore = view.documentStore;
     export let nodeId: string;
     export let activeStatus: ActiveStatus | null;
 
@@ -28,7 +28,7 @@
     // eslint-disable-next-line no-undef
     const openFile = async () => {
         if (!view.file) return;
-        const treeIndex = get(viewStore).document.treeIndex[nodeId];
+        const treeIndex = get(documentStore).sections.id_section[nodeId];
         const lines = view.data.split('\n');
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
@@ -55,7 +55,7 @@
     class={'tree-index ' + (activeStatus ? classes[activeStatus] : '')}
     on:click={openFile}
 >
-    {$viewStore.document.treeIndex[nodeId]}
+    {$documentStore.sections.id_section[nodeId]}
 </div>
 
 <style>

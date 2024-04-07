@@ -20,11 +20,40 @@ export type SettingsActions =
               newPath: string;
           };
       }
-    | { type: 'TOGGLE_THEME' }
     | {
           type: 'SET_CUSTOM_HOTKEYS';
           payload: {
               customHotkeys: CustomHotkeys;
+          };
+      }
+    | {
+          type: 'SET_FONT_SIZE';
+          payload: {
+              fontSize: number;
+          };
+      }
+    | {
+          type: 'SET_CONTAINER_BG';
+          payload: {
+              backgroundColor: string | undefined;
+          };
+      }
+    | {
+          type: 'SET_ACTIVE_BRANCH_BG';
+          payload: {
+              backgroundColor: string | undefined;
+          };
+      }
+    | {
+          type: 'SET_CARD_WIDTH';
+          payload: {
+              width: number | undefined;
+          };
+      }
+    | {
+          type: 'SET_MIN_CARD_HEIGHT';
+          payload: {
+              height: number | undefined;
           };
       };
 
@@ -38,6 +67,16 @@ const updateState = (store: Settings, action: SettingsActions) => {
         store.documents[action.payload.newPath] = true;
     } else if (action.type === 'SET_CUSTOM_HOTKEYS') {
         store.hotkeys.customHotkeys = action.payload.customHotkeys;
+    } else if (action.type === 'SET_FONT_SIZE') {
+        store.view.fontSize = action.payload.fontSize;
+    } else if (action.type === 'SET_CONTAINER_BG') {
+        store.view.theme.containerBg = action.payload.backgroundColor;
+    } else if (action.type === 'SET_ACTIVE_BRANCH_BG') {
+        store.view.theme.activeBranchBg = action.payload.backgroundColor;
+    } else if (action.type === 'SET_CARD_WIDTH') {
+        store.view.cardWidth = action.payload.width;
+    } else if (action.type === 'SET_MIN_CARD_HEIGHT') {
+        store.view.minimumCardHeight = action.payload.height;
     }
 };
 export const settingsReducer = (

@@ -1,66 +1,59 @@
-import { MarkdownView, TFile, WorkspaceLeaf, WorkspaceSplit } from 'obsidian';
+import { MarkdownView, TFile } from 'obsidian';
 import { LineageView } from 'src/view/view';
-import { adjustHeight } from 'src/view/actions/inline-editor/expandable-textarea-action';
+import { AdjustHeight } from 'src/view/actions/inline-editor/expandable-textarea-action';
 
 const noop = async () => {};
 
 export type InlineMarkdownView = MarkdownView & {
     __setViewData__: MarkdownView['setViewData'];
 };
-
 export class InlineEditor {
-    rootSplit: WorkspaceSplit & { containerEl: HTMLElement };
-    leaf: WorkspaceLeaf;
+    private inlineView: InlineMarkdownView;
+    private containerEl: HTMLElement;
     private nodeId: string | null = null;
     private target: HTMLElement | null = null;
-    constructor(private view: LineageView) {
-        this.onload();
-    }
+    private appliedExternalCursor = false;
+    private onChangeSubscriptions: Set<() => void> = new Set();
+
+    constructor(private view: LineageView) {}
 
     get activeNode() {
         return this.nodeId;
     }
 
     getContent() {
-        const inlineView = this.leaf.view as InlineMarkdownView;
-        return inlineView.editor.getValue();
+        return this.inlineView.editor.getValue();
     }
 
     getCursor() {
-        const inlineView = this.leaf.view as InlineMarkdownView;
-        return inlineView.editor.getCursor();
+        return this.inlineView.editor.getCursor();
+    }
+
+    overrideCursor(line: number, ch: number) {
+        this.appliedExternalCursor = true;
+        this.setCursor(line, ch);
     }
 
     setContent(content: string) {
-        const inlineView = this.leaf.view as InlineMarkdownView;
-        inlineView.__setViewData__(content, true);
+        this.inlineView.__setViewData__(content, true);
     }
 
-    async loadFile(file: TFile) {
-        await this.leaf.openFile(file, {
-            state: {
-                inlineEditor: true,
-            },
-        });
-        const inlineView = this.leaf.view as InlineMarkdownView;
-        inlineView.save = noop;
-        inlineView.requestSave = noop;
-        inlineView.__setViewData__ = inlineView.setViewData;
-        inlineView.setViewData = noop;
-    }
     loadNode(target: HTMLElement, nodeId: string) {
-        const inlineView = this.leaf.view as InlineMarkdownView;
         const content =
             this.view.documentStore.getValue().document.content[nodeId];
         this.setContent(content?.content || '');
-        inlineView.editor.setCursor({
-            line: inlineView.editor.lastLine(),
-            ch: inlineView.editor.getLine(inlineView.editor.lastLine()).length,
-        });
-        target.append(this.rootSplit.containerEl);
-        inlineView.editor.focus();
-        const editor = target.querySelector('.cm-scroller') as HTMLElement;
-        if (editor) adjustHeight(target, editor);
+
+        if (!this.appliedExternalCursor)
+            this.setCursor(
+                this.inlineView.editor.lastLine(),
+                this.inlineView.editor.getLine(
+                    this.inlineView.editor.lastLine(),
+                ).length,
+            );
+        this.appliedExternalCursor = false;
+        target.append(this.containerEl);
+        this.inlineView.editor.focus();
+        AdjustHeight(target)();
         this.nodeId = nodeId;
         this.target = target;
     }
@@ -71,13 +64,60 @@ export class InlineEditor {
         this.target = null;
     }
 
-    private onload() {
+    async onload() {
         const workspace = this.view.plugin.app.workspace;
         // @ts-ignore
-        this.rootSplit = new WorkspaceSplit(workspace, 'vertical');
-        this.rootSplit.getRoot = () => workspace.rootSplit;
-        this.rootSplit.getContainer = () => workspace.rootSplit;
-        this.rootSplit.containerEl.addClasses(['lineage-inline-editor']);
-        this.leaf = workspace.createLeafInParent(this.rootSplit, 0);
+
+        this.containerEl = document.createElement('div');
+        this.containerEl.addClasses(['lineage-inline-editor']);
+        // help: how to instantiate a MarkdownView?
+        this.inlineView = new MarkdownView({
+            containerEl: this.containerEl,
+            app: this.view.plugin.app,
+            workspace,
+        } as never) as InlineMarkdownView;
+        this.inlineView.save = noop;
+        this.inlineView.requestSave = this.invokeAndDeleteOnChangeSubscriptions;
+        this.inlineView.__setViewData__ = this.inlineView.setViewData;
+        this.inlineView.setViewData = noop;
+
+        if (this.inlineView.getMode() === 'preview') {
+            await this.inlineView.setState(
+                { mode: 'source' },
+                { history: false },
+            );
+        }
+    }
+
+    onNextChange(subscription: () => void) {
+        this.onChangeSubscriptions.add(subscription);
+        return () => {
+            this.onChangeSubscriptions.delete(subscription);
+        };
+    }
+
+    async loadFile(file: TFile) {
+        this.inlineView.file = file;
+        await this.inlineView.onLoadFile(file);
+    }
+
+    async unloadFile() {
+        const file = this.inlineView.file;
+        if (file) {
+            this.inlineView.file = null;
+            await this.inlineView.onUnloadFile(file);
+        }
+    }
+
+    private invokeAndDeleteOnChangeSubscriptions = () => {
+        if (this.onChangeSubscriptions.size)
+            for (const subscription of this.onChangeSubscriptions) {
+                subscription();
+                this.onChangeSubscriptions.delete(subscription);
+            }
+    };
+
+    private setCursor(line: number, ch: number) {
+        this.inlineView.editor.setCursor(line, ch);
     }
 }
