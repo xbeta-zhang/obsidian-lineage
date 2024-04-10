@@ -1,16 +1,17 @@
-import { DocumentViewState } from 'src/stores/view/view-state-type';
+import { DocumentViewState, ViewState } from 'src/stores/view/view-state-type';
 import { addNavigationHistoryItem } from 'src/stores/view/reducers/ui/helpers/add-navigation-history-item';
-import { NavigationHistory } from 'src/stores/document/document-state-type';
 import { disableEditMode } from 'src/stores/view/reducers/document/disable-edit-mode';
 
 export const updateActiveNode = (
-    state: DocumentViewState,
+    documentState: DocumentViewState,
     nodeId: string,
-    navigationHistory: null | NavigationHistory,
+    state: null | Pick<ViewState, 'navigationHistory'>,
 ) => {
-    state.activeNode = nodeId;
-    if (navigationHistory)
-        addNavigationHistoryItem(navigationHistory, state.activeNode);
-    if (state.editing.activeNodeId && state.editing.activeNodeId !== nodeId)
-        disableEditMode(state.editing);
+    documentState.activeNode = nodeId;
+    if (state) addNavigationHistoryItem(state, documentState.activeNode);
+    if (
+        documentState.editing.activeNodeId &&
+        documentState.editing.activeNodeId !== nodeId
+    )
+        disableEditMode(documentState);
 };

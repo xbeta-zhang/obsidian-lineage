@@ -84,13 +84,15 @@ const viewEffectsAndActions = (
             updateSearchResults(documentStore, viewStore);
         }
         if (action.type === 'UI/TOGGLE_HELP_SIDEBAR') {
-            if (viewState.ui.showHelpSidebar)
-                hotkeyStore.dispatch({
-                    type: 'SET_CONFLICTING_HOTKEYS',
-                    payload: {
-                        conflictingHotkeys: getUsedHotkeys(view.plugin),
-                    },
-                });
+            if (viewState.ui.controls.showHelpSidebar)
+                setTimeout(() => {
+                    hotkeyStore.dispatch({
+                        type: 'SET_CONFLICTING_HOTKEYS',
+                        payload: {
+                            conflictingHotkeys: getUsedHotkeys(view.plugin),
+                        },
+                    });
+                }, 50);
         }
 
         if (

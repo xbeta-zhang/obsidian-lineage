@@ -9,9 +9,11 @@ export const defaultViewState = (): ViewState => ({
         showInput: false,
     },
     ui: {
-        showHistorySidebar: false,
-        showHelpSidebar: false,
-        showSettingsSidebar: false,
+        controls: {
+            showHistorySidebar: false,
+            showHelpSidebar: false,
+            showSettingsSidebar: false,
+        },
         zoomLevel: 1,
     },
     document: {

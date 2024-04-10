@@ -1,9 +1,11 @@
 <script lang="ts">
     import { Search } from 'lucide-svelte';
     import { getView } from 'src/view/components/container/context';
+    import { searchStore } from 'src/stores/view/derived/search-store';
 
     const view = getView();
     const viewStore = view.viewStore;
+    const search = searchStore(view)
     const onInput = (
         // eslint-disable-next-line no-undef
         e: Event & { currentTarget: EventTarget & HTMLInputElement },
@@ -21,7 +23,7 @@
     <button
         aria-label={'Toggle search input'}
         class={'search-toggle ' +
-            ($viewStore.search.showInput ? 'search-toggle-active' : '')}
+            ($search.showInput ? 'search-toggle-active' : '')}
         data-tooltip-position="bottom"
         on:click={() => {
             viewStore.dispatch({ type: 'SEARCH/TOGGLE_INPUT' });
@@ -29,10 +31,10 @@
     >
         <Search class="svg-icon" size="12" />
     </button>
-    {#if $viewStore.search.showInput}
+    {#if $search.showInput}
         <div class="">
             <input
-                value={$viewStore.search.query}
+                value={$search.query}
                 class="search-input search-input-element"
                 enterkeyhint="search"
                 placeholder={'search'}
@@ -43,7 +45,7 @@
                 aria-label="Search document"
             />
             <div
-                style={$viewStore.search.query ? '' : 'display: none'}
+                style={$search.query ? '' : 'display: none'}
                 aria-label={'Clear'}
                 class="search-input-clear-button"
                 on:click={() => {

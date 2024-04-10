@@ -11,4 +11,5 @@ export type SetSearchResultsAction = {
 export const setSearchResults = (state: ViewState, results: NodeId[]) => {
     state.search.results = new Set(results);
     state.search.searching = false;
+    state.search = { ...state.search };
 };

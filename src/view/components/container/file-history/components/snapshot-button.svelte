@@ -9,7 +9,6 @@
     export let snapshot: Snapshot;
     export let active: boolean;
     export let reverseIndex: number;
-    export let filePath: string;
 
     const view = getView();
     const documentStore = view.documentStore;
@@ -34,7 +33,7 @@
         else
             documentStore.dispatch({
                 type: 'HISTORY/SELECT_SNAPSHOT',
-                payload: { snapshotId: snapshot.id, path: filePath },
+                payload: { snapshotId: snapshot.id, },
             });
 
     }}

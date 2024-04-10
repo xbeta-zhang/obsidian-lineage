@@ -1,4 +1,4 @@
-import { ViewState } from 'src/stores/view/view-state-type';
+import { DocumentViewState } from 'src/stores/view/view-state-type';
 
 export type ToggleEditModeAction = {
     type: 'DOCUMENT/ENABLE_EDIT_MODE';
@@ -7,9 +7,11 @@ export type ToggleEditModeAction = {
     };
 };
 export const enableEditMode = (
-    editing: ViewState['document']['editing'],
+    state: Pick<DocumentViewState, 'editing'>,
     action: ToggleEditModeAction,
 ) => {
-    editing.activeNodeId = action.payload.nodeId;
-    editing.disableEditConfirmation = false;
+    state.editing = {
+        activeNodeId: action.payload.nodeId,
+        disableEditConfirmation: false,
+    };
 };

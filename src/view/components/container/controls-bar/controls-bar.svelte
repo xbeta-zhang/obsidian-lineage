@@ -14,37 +14,34 @@
     import { getPlugin, getView } from 'src/view/components/container/context';
     import { LineageView } from 'src/view/view';
     import { lang } from 'src/lang/lang';
-    import { DocumentHistory } from 'src/stores/document/document-state-type';
     import { maxZoomLevel, minZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
     import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
     import { Notice } from 'obsidian';
+    import { historyStore } from 'src/stores/document/derived/history-store';
+    import { uiControlsStore } from 'src/stores/view/derived/ui-controls-store';
+    import { zoomLevelStore } from 'src/stores/view/derived/zoom-level-store';
 
     const view = getView();
     const viewStore = view.viewStore;
     const documentStore = view.documentStore;
-    export let documentHistory: DocumentHistory;
-    export let path: string | null;
 
+    const history = historyStore(view)
     const handleNextClick = () => {
-        if (path){
-            if (viewStore.getValue().document.editing.activeNodeId)
-                new Notice('cannot apply snapshot while editing');
-            else
+        if (viewStore.getValue().document.editing.activeNodeId)
+            new Notice('cannot apply snapshot while editing');
+        else
             documentStore.dispatch({
                 type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
             });
-        }
     };
 
     const handlePreviousClick = () => {
-        if (path) {
-            if (viewStore.getValue().document.editing.activeNodeId)
-                new Notice('cannot apply snapshot while editing');
-            else
-                documentStore.dispatch({
-                    type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
-                });
-        }
+        if (viewStore.getValue().document.editing.activeNodeId)
+            new Notice('cannot apply snapshot while editing');
+        else
+            documentStore.dispatch({
+                type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
+            });
     };
     const plugin = getPlugin();
 
@@ -95,6 +92,8 @@
             });
         }
     };
+    const controls = uiControlsStore(view);
+    const zoomLevel = zoomLevelStore(view)
 </script>
 
 <div class="controls-container">
@@ -108,9 +107,9 @@
             <File class="svg-icon" />
         </button>
         <button
-            aria-label={"Settings"}
+            aria-label={'Settings'}
             class="control-item"
-            data-active={$viewStore.ui.showSettingsSidebar}
+            data-active={$controls.showSettingsSidebar}
             data-tooltip-position="left"
             on:click={toggleSettings}
         >
@@ -119,7 +118,7 @@
         <button
             aria-label="Keyboard shortcuts"
             class="control-item"
-            data-active={$viewStore.ui.showHelpSidebar}
+            data-active={$controls.showHelpSidebar}
             data-tooltip-position="left"
             on:click={toggleHelp}
         >
@@ -130,9 +129,9 @@
         <button
             aria-label="History"
             class="control-item"
-            data-active={$viewStore.ui.showHistorySidebar}
+            data-active={$controls.showHistorySidebar}
             data-tooltip-position="left"
-            disabled={documentHistory.items.length === 0}
+            disabled={$history.items.length === 0}
             on:click={() => {
                 viewStore.dispatch({ type: 'UI/TOGGLE_HISTORY_SIDEBAR' });
             }}
@@ -144,7 +143,7 @@
             aria-label="Undo"
             class="control-item"
             data-tooltip-position="left"
-            disabled={!documentHistory || !documentHistory.state.canGoBack}
+            disabled={ !$history.state.canGoBack}
             on:click={handlePreviousClick}
         >
             <UndoIcon class="svg-icon" />
@@ -153,7 +152,7 @@
             aria-label="Redo"
             class="control-item"
             data-tooltip-position="left"
-            disabled={!documentHistory || !documentHistory.state.canGoForward}
+            disabled={!$history.state.canGoForward}
             on:click={handleNextClick}
         >
             <RedoIcon class="svg-icon" />
@@ -164,7 +163,7 @@
             aria-label="zoom in"
             class="control-item"
             data-tooltip-position="left"
-            disabled={$viewStore.ui.zoomLevel === maxZoomLevel}
+            disabled={$zoomLevel === maxZoomLevel}
             on:click={zoomIn}
         >
             <ZoomIn class="svg-icon" />
@@ -189,7 +188,7 @@
             aria-label="Zoom out"
             class="control-item"
             data-tooltip-position="left"
-            disabled={$viewStore.ui.zoomLevel === minZoomLevel}
+            disabled={$zoomLevel === minZoomLevel}
             on:click={zoomOut}
         >
             <ZoomOut class="svg-icon" />
@@ -202,7 +201,7 @@
         cursor: not-allowed;
         color: var(--color-base-40);
     }
-    button[data-active="true"] {
+    button[data-active='true'] {
         background-color: var(--color-base-40);
     }
     .controls-container {

@@ -16,6 +16,7 @@ export const cloneGroup = (
         const newNode = id.node();
         nodeIdMap[node] = newNode;
         newGroup.nodes.push(newNode);
+
         const existingContent = oldContent[node];
         if (existingContent) {
             newContent[newNode] = {

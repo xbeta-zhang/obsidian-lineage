@@ -27,10 +27,12 @@ export type ViewState = {
         showInput: boolean;
     };
     ui: {
-        showHistorySidebar: boolean;
-        showHelpSidebar: boolean;
+        controls: {
+            showHistorySidebar: boolean;
+            showHelpSidebar: boolean;
+            showSettingsSidebar: boolean;
+        };
         zoomLevel: number;
-        showSettingsSidebar: boolean;
     };
     document: DocumentViewState;
     navigationHistory: NavigationHistory;

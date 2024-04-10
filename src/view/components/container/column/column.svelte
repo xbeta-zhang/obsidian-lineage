@@ -1,19 +1,21 @@
 <script lang="ts">
-    import { Column } from 'src/stores/document/document-state-type';
     import Group from './components/group/group.svelte';
     import { getView } from 'src/view/components/container/context';
     import { scrollOnDndY } from 'src/view/actions/dnd/scroll-on-dnd-y';
+    import { groupsStore } from 'src/stores/document/derived/groups-store';
+    import { dndStore } from 'src/stores/view/derived/dnd-store';
 
     const view = getView();
-    const viewStore = view.viewStore;
-    export let column: Column;
+    export let columnId: string;
+    const groups = groupsStore(view,columnId);
+    const dnd = dndStore(view)
 </script>
 
-<div class="column" id={column.id}  use:scrollOnDndY>
+<div class="column" id={columnId}  use:scrollOnDndY>
     <div class="column-buffer" />
-    {#each column.groups as group (group.parentId)}
-        {#if !$viewStore.document.dnd.childGroups.has(group.parentId)}
-            <Group {group} />
+    {#each $groups as group (group.parentId)}
+        {#if !$dnd.childGroups.has(group.parentId)}
+            <Group groupId={group.parentId} {columnId} />
         {/if}
     {/each}
     <div class="column-buffer" />

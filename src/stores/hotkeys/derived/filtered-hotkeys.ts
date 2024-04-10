@@ -1,4 +1,4 @@
-import { derived } from 'src/helpers/store/derived';
+import { derivedOnAction } from 'src/helpers/store/derived-on-action';
 import { CommandHotkeys, hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
 import {
     GroupName,
@@ -7,7 +7,7 @@ import {
 import { groupArrayByProperty } from 'src/helpers/group-array-by-property';
 
 type GroupedHotkeys = Record<GroupName, CommandHotkeys[]>;
-export const filteredHotkeys = derived(
+export const filteredHotkeys = derivedOnAction(
     hotkeyStore,
     (store) => {
         let array: CommandHotkeys[] = [];

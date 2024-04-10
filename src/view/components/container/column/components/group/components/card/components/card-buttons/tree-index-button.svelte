@@ -4,6 +4,7 @@
     import { parseDelimiter } from 'src/stores/view/helpers/json-to-md/markdown-to-json/helpers/delimiter';
     import { get } from 'svelte/store';
     import { MarkdownView, TFile } from 'obsidian';
+    import { idSectionStore } from 'src/stores/document/derived/id-section-store';
 
     const plugin = getPlugin();
     const view = getView();
@@ -48,6 +49,8 @@
         [ActiveStatus.parent]: 'is-active-parent',
         [ActiveStatus.sibling]: 'is-active-parent',
     };
+    const section = idSectionStore(view,nodeId);
+
 </script>
 
 <div
@@ -55,7 +58,7 @@
     class={'tree-index ' + (activeStatus ? classes[activeStatus] : '')}
     on:click={openFile}
 >
-    {$documentStore.sections.id_section[nodeId]}
+    {$section}
 </div>
 
 <style>

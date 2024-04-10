@@ -22,6 +22,7 @@ export const moveNodeAsSibling = (
                 targetGroup.nodes.splice(0, 0, node);
             } else if (direction === 'up') {
                 targetGroup.nodes.push(node);
+                targetGroup.nodes = [...targetGroup.nodes];
             }
         } else {
             direction = direction === 'left' ? 'down' : direction;

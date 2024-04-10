@@ -40,7 +40,7 @@ describe('merge node', () => {
             },
         };
 
-        mergeNode(input.columns, input.content, input.action);
+        mergeNode(input, input.action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -71,7 +71,7 @@ describe('merge node', () => {
             },
             content: { nc8J: { content: '1\n2' } },
         } satisfies Output;
-        mergeNode(input.columns, input.content, input.action);
+        mergeNode(input, input.action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -124,7 +124,7 @@ describe('merge node', () => {
                 nsPj: { content: '1.1\n2.1' },
             },
         } satisfies Output;
-        mergeNode(input.columns, input.content, input.action);
+        mergeNode(input, input.action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -177,7 +177,7 @@ describe('merge node', () => {
                 ngoB: { content: '1.1\n2.1' },
             },
         } satisfies Output;
-        mergeNode(input.columns, input.content, input.action);
+        mergeNode(input, input.action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -276,7 +276,7 @@ describe('merge node', () => {
                 nX1f: { content: '2.1.2' },
             },
         } as Output;
-        mergeNode(input.columns, input.content, input.action);
+        mergeNode(input, input.action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -375,7 +375,7 @@ describe('merge node', () => {
                 nX1f: { content: '2.1.2' },
             },
         } as Output;
-        mergeNode(input.columns, input.content, input.action);
+        mergeNode(input, input.action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -482,7 +482,7 @@ describe('merge node', () => {
                 'nL-q': { content: '2.1.2' },
             },
         };
-        mergeNode(input.columns, input.content, input.action);
+        mergeNode(input, input.action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -590,7 +590,7 @@ describe('merge node', () => {
                 ncc7: { content: '2.1.2' },
             },
         } satisfies Output;
-        mergeNode(input.columns, input.content, input.action);
+        mergeNode(input, input.action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -713,7 +713,7 @@ describe('merge node', () => {
                 activeNode: targetNode,
             },
         } satisfies Output;
-        mergeNode(input.columns, input.content, action);
+        mergeNode(input, action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -832,7 +832,7 @@ describe('merge node', () => {
                 activeNode: targetNode,
             },
         };
-        mergeNode(input.columns, input.content, action);
+        mergeNode(input, action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -951,7 +951,7 @@ describe('merge node', () => {
                 activeNode: target,
             },
         };
-        mergeNode(input.columns, input.content, action);
+        mergeNode(input, action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -1056,7 +1056,7 @@ describe('merge node', () => {
                 activeNode: target,
             },
         };
-        mergeNode(input.columns, input.content, action);
+        mergeNode(input, action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });
@@ -1128,7 +1128,7 @@ describe('merge node', () => {
                 [n2_1_2]: { content: '2.1.2' },
             },
         };
-        mergeNode(input.columns, input.content, action);
+        mergeNode(input, action);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
     });

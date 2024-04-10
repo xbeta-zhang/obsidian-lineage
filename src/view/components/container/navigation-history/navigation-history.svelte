@@ -1,9 +1,11 @@
 <script lang="ts">
     import { getView } from 'src/view/components/container/context';
     import { ArrowLeft, ArrowRight } from 'lucide-svelte';
+    import { navigationHistoryStore } from 'src/stores/view/derived/navigation-history-store';
 
     const view = getView();
     const viewStore = view.viewStore;
+    const navigationHistory = navigationHistoryStore(view)
 </script>
 
 <div class="navigation-history-container" >
@@ -12,7 +14,7 @@
             aria-label={'Navigate back'}
             class="navigation-button"
             data-tooltip-position="bottom"
-            disabled={!$viewStore.navigationHistory.state.canGoBack}
+            disabled={!$navigationHistory.state.canGoBack}
             on:click={() => {
                 viewStore.dispatch({ type: 'NAVIGATION/NAVIGATE_BACK' });
             }}
@@ -23,7 +25,7 @@
             aria-label={'Navigate forward'}
             class="navigation-button"
             data-tooltip-position="bottom"
-            disabled={!$viewStore.navigationHistory.state.canGoForward}
+            disabled={!$navigationHistory.state.canGoForward}
             on:click={() => {
                 viewStore.dispatch({ type: 'NAVIGATION/NAVIGATE_FORWARD' });
             }}

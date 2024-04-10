@@ -1,8 +1,7 @@
 import { insertNode } from 'src/stores/document/reducers/insert-node/insert-node';
 import {
     ClipboardBranch,
-    Column,
-    Content,
+    LineageDocument,
 } from 'src/stores/document/document-state-type';
 import { pastChildGroups } from 'src/stores/document/reducers/clipboard/paste-node/helpers/past-child-groups';
 import { cleanAndSortColumns } from 'src/stores/document/reducers/move-node/helpers/clean-and-sort-columns';
@@ -18,8 +17,7 @@ export type PasteNodeAction = {
 };
 
 export const pasteNode = (
-    columns: Column[],
-    content: Content,
+    document: LineageDocument,
     action: Pick<PasteNodeAction, 'payload'>,
 ) => {
     if (!action.payload.branch) throw new SilentError('clipboard is empty');
@@ -27,8 +25,7 @@ export const pasteNode = (
 
     const nextNode = branch.nodeId;
     insertNode(
-        columns,
-        content,
+        document,
         {
             payload: {
                 activeNodeId: action.payload.targetNodeId,
@@ -38,7 +35,7 @@ export const pasteNode = (
         },
         branch.nodeId,
     );
-    pastChildGroups(columns, content, branch);
-    cleanAndSortColumns(columns);
+    pastChildGroups(document, branch);
+    cleanAndSortColumns(document);
     return nextNode;
 };

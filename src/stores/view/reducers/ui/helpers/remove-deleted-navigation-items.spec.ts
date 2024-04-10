@@ -4,12 +4,11 @@ import { removeDeletedNavigationItems } from 'src/stores/view/reducers/ui/helper
 
 describe('add navigation history item', () => {
     it('case 1', () => {
-        const contentItem = { content: '' };
         const content = {
-            1: contentItem,
-            2: null,
-            3: null,
-            4: null,
+            1: { content: '' },
+            2: { content: '' },
+            3: { content: '' },
+            4: { content: '' },
         };
 
         const input: NavigationHistory = {
@@ -32,15 +31,14 @@ describe('add navigation history item', () => {
             context: undefined,
         };
 
-        removeDeletedNavigationItems(input, content);
+        removeDeletedNavigationItems({ navigationHistory: input }, content);
         expect(input).toEqual(output);
     });
     it('case 2', () => {
-        const contentItem = { content: '' };
         const content = {
-            1: contentItem,
-            2: null,
-            4: null,
+            1: { content: '' },
+            2: { content: '' },
+            4: { content: '' },
         };
 
         const input: NavigationHistory = {
@@ -63,7 +61,7 @@ describe('add navigation history item', () => {
             context: undefined,
         };
 
-        removeDeletedNavigationItems(input, content);
+        removeDeletedNavigationItems({ navigationHistory: input }, content);
         expect(input).toEqual(output);
     });
 });

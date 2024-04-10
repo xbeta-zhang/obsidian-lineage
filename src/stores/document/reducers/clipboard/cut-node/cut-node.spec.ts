@@ -53,7 +53,7 @@ describe('cut node', () => {
                 mode: 'cut',
             },
         };
-        cutNode(input.columns, input.content, input_state, nodeId);
+        cutNode(input, input_state, nodeId);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
         expect(input_state).toEqual(output_state);
@@ -154,7 +154,7 @@ describe('cut node', () => {
                 mode: 'cut',
             },
         };
-        cutNode(input.columns, input.content, input_state, nodeId);
+        cutNode(input, input_state, nodeId);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
         expect(input_state).toEqual(output_state);
@@ -262,7 +262,7 @@ describe('cut node', () => {
                 mode: 'cut',
             },
         };
-        cutNode(input.columns, input.content, input_state, nodeId);
+        cutNode(input, input_state, nodeId);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
         expect(input_state).toEqual(output_state);
@@ -374,7 +374,7 @@ describe('cut node', () => {
                 mode: 'cut',
             },
         };
-        cutNode(input.columns, input.content, input_state, nodeId);
+        cutNode(input, input_state, nodeId);
         expect(input.columns).toEqual(output.columns);
         expect(input.content).toEqual(output.content);
         expect(input_state).toEqual(output_state);

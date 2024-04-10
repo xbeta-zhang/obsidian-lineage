@@ -1,7 +1,6 @@
 import {
-    Column,
-    Content,
     DocumentState,
+    LineageDocument,
 } from 'src/stores/document/document-state-type';
 import { getBranch } from 'src/stores/document/reducers/clipboard/cut-node/helpers/get-branch';
 import { findNextNodeAfterDeletion } from 'src/stores/view/reducers/document/helpers/find-next-node/find-next-node-after-deletion';
@@ -17,16 +16,15 @@ export type CutNodeAction = {
 };
 
 export const cutNode = (
-    columns: Column[],
-    content: Content,
+    document: LineageDocument,
     state: DocumentState['clipboard'],
     nodeId: string,
 ) => {
-    const lastNode = isLastRootNode(columns, nodeId);
+    const lastNode = isLastRootNode(document.columns, nodeId);
     if (lastNode) throw new Error('cannot cut last root node');
-    const nextNode = findNextNodeAfterDeletion(columns, nodeId);
+    const nextNode = findNextNodeAfterDeletion(document.columns, nodeId);
     invariant(nextNode);
-    state.branch = getBranch(columns, content, nodeId, 'cut');
-    cleanAndSortColumns(columns);
+    state.branch = getBranch(document.columns, document.content, nodeId, 'cut');
+    cleanAndSortColumns(document);
     return nextNode;
 };

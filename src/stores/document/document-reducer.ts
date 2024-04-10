@@ -33,29 +33,17 @@ const updateDocumentState = (
         setNodeContent(state.document.content, action);
         activeNodeId = action.payload.nodeId;
     } else if (action.type === 'DOCUMENT/INSERT_NODE') {
-        activeNodeId = insertNode(
-            state.document.columns,
-            state.document.content,
-            action,
-        );
+        activeNodeId = insertNode(state.document, action);
     } else if (action.type === 'DOCUMENT/DELETE_NODE') {
-        activeNodeId = deleteNode(
-            state.document.columns,
-            state.document.content,
-            action.payload.activeNodeId,
-        );
+        activeNodeId = deleteNode(state.document, action.payload.activeNodeId);
     } else if (action.type === 'DOCUMENT/DROP_NODE') {
-        dropNode(state.document.columns, action);
+        dropNode(state.document, action);
         activeNodeId = action.payload.droppedNodeId;
     } else if (action.type === 'DOCUMENT/MOVE_NODE') {
-        moveNode(state.document.columns, action);
+        moveNode(state.document, action);
         activeNodeId = action.payload.activeNodeId;
     } else if (action.type === 'DOCUMENT/MERGE_NODE') {
-        activeNodeId = mergeNode(
-            state.document.columns,
-            state.document.content,
-            action,
-        );
+        activeNodeId = mergeNode(state.document, action);
     } else if (action.type === 'DOCUMENT/LOAD_FILE') {
         activeNodeId = loadDocumentFromFile(state, action);
     } else if (action.type === 'RESET_STORE') {
@@ -66,10 +54,13 @@ const updateDocumentState = (
         state.clipboard = newState.clipboard;
     } else if (action.type === 'HISTORY/SELECT_SNAPSHOT') {
         selectSnapshot(state.document, state.history, action);
+        state.history = { ...state.history };
     } else if (action.type === 'HISTORY/APPLY_PREVIOUS_SNAPSHOT') {
         undoAction(state.document, state.history);
+        state.history = { ...state.history };
     } else if (action.type === 'HISTORY/APPLY_NEXT_SNAPSHOT') {
         redoAction(state.document, state.history);
+        state.history = { ...state.history };
     } else if (action.type === 'FS/SET_FILE_PATH') {
         state.file.path = action.payload.path;
     } else if (action.type === 'DOCUMENT/FORMAT_HEADINGS') {
@@ -79,11 +70,7 @@ const updateDocumentState = (
             state.history.context.activeSection,
         );
     } else if (action.type === 'DOCUMENT/PASTE_NODE') {
-        activeNodeId = pasteNode(
-            state.document.columns,
-            state.document.content,
-            action,
-        );
+        activeNodeId = pasteNode(state.document, action);
     } else if (action.type === 'DOCUMENT/COPY_NODE') {
         copyNode(
             state.document.columns,
@@ -93,8 +80,7 @@ const updateDocumentState = (
         );
     } else if (action.type === 'DOCUMENT/CUT_NODE') {
         activeNodeId = cutNode(
-            state.document.columns,
-            state.document.content,
+            state.document,
             state.clipboard,
             action.payload.nodeId,
         );
@@ -122,6 +108,7 @@ const updateDocumentState = (
             action as UndoableAction,
             activeNodeId,
         );
+        state.history = { ...state.history };
     }
 };
 

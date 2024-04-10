@@ -2,7 +2,7 @@ import { insertChild } from 'src/stores/document/reducers/insert-node/helpers/in
 import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
 import { Direction } from 'src/stores/document/document-store-actions';
 import { findGroupByNodeId } from 'src/stores/view/helpers/search/find-group-by-node-id';
-import { Column, Content } from 'src/stores/document/document-state-type';
+import { LineageDocument } from 'src/stores/document/document-state-type';
 import invariant from 'tiny-invariant';
 import { id } from 'src/helpers/id';
 
@@ -15,8 +15,7 @@ export type CreateNodeAction = {
     };
 };
 export const insertNode = (
-    columns: Column[],
-    content: Content,
+    document: LineageDocument,
     action: Pick<CreateNodeAction, 'payload'>,
     newNodeId = id.node(),
 ) => {
@@ -24,10 +23,13 @@ export const insertNode = (
     invariant(payload.activeNodeId);
 
     if (payload.position === 'right') {
-        insertChild(columns, payload.activeNodeId, newNodeId);
+        insertChild(document, payload.activeNodeId, newNodeId);
     } else {
-        const columnIndex = findNodeColumn(columns, payload.activeNodeId);
-        const column = columns[columnIndex];
+        const columnIndex = findNodeColumn(
+            document.columns,
+            payload.activeNodeId,
+        );
+        const column = document.columns[columnIndex];
         const group = findGroupByNodeId([column], payload.activeNodeId);
         invariant(group, 'could not find group of ' + payload.activeNodeId);
 
@@ -41,10 +43,9 @@ export const insertNode = (
             action.payload.position === 'up' ? groupIndex : groupIndex + 1;
         group.nodes.splice(insertionIndex, 0, newNodeId);
     }
-    content[newNodeId] = action.payload.content
-        ? {
-              content: action.payload.content,
-          }
-        : null;
+    document.content[newNodeId] = {
+        content: action.payload.content || '',
+    };
+
     return newNodeId;
 };

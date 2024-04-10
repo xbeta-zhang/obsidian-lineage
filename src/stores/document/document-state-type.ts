@@ -47,7 +47,7 @@ export type NodeId = string;
 
 export type Columns = Column[];
 export type Content = {
-    [nodeId: string]: null | {
+    [nodeId: string]: {
         content: string;
     };
 };

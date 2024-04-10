@@ -123,7 +123,7 @@ describe('paste node', () => {
             },
         };
 
-        pasteNode(input.columns, input.content, {
+        pasteNode(input, {
             payload: { targetNodeId, branch: input_clipboard.branch },
         });
         expect(input.columns).toEqual(output.columns);
@@ -230,7 +230,7 @@ describe('paste node', () => {
                 [n1_4_1]: { content: '1.4.1' },
             },
         };
-        pasteNode(input.columns, input.content, {
+        pasteNode(input, {
             payload: { targetNodeId, branch: input_clipboard.branch },
         });
         expect(input.columns).toEqual(output.columns);
@@ -364,7 +364,7 @@ describe('paste node', () => {
                 [n1_2_2_1_2]: { content: '1.2.2.1.2' },
             },
         };
-        pasteNode(input.columns, input.content, {
+        pasteNode(input, {
             payload: { targetNodeId, branch: input_clipboard.branch },
         });
         expect(input.columns).toEqual(output.columns);

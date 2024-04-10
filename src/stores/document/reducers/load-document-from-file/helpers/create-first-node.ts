@@ -6,7 +6,7 @@ export const createFirstNode = (columns: Column[], content: Content) => {
     if (columns.length === 0) {
         const rootId = id.rootNode();
         const createdNode = createNode();
-        content[createdNode] = null;
+        content[createdNode] = { content: '' };
         columns.push({
             id: id.column(),
             groups: [
