@@ -1,11 +1,14 @@
 import Lineage from 'src/main';
 import { TFile, TFolder } from 'obsidian';
+import invariant from 'tiny-invariant';
+import { sanitizeFileName } from 'src/helpers/sanitize-file-name';
 
 const getUniqueFileName = (
     folderPath: string,
     files: string[],
     basename = 'Untitled',
 ): string => {
+    basename = sanitizeFileName(basename);
     let index = 1;
     let newFileName = basename;
 
@@ -23,13 +26,14 @@ export const createNewFile = async (
     data = '',
     basename?: string,
 ) => {
-    if (folder) {
-        const children = folder.children
-            .map((c) => (c instanceof TFile ? c.basename : null))
-            .filter((f) => f) as string[];
-        const path = getUniqueFileName(folder.path, children, basename);
-        const newFilePath = path + '.md';
+    invariant(folder);
+    const children = folder.children
+        .map((c) => (c instanceof TFile ? c.basename : null))
+        .filter((f) => f) as string[];
+    const path = getUniqueFileName(folder.path, children, basename);
+    const newFilePath = path + '.md';
 
-        return await plugin.app.vault.create(newFilePath, data);
-    }
+    const file = await plugin.app.vault.create(newFilePath, data);
+    invariant(file);
+    return file;
 };

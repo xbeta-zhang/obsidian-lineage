@@ -7,6 +7,7 @@ import { LineageView } from 'src/view/view';
 import { createNewFile } from 'src/obsidian/commands/helpers/create-new-file';
 import { removeStructuralComments } from 'src/obsidian/commands/helpers/remove-structural-comments';
 import { openFile } from 'src/obsidian/commands/helpers/open-file';
+import { extractBranch } from 'src/obsidian/commands/helpers/extract-branch/extract-branch';
 
 const createCommands = (plugin: Lineage) => {
     const commands: Omit<Command, 'id'>[] = [];
@@ -87,6 +88,19 @@ const createCommands = (plugin: Lineage) => {
                     view.documentStore.dispatch({
                         type: 'DOCUMENT/FORMAT_HEADINGS',
                     });
+            }
+        },
+    });
+    commands.push({
+        name: lang.extract_branch,
+        icon: 'file-symlink',
+        checkCallback: (checking) => {
+            const view = plugin.app.workspace.getActiveViewOfType(LineageView);
+            if (view) {
+                if (checking) return true;
+                else {
+                    extractBranch(view);
+                }
             }
         },
     });

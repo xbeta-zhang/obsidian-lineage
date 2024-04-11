@@ -23,6 +23,7 @@ import { copyNode } from 'src/stores/document/reducers/clipboard/copy-node/copy-
 import { cutNode } from 'src/stores/document/reducers/clipboard/cut-node/cut-node';
 import { updateSectionsDictionary } from 'src/stores/document/reducers/state/update-sections-dictionary';
 import { getIdOfSection } from 'src/stores/view/subscriptions/actions/get-id-of-section';
+import { extractNode } from 'src/stores/document/reducers/extract-node/extract-node';
 
 const updateDocumentState = (
     state: DocumentState,
@@ -36,6 +37,9 @@ const updateDocumentState = (
         activeNodeId = insertNode(state.document, action);
     } else if (action.type === 'DOCUMENT/DELETE_NODE') {
         activeNodeId = deleteNode(state.document, action.payload.activeNodeId);
+    } else if (action.type === 'DOCUMENT/EXTRACT_BRANCH') {
+        extractNode(state.document, action);
+        activeNodeId = action.payload.nodeId;
     } else if (action.type === 'DOCUMENT/DROP_NODE') {
         dropNode(state.document, action);
         activeNodeId = action.payload.droppedNodeId;

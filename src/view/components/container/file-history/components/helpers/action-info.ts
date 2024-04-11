@@ -4,6 +4,7 @@ import {
     FileMinus,
     FileOutput,
     FilePlus,
+    FileSymlink,
     FileUp,
     Heading1,
     Merge,
@@ -23,6 +24,7 @@ export const actionInfo: Partial<
     'DOCUMENT/MOVE_NODE': { label: 'Moved a card', icon: FileOutput },
     'DOCUMENT/MERGE_NODE': { label: 'Merged a card', icon: Merge },
     'DOCUMENT/FORMAT_HEADINGS': { label: 'Formatted headings', icon: Heading1 },
-    'DOCUMENT/CUT_NODE': { label: 'Cut a node', icon: Scissors },
-    'DOCUMENT/PASTE_NODE': { label: 'Pasted a node', icon: ClipboardPaste },
+    'DOCUMENT/CUT_NODE': { label: 'Cut a card', icon: Scissors },
+    'DOCUMENT/PASTE_NODE': { label: 'Pasted a card', icon: ClipboardPaste },
+    'DOCUMENT/EXTRACT_BRANCH': { label: 'Extracted a card', icon: FileSymlink },
 };

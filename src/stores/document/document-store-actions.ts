@@ -12,6 +12,7 @@ import { FormatHeadingsAction } from 'src/stores/document/reducers/content/forma
 import { CopyNodeAction } from 'src/stores/document/reducers/clipboard/copy-node/copy-node';
 import { CutNodeAction } from 'src/stores/document/reducers/clipboard/cut-node/cut-node';
 import { PasteNodeAction } from 'src/stores/document/reducers/clipboard/paste-node/paste-node';
+import { ExtractNodeAction } from 'src/stores/document/reducers/extract-node/extract-node';
 
 export type VerticalDirection = 'up' | 'down';
 export type Direction = VerticalDirection | 'right';
@@ -42,7 +43,8 @@ export type DocumentAction =
     | MoveNodeAction
     | MergeNodeAction
     | FormatHeadingsAction
-    | DocumentClipboardActions;
+    | DocumentClipboardActions
+    | ExtractNodeAction;
 
 export type HistoryAction = UndoRedoAction | SelectSnapshotAction;
 export type UndoableAction =
@@ -55,7 +57,8 @@ export type UndoableAction =
     | LoadDocumentAction
     | FormatHeadingsAction
     | PasteNodeAction
-    | CutNodeAction;
+    | CutNodeAction
+    | ExtractNodeAction;
 
 export type DocumentClipboardActions =
     | CopyNodeAction

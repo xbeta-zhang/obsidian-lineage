@@ -6,4 +6,5 @@ export const lang = {
     create_new_file: 'Create new document',
     new_file: 'New lineage document',
     format_headings: 'Format headings',
+    extract_branch: 'Extract branch to a new document',
 };
