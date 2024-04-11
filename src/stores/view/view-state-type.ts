@@ -8,8 +8,10 @@ import {
     EditingState,
 } from 'src/stores/view/default-view-state';
 
-export type ActiveNodeOfGroup = {
-    [groupId: string]: string;
+export type ActiveNodesOfColumn = {
+    [columnId: string]: {
+        [groupId: string]: string;
+    };
 };
 
 export type DocumentViewState = {
@@ -17,7 +19,7 @@ export type DocumentViewState = {
     activeBranch: ActiveBranch;
     dnd: DNDState;
     activeNode: string;
-    activeNodeOfGroup: ActiveNodeOfGroup;
+    activeNodesOfColumn: ActiveNodesOfColumn;
 };
 export type ViewState = {
     search: {

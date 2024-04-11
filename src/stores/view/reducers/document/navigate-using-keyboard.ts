@@ -21,7 +21,7 @@ export const navigateUsingKeyboard = (
         action.payload.columns,
         documentState.activeNode,
         action.payload.direction,
-        documentState.activeNodeOfGroup,
+        documentState.activeNodesOfColumn,
     );
     if (nextNode) {
         updateActiveNode(documentState, nextNode, state);

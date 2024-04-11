@@ -4,7 +4,7 @@ import { traverseDown } from 'src/stores/view/helpers/search/traverse-down';
 import { findGroupByNodeId } from 'src/stores/view/helpers/search/find-group-by-node-id';
 import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
 import {
-    ActiveNodeOfGroup,
+    ActiveNodesOfColumn,
     DocumentViewState,
 } from 'src/stores/view/view-state-type';
 
@@ -18,7 +18,7 @@ export type UpdateActiveBranchAction = {
 export const updateActiveBranch = (
     state: Pick<DocumentViewState, 'activeBranch' | 'activeNode'>,
     columns: Column[],
-    activeNodeOfGroup: ActiveNodeOfGroup,
+    activeNodeOfGroup: ActiveNodesOfColumn,
 ) => {
     if (!state.activeNode) return;
     const sortedParents = traverseUp(columns, state.activeNode).reverse();
@@ -42,13 +42,16 @@ export const updateActiveBranch = (
             column: columnId,
         };
     }
-    activeNodeOfGroup[group.parentId] = state.activeNode;
-    for (const group in activeNodeOfGroup) {
-        if (
-            activeNodeOfGroup[group] === state.activeNode &&
-            group !== state.activeBranch.group
-        ) {
-            delete activeNodeOfGroup[group];
+    if (!activeNodeOfGroup[columnId]) activeNodeOfGroup[columnId] = {};
+    activeNodeOfGroup[columnId][group.parentId] = state.activeNode;
+    for (const column of Object.values(activeNodeOfGroup)) {
+        for (const group in column) {
+            if (
+                column[group] === state.activeNode &&
+                group !== state.activeBranch.group
+            ) {
+                delete column[group];
+            }
         }
     }
 };

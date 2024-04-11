@@ -3,13 +3,13 @@ import { AllDirections } from 'src/stores/document/document-store-actions';
 import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
 import { findGroupByNodeId } from 'src/stores/view/helpers/search/find-group-by-node-id';
 import { findChildGroup } from 'src/stores/view/helpers/search/find-child-group';
-import { ActiveNodeOfGroup } from 'src/stores/view/view-state-type';
+import { ActiveNodesOfColumn } from 'src/stores/view/view-state-type';
 
 export const findNextActiveNodeOnKeyboardNavigation = (
     columns: Column[],
     node: string,
     direction: AllDirections,
-    activeNodeOfGroup: ActiveNodeOfGroup,
+    activeNodeOfGroup: ActiveNodesOfColumn,
 ) => {
     if (!node) return;
     let nextNode: NodeId | null = null;
@@ -22,7 +22,7 @@ export const findNextActiveNodeOnKeyboardNavigation = (
     } else if (direction === 'right') {
         const group = findChildGroup(columns, node);
         if (group) {
-            const activeNode = activeNodeOfGroup[group.parentId];
+            const activeNode = activeNodeOfGroup[column.id]?.[group.parentId];
             if (activeNode) nextNode = activeNode;
             else nextNode = group.nodes[0];
         }
