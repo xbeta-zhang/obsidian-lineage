@@ -64,10 +64,19 @@ export const alignElement = (
         }
 
         if (mode === 'vertical' || mode === 'both') {
-            const verticalMiddle = containerRect.height / 2;
-            const scrollTop =
-                verticalMiddle -
-                (elementRect.top - containerRect.top + elementRect.height / 2);
+            const viewPortIsTallEnough =
+                containerRect.height >= elementRect.height;
+            let scrollTop: number;
+            if (viewPortIsTallEnough) {
+                const verticalMiddle = containerRect.height / 2;
+                scrollTop =
+                    verticalMiddle -
+                    (elementRect.top -
+                        containerRect.top +
+                        elementRect.height / 2);
+            } else {
+                scrollTop = containerRect.top - elementRect.top + 2;
+            }
             if (Math.abs(scrollTop) > THRESHOLD)
                 column.scrollBy({
                     top: scrollTop * -1,
