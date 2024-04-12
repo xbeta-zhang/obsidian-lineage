@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { filteredHotkeys } from 'src/stores/hotkeys/derived/filtered-hotkeys';
+    import { filteredHotkeys } from '../../../../../../stores/hotkeys/derived/filtered-hotkeys';
     import Group from './group.svelte';
     import Front from './front.svelte';
 </script>
@@ -11,10 +11,7 @@
             <Group {groupName} {group} />
         {/each}
     </div>
-    <div class="note">
-        *If a keyboard shortcut is not working, make sure it is not assigned to
-        an Obsidian command.
-    </div>
+
 </div>
 
 <style>
@@ -27,7 +24,14 @@
         padding: var(--size-4-2) 0;
         display: flex;
         flex-direction: column;
-        gap: var(--size-4-2)
+        gap: var(--size-4-2);
+        z-index: 10;
+    }
+    :global(.is-mobile){
+       & .sidebar {
+            width: fit-content
+        }
+
     }
 
     .groups {

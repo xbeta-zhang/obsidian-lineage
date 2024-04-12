@@ -2,9 +2,11 @@
     import { Hotkey } from 'obsidian';
     import { RotateCcw, X } from 'lucide-svelte';
 
-    import { CommandName } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
-    import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
-    import { Modifiers } from 'src/view/actions/keyboard-shortcuts/helpers/commands/update-commands-dictionary';
+    import { CommandName } from '../../../../../../../actions/keyboard-shortcuts/helpers/commands/command-names';
+    import { hotkeyStore } from '../../../../../../../../stores/hotkeys/hotkey-store';
+    import {
+        Modifiers
+    } from '../../../../../../../actions/keyboard-shortcuts/helpers/commands/update-commands-dictionary';
 
     export let hotkey: Hotkey;
     export let commandName: CommandName;

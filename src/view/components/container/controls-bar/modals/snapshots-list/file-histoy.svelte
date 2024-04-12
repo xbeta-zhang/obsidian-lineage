@@ -2,7 +2,7 @@
     import SnapshotButton from './components/snapshot-button.svelte';
     import { updateRelativeTime } from 'src/view/actions/update-relative-time';
     import { historyStore } from 'src/stores/document/derived/history-store';
-    import { getView } from 'src/view/components/container/context';
+    import { getView } from '../../../context';
 
     const view = getView();
     const history = historyStore(view)
@@ -33,6 +33,7 @@
         right: var(--sidebar-right);
         top: var(--size-4-2);
         padding: var(--size-4-2);
+        z-index: 10;
     }
 
     .snapshots-list {

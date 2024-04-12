@@ -1,9 +1,11 @@
 <script lang="ts">
-    import { relativeTime } from 'src/helpers/relative-time';
+    import { relativeTime } from '../../../../../../../helpers/relative-time';
     import { FileQuestion } from 'lucide-svelte';
-    import { actionInfo } from 'src/view/components/container/file-history/components/helpers/action-info';
-    import { Snapshot } from 'src/stores/document/document-state-type';
-    import { getView } from 'src/view/components/container/context';
+    import {
+        actionInfo
+    } from 'src/view/components/container/controls-bar/modals/snapshots-list/components/helpers/action-info';
+    import { Snapshot } from '../../../../../../../stores/document/document-state-type';
+    import { getView } from '../../../../context';
     import { Notice } from 'obsidian';
 
     export let snapshot: Snapshot;

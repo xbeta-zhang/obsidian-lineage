@@ -35,7 +35,7 @@
         --position-lr: -4px;
     }
     button {
-        color: var(--color-acive-node);
+        color: var(--color-acive-node) !important;
         width: var(--floating-button-width);
         height: var(--floating-button-height);
         position: absolute;
@@ -44,14 +44,19 @@
         border: none;
         background-color: transparent;
         transition: opacity 200ms;
-        padding: 8px;
+        padding: 8px !important;
         cursor: pointer;
     }
     .is-disabled {
         cursor: not-allowed;
     }
     button:not(.is-disabled):hover {
-        opacity: 8;
+        opacity: 0.8;
+    }
+     :global(.is-mobile){
+        & button {
+            opacity: 0.8;
+        }
     }
 
     .position-top {

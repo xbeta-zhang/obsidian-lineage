@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
+    import { hotkeyStore } from '../../../../../../stores/hotkeys/hotkey-store';
 
     let searchTerm = '';
 

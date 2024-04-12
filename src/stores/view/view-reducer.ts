@@ -38,7 +38,7 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
         const showHelpSidebar = state.ui.controls.showHelpSidebar;
         state.ui.controls = {
             showHistorySidebar: false,
-            showHelpSidebar: showHelpSidebar,
+            showHelpSidebar: !showHelpSidebar,
             showSettingsSidebar: false,
         };
     } else if (action.type === 'UI/TOGGLE_SETTINGS_SIDEBAR') {

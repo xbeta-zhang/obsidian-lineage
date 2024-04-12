@@ -1,6 +1,6 @@
 <script lang="ts">
     import Hotkey from './components/command.svelte';
-    import { CommandHotkeys } from 'src/stores/hotkeys/hotkey-store';
+    import { CommandHotkeys } from '../../../../../../stores/hotkeys/hotkey-store';
 
     export let group: CommandHotkeys[]
 export let groupName: string

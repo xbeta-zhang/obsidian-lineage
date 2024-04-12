@@ -40,7 +40,7 @@
     "lucide-svelte": "0.344.0",
     "monkey-around": "3.0.0",
     "nanoid": "5.0.6",
-    "obsidian": "latest",
+    "obsidian": "1.5.7-1",
     "prettier": "3.2.5",
     "prettier-plugin-svelte": "3.2.2",
     "svelte": "4.2.12",

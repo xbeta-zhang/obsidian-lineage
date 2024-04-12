@@ -1,7 +1,7 @@
 <script lang="ts">
-    import Hotkey from './hotkey/hotkey.svelte';
-    import { hotkeysLang } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
-    import { CommandHotkeys } from 'src/stores/hotkeys/hotkey-store';
+    import Hotkey from 'src/view/components/container/controls-bar/modals/hotkeys/components/hotkey/hotkey.svelte';
+    import { hotkeysLang } from '../../../../../../actions/keyboard-shortcuts/helpers/commands/command-names';
+    import { CommandHotkeys } from '../../../../../../../stores/hotkeys/hotkey-store';
 
     export let commandHotkeys: CommandHotkeys;
 </script>
@@ -24,6 +24,17 @@
         border-radius: 4px;
         gap: 8px;
         background-color: var(--color-base-30);
+    }
+    :global(.is-mobile){
+        & .command {
+            flex-direction: column;
+            align-items: start;
+            width: 190px
+        }
+        & .hotkeys{
+            align-self: center;
+        }
+
     }
     .hotkeys {
         display: flex;

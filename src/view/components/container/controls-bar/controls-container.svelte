@@ -1,9 +1,12 @@
-<script lang="ts">
+<script>
+    import { lang } from 'src/lang/lang';
+    import { maxZoomLevel, minZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
     import {
         File,
         HistoryIcon,
         Keyboard,
         Maximize,
+        MoreVertical,
         RedoIcon,
         RotateCcw,
         Settings,
@@ -11,21 +14,21 @@
         ZoomIn,
         ZoomOut
     } from 'lucide-svelte';
-    import { getPlugin, getView } from 'src/view/components/container/context';
-    import { LineageView } from 'src/view/view';
-    import { lang } from 'src/lang/lang';
-    import { maxZoomLevel, minZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
-    import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
-    import { Notice } from 'obsidian';
+    import { getPlugin, getView } from '../context';
     import { historyStore } from 'src/stores/document/derived/history-store';
-    import { uiControlsStore } from 'src/stores/view/derived/ui-controls-store';
+    import { Notice } from 'obsidian';
+    import { LineageView } from '../../../view';
+    import { setFileViewType } from 'src/obsidian/events/workspace/helpers/set-file-view-type';
     import { zoomLevelStore } from 'src/stores/view/derived/zoom-level-store';
+    import { writable } from 'svelte/store';
+    import { uiControlsStore } from 'src/stores/view/derived/ui-controls-store';
+    import Button from '../shared/button.svelte';
 
     const view = getView();
     const viewStore = view.viewStore;
     const documentStore = view.documentStore;
 
-    const history = historyStore(view)
+    const history = historyStore(view);
     const handleNextClick = () => {
         if (viewStore.getValue().document.editing.activeNodeId)
             new Notice('cannot apply snapshot while editing');
@@ -92,118 +95,134 @@
             });
         }
     };
+    const zoomLevel = zoomLevelStore(view);
     const controls = uiControlsStore(view);
-    const zoomLevel = zoomLevelStore(view)
+    const showControls = writable(false);
+    const toggleShowControls = () => {
+        showControls.update((v) => !v);
+    };
 </script>
 
 <div class="controls-container">
-    <div class="lineage-view-control-group">
-        <button
-            aria-label={lang.open_in_editor}
+    <div class="buttons-group controls-toggle">
+        <Button
+            data-active={$showControls}
+            label={'Toggle controls'}
+            on:click={toggleShowControls}
+            tooltipPosition="left"
+        >
+            <MoreVertical class="svg-icon" />
+        </Button>
+    </div>
+    <div
+        class="buttons-group buttons-group--vertical"
+        data-visible={$showControls}
+    >
+        <Button
             class="control-item"
-            data-tooltip-position="left"
+            label={lang.open_in_editor}
             on:click={openAsMarkdown}
+            tooltipPosition="left"
         >
             <File class="svg-icon" />
-        </button>
-        <button
-            aria-label={'Settings'}
+        </Button>
+        <Button
             class="control-item"
             data-active={$controls.showSettingsSidebar}
-            data-tooltip-position="left"
+            label={'Settings'}
             on:click={toggleSettings}
+            tooltipPosition="left"
         >
             <Settings class="svg-icon" />
-        </button>
-        <button
-            aria-label="Keyboard shortcuts"
+        </Button>
+        <Button
             class="control-item"
             data-active={$controls.showHelpSidebar}
-            data-tooltip-position="left"
+            label="Keyboard shortcuts"
             on:click={toggleHelp}
+            tooltipPosition="left"
         >
             <Keyboard class="svg-icon" />
-        </button>
+        </Button>
     </div>
-    <div class="lineage-view-control-group">
-        <button
-            aria-label="History"
+    <div
+        class="buttons-group buttons-group--vertical"
+        data-visible={$showControls}
+    >
+        <Button
             class="control-item"
             data-active={$controls.showHistorySidebar}
-            data-tooltip-position="left"
             disabled={$history.items.length === 0}
+            label="History"
             on:click={() => {
                 viewStore.dispatch({ type: 'UI/TOGGLE_HISTORY_SIDEBAR' });
             }}
+            tooltipPosition="left"
         >
             <HistoryIcon class="svg-icon" />
-        </button>
+        </Button>
 
-        <button
-            aria-label="Undo"
+        <Button
             class="control-item"
-            data-tooltip-position="left"
-            disabled={ !$history.state.canGoBack}
+            disabled={!$history.state.canGoBack}
+            label="Undo"
             on:click={handlePreviousClick}
+            tooltipPosition="left"
         >
             <UndoIcon class="svg-icon" />
-        </button>
-        <button
-            aria-label="Redo"
+        </Button>
+        <Button
             class="control-item"
-            data-tooltip-position="left"
             disabled={!$history.state.canGoForward}
+            label="Redo"
             on:click={handleNextClick}
+            tooltipPosition="left"
         >
             <RedoIcon class="svg-icon" />
-        </button>
+        </Button>
     </div>
-    <div class="lineage-view-control-group">
-        <button
-            aria-label="zoom in"
+    <div
+        class="buttons-group buttons-group--vertical"
+        data-visible={$showControls}
+    >
+        <Button
             class="control-item"
-            data-tooltip-position="left"
             disabled={$zoomLevel === maxZoomLevel}
+            label="zoom in"
             on:click={zoomIn}
+            tooltipPosition="left"
         >
             <ZoomIn class="svg-icon" />
-        </button>
-        <button
-            aria-label="Restore zoom level"
+        </Button>
+        <Button
             class="control-item"
-            data-tooltip-position="left"
+            label="Restore zoom level"
             on:click={restoreZoom}
+            tooltipPosition="left"
         >
             <RotateCcw class="svg-icon" />
-        </button>
-        <button
-            aria-label="Zoom to fit"
+        </Button>
+        <Button
             class="control-item"
-            data-tooltip-position="left"
+            label="Zoom to fit"
             on:click={fitToScale}
+            tooltipPosition="left"
         >
             <Maximize class="svg-icon" />
-        </button>
-        <button
-            aria-label="Zoom out"
+        </Button>
+        <Button
             class="control-item"
-            data-tooltip-position="left"
             disabled={$zoomLevel === minZoomLevel}
+            label="Zoom out"
             on:click={zoomOut}
+            tooltipPosition="left"
         >
             <ZoomOut class="svg-icon" />
-        </button>
+        </Button>
     </div>
 </div>
 
 <style>
-    button:disabled {
-        cursor: not-allowed;
-        color: var(--color-base-40);
-    }
-    button[data-active='true'] {
-        background-color: var(--color-base-40);
-    }
     .controls-container {
         right: var(--size-4-2);
         top: var(--size-4-2);
@@ -213,33 +232,16 @@
         position: absolute;
         z-index: 2;
     }
-    .lineage-view-control-group {
-        border-radius: var(--radius-s);
-        background-color: var(--background-primary);
-        border: 1px solid var(--background-modifier-border);
-        box-shadow: var(--input-shadow);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
+
+    .controls-toggle {
+        display: none;
     }
-    .control-item {
-        border-radius: 0;
-        box-shadow: none;
-        height: auto;
-        display: flex;
-        line-height: 1;
-        font-size: inherit;
-        align-items: center;
-        justify-content: center;
-        padding: var(--size-4-2);
-        border-bottom: 1px solid var(--background-modifier-border);
-        color: var(--text-muted);
-        background-color: var(--interactive-normal);
-        --icon-size: var(--icon-s);
-        --icon-stroke: var(--icon-s-stroke-width);
-        cursor: pointer;
-    }
-    .control-item:last-child {
-        border-bottom: none;
+    :global(.is-mobile){
+        & .controls-toggle {
+            display: block;
+        }
+        & .buttons-group[data-visible='false'] {
+            display: none;
+        }
     }
 </style>

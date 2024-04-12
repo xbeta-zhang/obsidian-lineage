@@ -36,10 +36,12 @@
         padding-left: 100px;
         overflow-y: hidden;
         overflow-x: auto;
-        @media (max-width: 1280px) {
-            padding-left: 10px;
-        }
     }
+    :global(.is-mobile){
+            & .columns-container {
+                padding-left: 10px;
+            }
+        }
     .columns {
         display: flex;
         align-items: center;
