@@ -21,6 +21,7 @@ import { DocumentsState } from 'src/stores/documents/documents-state-type';
 import { DocumentsStoreAction } from 'src/stores/documents/documents-store-actions';
 import { documentsReducer } from 'src/stores/documents/documents-reducer';
 import { DefaultDocumentsState } from 'src/stores/documents/default-documents-state';
+import { StatusBar } from 'src/obsidian/status-bar/status-bar';
 
 export type SettingsStore = Store<Settings, SettingsActions>;
 export type DocumentsStore = Store<DocumentsState, DocumentsStoreAction>;
@@ -28,6 +29,7 @@ export type DocumentsStore = Store<DocumentsState, DocumentsStoreAction>;
 export default class Lineage extends Plugin {
     settings: SettingsStore;
     documents: DocumentsStore;
+    statusBar: StatusBar;
     async onload() {
         await this.loadSettings();
         this.documents = new Store<DocumentsState, DocumentsStoreAction>(
@@ -44,6 +46,7 @@ export default class Lineage extends Plugin {
         addCommands(this);
         loadCommands(this);
         this.registerEffects();
+        this.statusBar = new StatusBar(this);
     }
 
     async saveSettings() {

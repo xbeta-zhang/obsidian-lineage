@@ -26,6 +26,7 @@ import { applyActiveBranchBg } from 'src/stores/view/subscriptions/effects/css-v
 import { applyCardWidth } from 'src/stores/view/subscriptions/effects/css-variables/apply-card-width';
 import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
 import { getUsedHotkeys } from 'src/obsidian/helpers/get-used-hotkeys';
+import { updateStatusBar } from 'src/stores/view/subscriptions/effects/update-status-bar';
 
 const viewEffectsAndActions = (
     view: LineageView,
@@ -45,6 +46,7 @@ const viewEffectsAndActions = (
         if (view.isActive && isEmptyDocument(documentState.document.content)) {
             enableEditMode(viewStore, documentState);
         }
+        updateStatusBar(view);
         // effects
         if (view.isActive && container)
             alignBranchDebounced(documentState, viewState, container);
@@ -120,13 +122,13 @@ const viewEffectsAndActions = (
         if (e.content || structuralChange) {
             resetSearchFuse(documentStore);
         }
+        if (structuralChange) {
+            updateStatusBar(view);
+        }
         if (
             action.type === 'DOCUMENT/DISABLE_EDIT_MODE' ||
-            e.changeHistory ||
             e.content ||
-            e.createOrDelete ||
-            e.dropOrMove ||
-            e.clipboard
+            structuralChange
         ) {
             focusContainer(container);
         }
