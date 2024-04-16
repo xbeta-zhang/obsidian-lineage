@@ -55,6 +55,12 @@ export type SettingsActions =
           payload: {
               height: number | undefined;
           };
+      }
+    | {
+          type: 'SET_ALWAYS_CENTER_HORIZONTALLY';
+          payload: {
+              center: boolean;
+          };
       };
 
 const updateState = (store: Settings, action: SettingsActions) => {
@@ -77,6 +83,9 @@ const updateState = (store: Settings, action: SettingsActions) => {
         store.view.cardWidth = action.payload.width;
     } else if (action.type === 'SET_MIN_CARD_HEIGHT') {
         store.view.minimumCardHeight = action.payload.height;
+    } else if (action.type === 'SET_ALWAYS_CENTER_HORIZONTALLY') {
+        store.view.scrolling.alwaysCenterHorizontally = action.payload.center;
+        store.view.scrolling = { ...store.view.scrolling };
     }
 };
 export const settingsReducer = (

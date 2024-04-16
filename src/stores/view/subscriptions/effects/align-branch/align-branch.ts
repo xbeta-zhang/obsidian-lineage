@@ -2,17 +2,19 @@ import { DocumentState } from 'src/stores/document/document-state-type';
 import {
     AlignBranchState,
     alignElement,
-} from 'src/stores/view/subscriptions/effects/align-branch/helpers/align-element';
+} from 'src/stores/view/subscriptions/effects/align-branch/helpers/align-element/align-element';
 import { alignParentsAndActiveNode } from 'src/stores/view/subscriptions/effects/align-branch/align-parents-and-active-node';
 import { alignChildGroupOfColumn } from 'src/stores/view/subscriptions/effects/align-branch/align-child-group-of-column';
 import { ViewState } from 'src/stores/view/view-state-type';
 import { debounce } from 'obsidian';
 import { getNodeElement } from 'src/stores/view/subscriptions/effects/align-branch/helpers/get-node-element';
+import { Settings } from 'src/stores/settings/settings-type';
 
 export const alignBranch = (
     documentState: DocumentState,
     viewState: ViewState,
     container: HTMLElement,
+    settings: Settings,
     behavior?: ScrollBehavior,
 ) => {
     if (!container) return;
@@ -25,7 +27,7 @@ export const alignBranch = (
         viewState,
         container,
         localState,
-        documentState.document.columns,
+        settings,
         behavior,
     );
 
@@ -41,7 +43,12 @@ export const alignBranch = (
         if (activeDirectChildNode) {
             const element = getNodeElement(container, activeDirectChildNode);
             if (element) {
-                const columnId = alignElement(container, element, behavior);
+                const columnId = alignElement(
+                    container,
+                    element,
+                    settings,
+                    behavior,
+                );
                 if (columnId) localState.columns.add(columnId);
             }
         } else {
@@ -53,6 +60,7 @@ export const alignBranch = (
                     viewState,
                     container,
                     column.id,
+                    settings,
                     behavior,
                 );
             } /*else {

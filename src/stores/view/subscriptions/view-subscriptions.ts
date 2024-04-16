@@ -38,6 +38,7 @@ const viewEffectsAndActions = (
     const documentState = documentStore.getValue();
     const viewStore = view.viewStore;
     const viewState = viewStore.getValue();
+    const settings = view.plugin.settings.getValue();
     const container = view.container;
     if (initialRun) {
         // actions
@@ -49,7 +50,7 @@ const viewEffectsAndActions = (
         updateStatusBar(view);
         // effects
         if (view.isActive && container)
-            alignBranchDebounced(documentState, viewState, container);
+            alignBranchDebounced(documentState, viewState, container, settings);
     } else if (action) {
         const type = action.type;
 
@@ -137,6 +138,7 @@ const viewEffectsAndActions = (
                 documentStore.getValue(),
                 viewState,
                 container,
+                settings,
                 type === 'DOCUMENT/MOVE_NODE' ? 'instant' : undefined,
             );
         }

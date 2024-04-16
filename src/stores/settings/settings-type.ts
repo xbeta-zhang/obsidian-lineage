@@ -22,5 +22,8 @@ export type Settings = {
         theme: Theme;
         cardWidth?: number;
         minimumCardHeight?: number;
+        scrolling: {
+            alwaysCenterHorizontally: boolean;
+        };
     };
 };

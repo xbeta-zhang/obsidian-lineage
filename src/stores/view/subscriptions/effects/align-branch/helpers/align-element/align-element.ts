@@ -3,15 +3,18 @@ import {
     restoreZoom,
     suspendZoom,
 } from 'src/stores/view/subscriptions/effects/align-branch/helpers/restore-zoom';
+import { Settings } from 'src/stores/settings/settings-type';
+import { calculateScrollTop } from 'src/stores/view/subscriptions/effects/align-branch/helpers/align-element/helpers/calculate-scroll-top';
+import { calculateScrollLeft } from 'src/stores/view/subscriptions/effects/align-branch/helpers/align-element/helpers/calculate-scroll-left';
 
 export type AlignBranchState = { columns: Set<string> };
 
-const THRESHOLD = 5;
-const PADDING = 100;
+export const THRESHOLD = 5;
 
 export const alignElement = (
     container: HTMLElement,
     elements: HTMLElement | HTMLElement[],
+    settings: Settings,
     behavior: ScrollBehavior = 'smooth',
     mode: 'vertical' | 'horizontal' | 'both' = 'vertical',
     horizontalChild?: HTMLElement,
@@ -22,6 +25,7 @@ export const alignElement = (
     if (!element) return;
     const column = element.matchParent('.column') as HTMLElement;
     const columns = column.matchParent('.columns') as HTMLElement;
+
     if (column) {
         const zoomStyle = suspendZoom(column, columns);
         const elementRect = isArray
@@ -32,51 +36,24 @@ export const alignElement = (
         ).getBoundingClientRect();
 
         if (mode === 'horizontal' || mode === 'both') {
-            // only scroll horizontally if the element is not fully visible
-            const leftSideIsVisible =
-                elementRect.left >= containerRect.left + PADDING;
-            const boundingClientRect = horizontalChild
+            const childRect = horizontalChild
                 ? horizontalChild.getBoundingClientRect()
                 : null;
-            const viewPortIsWideEnough =
-                containerRect.width >
-                (boundingClientRect
-                    ? boundingClientRect.right
-                    : elementRect.right) -
-                    elementRect.left;
-            const rightSideIsVisible = boundingClientRect
-                ? boundingClientRect.right <= containerRect.right
-                : elementRect.right <= containerRect.right - PADDING;
-
-            let scrollLeft = 0;
-            if (!leftSideIsVisible || !viewPortIsWideEnough) {
-                scrollLeft = elementRect.left - (containerRect.left + PADDING);
-            } else if (!rightSideIsVisible) {
-                scrollLeft = boundingClientRect
-                    ? boundingClientRect.right - (containerRect.right - PADDING)
-                    : elementRect.right - (containerRect.right - PADDING);
-            }
+            const scrollLeft = calculateScrollLeft(
+                elementRect,
+                containerRect,
+                childRect,
+                settings.view.scrolling.alwaysCenterHorizontally,
+            );
             if (Math.abs(scrollLeft) > THRESHOLD)
                 container.scrollBy({
-                    left: scrollLeft,
+                    left: scrollLeft * -1,
                     behavior,
                 });
         }
 
         if (mode === 'vertical' || mode === 'both') {
-            const viewPortIsTallEnough =
-                containerRect.height >= elementRect.height;
-            let scrollTop: number;
-            if (viewPortIsTallEnough) {
-                const verticalMiddle = containerRect.height / 2;
-                scrollTop =
-                    verticalMiddle -
-                    (elementRect.top -
-                        containerRect.top +
-                        elementRect.height / 2);
-            } else {
-                scrollTop = containerRect.top - elementRect.top + 2;
-            }
+            const scrollTop = calculateScrollTop(elementRect, containerRect);
             if (Math.abs(scrollTop) > THRESHOLD)
                 column.scrollBy({
                     top: scrollTop * -1,
