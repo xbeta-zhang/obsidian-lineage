@@ -4,6 +4,7 @@ import { BackgroundColor } from 'src/view/actions/settings/components/background
 import { ActiveBranchColor } from 'src/view/actions/settings/components/active-branch-color';
 import { CardWidth } from 'src/view/actions/settings/components/card-width';
 import { CenterCardsHorizontally } from 'src/view/actions/settings/components/center-cards-horizontally';
+import { HorizontalCenterOffset } from 'src/view/actions/settings/components/horizontal-center-offset';
 
 export const renderSettings = (element: HTMLElement) => {
     const view = getView();
@@ -14,6 +15,7 @@ export const renderSettings = (element: HTMLElement) => {
         BackgroundColor(element.createDiv(), settingsStore);
         ActiveBranchColor(element.createDiv(), settingsStore);
         CenterCardsHorizontally(element.createDiv(), settingsStore);
+        HorizontalCenterOffset(element.createDiv(), settingsStore);
     };
     render();
     return {

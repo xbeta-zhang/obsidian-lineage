@@ -47,7 +47,7 @@ export type SettingsActions =
     | {
           type: 'SET_CARD_WIDTH';
           payload: {
-              width: number | undefined;
+              width: number;
           };
       }
     | {
@@ -60,6 +60,18 @@ export type SettingsActions =
           type: 'SET_ALWAYS_CENTER_HORIZONTALLY';
           payload: {
               center: boolean;
+          };
+      }
+    | {
+          type: 'SET_HORIZONTAL_OFFSET';
+          payload: {
+              offset: number;
+          };
+      }
+    | {
+          type: 'TOGGLE_HORIZONTAL_OFFSET';
+          payload: {
+              enable: boolean;
           };
       };
 
@@ -85,6 +97,13 @@ const updateState = (store: Settings, action: SettingsActions) => {
         store.view.minimumCardHeight = action.payload.height;
     } else if (action.type === 'SET_ALWAYS_CENTER_HORIZONTALLY') {
         store.view.scrolling.alwaysCenterHorizontally = action.payload.center;
+        store.view.scrolling = { ...store.view.scrolling };
+    } else if (action.type === 'SET_HORIZONTAL_OFFSET') {
+        store.view.scrolling.offset = action.payload.offset;
+        store.view.scrolling = { ...store.view.scrolling };
+    } else if (action.type === 'TOGGLE_HORIZONTAL_OFFSET') {
+        store.view.scrolling.enableOffset = action.payload.enable;
+        if (!store.view.scrolling.enableOffset) store.view.scrolling.offset = 0;
         store.view.scrolling = { ...store.view.scrolling };
     }
 };

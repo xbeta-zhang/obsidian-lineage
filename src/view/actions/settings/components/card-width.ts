@@ -1,7 +1,6 @@
 import { SettingsStore } from 'src/main';
 import { Setting } from 'obsidian';
-
-const DEFAULT_CARD_WIDTH = 400;
+import { DEFAULT_CARD_WIDTH } from 'src/stores/settings/default-settings';
 
 export const CardWidth = (
     element: HTMLElement,
@@ -12,7 +11,7 @@ export const CardWidth = (
     new Setting(element)
         .setName('Card width')
         .addSlider((cb) => {
-            const value = settingsState.view.cardWidth || DEFAULT_CARD_WIDTH;
+            const value = settingsState.view.cardWidth;
             cb.setLimits(200, 1000, 1);
             cb.setValue(value)
                 .onChange((width) => {
@@ -32,7 +31,7 @@ export const CardWidth = (
                     settingsStore.dispatch({
                         type: 'SET_CARD_WIDTH',
                         payload: {
-                            width: undefined,
+                            width: DEFAULT_CARD_WIDTH,
                         },
                     });
                     CardWidth(element, settingsStore);

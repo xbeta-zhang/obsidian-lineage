@@ -1,10 +1,12 @@
+import { ScrollingSettings } from 'src/stores/settings/settings-type';
+
 const HORIZONTAL_PADDING = 100;
 
 export const calculateScrollLeft = (
     elementRect: DOMRect,
     containerRect: DOMRect,
+    settings: ScrollingSettings,
     childRect?: DOMRect | null,
-    alwaysCenter = true,
 ) => {
     const viewPortIsWideEnough = containerRect.width > elementRect.width;
     const viewPortIsWideEnoughForChild = childRect
@@ -24,8 +26,11 @@ export const calculateScrollLeft = (
     let scrollLeft = 0;
     if (!viewPortIsWideEnough) {
         scrollLeft = deltaLeft;
-    } else if (alwaysCenter) {
-        const horizontalMiddle = containerRect.left + containerRect.width / 2;
+    } else if (settings.alwaysCenterHorizontally) {
+        const horizontalMiddle =
+            containerRect.left +
+            containerRect.width / 2 +
+            (settings.enableOffset ? settings.offset : 0);
         const elementMiddle = elementRect.left + elementRect.width / 2;
         scrollLeft = horizontalMiddle - elementMiddle;
     } else if (!leftSideIsVisible) {

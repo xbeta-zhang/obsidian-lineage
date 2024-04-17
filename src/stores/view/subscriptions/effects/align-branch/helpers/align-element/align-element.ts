@@ -42,8 +42,8 @@ export const alignElement = (
             const scrollLeft = calculateScrollLeft(
                 elementRect,
                 containerRect,
+                settings.view.scrolling,
                 childRect,
-                settings.view.scrolling.alwaysCenterHorizontally,
             );
             if (Math.abs(scrollLeft) > THRESHOLD)
                 container.scrollBy({

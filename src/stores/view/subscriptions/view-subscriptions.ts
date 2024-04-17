@@ -160,20 +160,33 @@ export const viewSubscriptions = (view: LineageView) => {
 
     const unsubFromSettings = view.plugin.settings.subscribe(
         (state, action, isInitialRun) => {
+            if (!view.container) return;
             if (isInitialRun) {
                 applyFontSize(view, state.view.fontSize);
                 applyContainerBg(view, state.view.theme.containerBg);
                 applyActiveBranchBg(view, state.view.theme.activeBranchBg);
                 applyCardWidth(view, state.view.cardWidth);
             } else if (action) {
-                if (action.type === 'SET_FONT_SIZE') {
+                const type = action.type;
+                if (type === 'SET_FONT_SIZE') {
                     applyFontSize(view, state.view.fontSize);
-                } else if (action.type === 'SET_CONTAINER_BG') {
+                } else if (type === 'SET_CONTAINER_BG') {
                     applyContainerBg(view, state.view.theme.containerBg);
-                } else if (action.type === 'SET_ACTIVE_BRANCH_BG') {
+                } else if (type === 'SET_ACTIVE_BRANCH_BG') {
                     applyActiveBranchBg(view, state.view.theme.activeBranchBg);
-                } else if (action.type === 'SET_CARD_WIDTH') {
+                } else if (type === 'SET_CARD_WIDTH') {
                     applyCardWidth(view, state.view.cardWidth);
+                } else if (
+                    type === 'SET_HORIZONTAL_OFFSET' ||
+                    type === 'SET_ALWAYS_CENTER_HORIZONTALLY' ||
+                    type === 'TOGGLE_HORIZONTAL_OFFSET'
+                ) {
+                    alignBranchDebounced(
+                        view.documentStore.getValue(),
+                        view.viewStore.getValue(),
+                        view.container,
+                        state,
+                    );
                 }
             }
         },

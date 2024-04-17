@@ -12,6 +12,13 @@ export type Theme = {
     containerBg?: string;
     activeBranchBg?: string;
 };
+
+export type ScrollingSettings = {
+    alwaysCenterHorizontally: boolean;
+    offset: number;
+    enableOffset: boolean;
+};
+
 export type Settings = {
     documents: Record<string, true>;
     hotkeys: {
@@ -20,10 +27,8 @@ export type Settings = {
     view: {
         fontSize: number;
         theme: Theme;
-        cardWidth?: number;
+        cardWidth: number;
         minimumCardHeight?: number;
-        scrolling: {
-            alwaysCenterHorizontally: boolean;
-        };
+        scrolling: ScrollingSettings;
     };
 };
