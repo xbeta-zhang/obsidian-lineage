@@ -1,5 +1,18 @@
 import { LineageView } from 'src/view/view';
 import { derived } from 'src/helpers/store/derived';
 
-export const scrollingStore = (view: LineageView) =>
-    derived(view.plugin.settings, (state) => state.view.scrolling);
+export const scrollingModeStore = (view: LineageView) =>
+    derived(
+        view.plugin.settings,
+        (state) => state.view.scrolling.horizontalScrollingMode,
+    );
+export const horizontalOffsetStore = (view: LineageView) =>
+    derived(
+        view.plugin.settings,
+        (state) => state.view.scrolling.horizontalOffset,
+    );
+export const verticalOffsetStore = (view: LineageView) =>
+    derived(
+        view.plugin.settings,
+        (state) => state.view.scrolling.verticalOffset,
+    );

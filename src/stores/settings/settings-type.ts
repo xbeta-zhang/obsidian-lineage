@@ -13,10 +13,15 @@ export type Theme = {
     activeBranchBg?: string;
 };
 
+export type ScrollingMode =
+    | 'reveal-active-card'
+    | 'reveal-active-card-and-direct-child'
+    | 'keep-active-card-at-center'
+    | 'fixed-position';
 export type ScrollingSettings = {
-    alwaysCenterHorizontally: boolean;
-    offset: number;
-    enableOffset: boolean;
+    horizontalOffset: number;
+    verticalOffset: number;
+    horizontalScrollingMode: ScrollingMode;
 };
 
 export type Settings = {

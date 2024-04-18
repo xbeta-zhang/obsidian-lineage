@@ -27,6 +27,7 @@ import { applyCardWidth } from 'src/stores/view/subscriptions/effects/css-variab
 import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
 import { getUsedHotkeys } from 'src/obsidian/helpers/get-used-hotkeys';
 import { updateStatusBar } from 'src/stores/view/subscriptions/effects/update-status-bar';
+import { Notice } from 'obsidian';
 
 const viewEffectsAndActions = (
     view: LineageView,
@@ -177,16 +178,23 @@ export const viewSubscriptions = (view: LineageView) => {
                 } else if (type === 'SET_CARD_WIDTH') {
                     applyCardWidth(view, state.view.cardWidth);
                 } else if (
-                    type === 'SET_HORIZONTAL_OFFSET' ||
-                    type === 'SET_ALWAYS_CENTER_HORIZONTALLY' ||
-                    type === 'TOGGLE_HORIZONTAL_OFFSET'
+                    type === 'SET_HORIZONTAL_SCROLLING_MODE' ||
+                    type === 'UPDATE_AXIS_OFFSET'
                 ) {
                     alignBranchDebounced(
                         view.documentStore.getValue(),
                         view.viewStore.getValue(),
                         view.container,
                         state,
+                        'instant',
                     );
+                    if (
+                        type === 'SET_HORIZONTAL_SCROLLING_MODE' &&
+                        state.view.scrolling.horizontalScrollingMode ===
+                            'fixed-position'
+                    ) {
+                        new Notice('Hold space to change axis position');
+                    }
                 }
             }
         },

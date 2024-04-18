@@ -33,7 +33,7 @@
         display: none;
     }
     .column-buffer {
-        height: 60%;
+        height: 90%;
         min-width: var(--node-width);
     }
 </style>

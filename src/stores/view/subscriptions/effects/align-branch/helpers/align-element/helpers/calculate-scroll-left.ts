@@ -26,17 +26,27 @@ export const calculateScrollLeft = (
     let scrollLeft = 0;
     if (!viewPortIsWideEnough) {
         scrollLeft = deltaLeft;
-    } else if (settings.alwaysCenterHorizontally) {
-        const horizontalMiddle =
-            containerRect.left +
-            containerRect.width / 2 +
-            (settings.enableOffset ? settings.offset : 0);
+    } else if (settings.horizontalScrollingMode === 'fixed-position') {
+        scrollLeft =
+            containerRect.left + settings.horizontalOffset - elementRect.left;
+    } else if (
+        settings.horizontalScrollingMode === 'keep-active-card-at-center'
+    ) {
+        const horizontalMiddle = containerRect.left + containerRect.width / 2;
         const elementMiddle = elementRect.left + elementRect.width / 2;
         scrollLeft = horizontalMiddle - elementMiddle;
     } else if (!leftSideIsVisible) {
         scrollLeft = deltaLeft;
-    } else if (!rightSideOfChildIsVisible && viewPortIsWideEnoughForChild) {
-        scrollLeft = deltaRightOfChild;
+    } else if (
+        settings.horizontalScrollingMode ===
+            'reveal-active-card-and-direct-child' &&
+        !rightSideOfChildIsVisible
+    ) {
+        if (viewPortIsWideEnoughForChild) {
+            scrollLeft = deltaRightOfChild;
+        } else {
+            scrollLeft = deltaLeft;
+        }
     } else if (!rightSideIsVisible) {
         scrollLeft = deltaRight;
     }

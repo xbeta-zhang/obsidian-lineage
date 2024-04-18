@@ -6,13 +6,13 @@
     import Settings from './controls-bar/modals/settings/settings.svelte';
     import FileHistory from 'src/view/components/container/controls-bar/modals/snapshots-list/file-histoy.svelte';
     import Hotkeys from 'src/view/components/container/controls-bar/modals/hotkeys/hotkeys.svelte';
-    import HCS from './horizontal-center-slider/horizontal-center-slider.svelte';
     import { LineageView } from '../../view';
     import Lineage from '../../../main';
     import { setContext } from 'svelte';
     import { searchStore } from 'src/stores/view/derived/search-store';
     import { uiControlsStore } from 'src/stores/view/derived/ui-controls-store';
-    import { scrollingStore } from 'src/stores/settings/derived/scrolling-store';
+    import { scrollingModeStore } from 'src/stores/settings/derived/scrolling-store';
+    import ScrollingAxis from 'src/view/components/container/scrolling-axis/scrolling-axis.svelte';
 
     export let plugin: Lineage;
     export let view: LineageView;
@@ -21,7 +21,7 @@
     const search = searchStore(view);
     const controls = uiControlsStore(view);
 
-    const scrolling = scrollingStore(view);
+    const scrollingMode = scrollingModeStore(view);
 </script>
 
 <div class={`lineage-main ${$search.searching ? 'is-loading' : ''}`}>
@@ -36,8 +36,8 @@
     {:else if $controls.showSettingsSidebar}
         <Settings />
     {/if}
-    {#if $scrolling.alwaysCenterHorizontally && $scrolling.enableOffset}
-        <HCS />
+    {#if $scrollingMode==="fixed-position" }
+        <ScrollingAxis />
     {/if}
 </div>
 

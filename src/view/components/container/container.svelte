@@ -5,29 +5,32 @@
     import { scrollOnDndX } from 'src/view/actions/dnd/scroll-on-dnd-x';
     import { columnsStore } from 'src/stores/document/derived/columns-store';
     import ColumnsBuffer from './buffers/columns-buffer.svelte';
-    import { scrollingStore } from 'src/stores/settings/derived/scrolling-store';
+    import { scrollingModeStore } from 'src/stores/settings/derived/scrolling-store';
 
     const view = getView();
     const columns = columnsStore(view);
-    const scrolling = scrollingStore(view)
+    const scrolling = scrollingModeStore(view);
 </script>
 
 <div
     class={'columns-container ' +
-        ($scrolling.alwaysCenterHorizontally ? 'hide-scrollbars' : '')}
+        ($scrolling === 'fixed-position' ||
+        $scrolling === 'keep-active-card-at-center'
+            ? 'hide-scrollbars'
+            : '')}
     id="columns-container"
     tabindex="0"
     use:keyboardShortcuts={{ view }}
     use:scrollOnDndX
 >
     <div class="columns">
-        {#if $scrolling.alwaysCenterHorizontally}
+        {#if $scrolling === 'fixed-position' || $scrolling === 'keep-active-card-at-center'}
             <ColumnsBuffer />
         {/if}
         {#each $columns as column (column.id)}
             <Column columnId={column.id} />
         {/each}
-        {#if $scrolling.alwaysCenterHorizontally}
+        {#if $scrolling === 'fixed-position' || $scrolling === 'keep-active-card-at-center'}
             <ColumnsBuffer />
         {:else}
             <div style="min-width: 50px;min-height: 10px"></div>

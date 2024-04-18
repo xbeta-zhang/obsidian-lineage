@@ -1,4 +1,4 @@
-import { CustomHotkeys, Settings } from './settings-type';
+import { CustomHotkeys, ScrollingMode, Settings } from './settings-type';
 
 export type SettingsActions =
     | {
@@ -57,21 +57,16 @@ export type SettingsActions =
           };
       }
     | {
-          type: 'SET_ALWAYS_CENTER_HORIZONTALLY';
+          type: 'SET_HORIZONTAL_SCROLLING_MODE';
           payload: {
-              center: boolean;
+              mode: ScrollingMode;
           };
       }
     | {
-          type: 'SET_HORIZONTAL_OFFSET';
+          type: 'UPDATE_AXIS_OFFSET';
           payload: {
-              offset: number;
-          };
-      }
-    | {
-          type: 'TOGGLE_HORIZONTAL_OFFSET';
-          payload: {
-              enable: boolean;
+              movementX: number;
+              movementY: number;
           };
       };
 
@@ -95,16 +90,11 @@ const updateState = (store: Settings, action: SettingsActions) => {
         store.view.cardWidth = action.payload.width;
     } else if (action.type === 'SET_MIN_CARD_HEIGHT') {
         store.view.minimumCardHeight = action.payload.height;
-    } else if (action.type === 'SET_ALWAYS_CENTER_HORIZONTALLY') {
-        store.view.scrolling.alwaysCenterHorizontally = action.payload.center;
-        store.view.scrolling = { ...store.view.scrolling };
-    } else if (action.type === 'SET_HORIZONTAL_OFFSET') {
-        store.view.scrolling.offset = action.payload.offset;
-        store.view.scrolling = { ...store.view.scrolling };
-    } else if (action.type === 'TOGGLE_HORIZONTAL_OFFSET') {
-        store.view.scrolling.enableOffset = action.payload.enable;
-        if (!store.view.scrolling.enableOffset) store.view.scrolling.offset = 0;
-        store.view.scrolling = { ...store.view.scrolling };
+    } else if (action.type === 'SET_HORIZONTAL_SCROLLING_MODE') {
+        store.view.scrolling.horizontalScrollingMode = action.payload.mode;
+    } else if (action.type === 'UPDATE_AXIS_OFFSET') {
+        store.view.scrolling.horizontalOffset += action.payload.movementX;
+        store.view.scrolling.verticalOffset += action.payload.movementY;
     }
 };
 export const settingsReducer = (
