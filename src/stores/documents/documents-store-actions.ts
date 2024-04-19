@@ -38,7 +38,10 @@ export type UpdateDocumentPath = {
     };
 };
 
-export type WorkspaceEvents = ActiveLineageViewChange | ActiveLeafChange;
+export type WorkspaceEvents =
+    | ActiveLineageViewChange
+    | ActiveLeafChange
+    | WorkspaceResize;
 
 export type ActiveLineageViewChange = {
     type: 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW';
@@ -50,4 +53,8 @@ export type ActiveLineageViewChange = {
 
 export type ActiveLeafChange = {
     type: 'WORKSPACE/ACTIVE_LEAF_CHANGE';
+};
+
+export type WorkspaceResize = {
+    type: 'WORKSPACE/RESIZE';
 };

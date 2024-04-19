@@ -169,13 +169,16 @@ export const viewSubscriptions = (view: LineageView) => {
                 saveNodeContent(view);
             }
         }
-        if (action.type === 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW') {
+        if (
+            view.isActive &&
+            (action.type === 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW' ||
+                action.type === 'WORKSPACE/RESIZE')
+        ) {
             alignBranchDebounced(
                 view.documentStore.getValue(),
                 view.viewStore.getValue(),
                 view.container,
                 view.plugin.settings.getValue(),
-                'instant',
             );
         }
     });

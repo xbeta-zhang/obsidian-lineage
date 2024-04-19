@@ -85,6 +85,13 @@ export default class Lineage extends Plugin {
                 });
             }),
         );
+        this.registerEvent(
+            this.app.workspace.on('resize', () => {
+                this.documents.dispatch({
+                    type: 'WORKSPACE/RESIZE',
+                });
+            }),
+        );
     }
 
     private registerEffects() {
