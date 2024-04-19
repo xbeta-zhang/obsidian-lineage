@@ -4,11 +4,13 @@ import { BackgroundColor } from 'src/view/actions/settings/components/background
 import { ActiveBranchColor } from 'src/view/actions/settings/components/active-branch-color';
 import { CardWidth } from 'src/view/actions/settings/components/card-width';
 import { ScrollingBehavior } from 'src/view/actions/settings/components/scrolling-behavior';
+import { LimitCardHeight } from 'src/view/actions/settings/components/limit-card-height';
 
 export const renderSettings = (element: HTMLElement) => {
     const view = getView();
     const settingsStore = view.plugin.settings;
     const render = () => {
+        LimitCardHeight(element.createDiv(), settingsStore);
         CardWidth(element.createDiv(), settingsStore);
         FontSize(element.createDiv(), settingsStore);
         BackgroundColor(element.createDiv(), settingsStore);

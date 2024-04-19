@@ -68,6 +68,12 @@ export type SettingsActions =
               movementX: number;
               movementY: number;
           };
+      }
+    | {
+          type: 'SET_LIMIT_PREVIEW_HEIGHT';
+          payload: {
+              limit: boolean;
+          };
       };
 
 const updateState = (store: Settings, action: SettingsActions) => {
@@ -95,6 +101,8 @@ const updateState = (store: Settings, action: SettingsActions) => {
     } else if (action.type === 'UPDATE_AXIS_OFFSET') {
         store.view.scrolling.horizontalOffset += action.payload.movementX;
         store.view.scrolling.verticalOffset += action.payload.movementY;
+    } else if (action.type === 'SET_LIMIT_PREVIEW_HEIGHT') {
+        store.view.limitPreviewHeight = action.payload.limit;
     }
 };
 export const settingsReducer = (

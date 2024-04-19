@@ -35,5 +35,6 @@ export type Settings = {
         cardWidth: number;
         minimumCardHeight?: number;
         scrolling: ScrollingSettings;
+        limitPreviewHeight: boolean;
     };
 };
