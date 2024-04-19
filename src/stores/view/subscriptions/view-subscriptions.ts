@@ -137,13 +137,17 @@ const viewEffectsAndActions = (
             focusContainer(container);
         }
         if (activeNodeChange || e.zoom || e.search || structuralChange) {
-            alignBranchDebounced(
-                documentStore.getValue(),
-                viewState,
-                container,
-                settings,
-                type === 'DOCUMENT/MOVE_NODE' ? 'instant' : undefined,
-            );
+            const skipAligning =
+                action.type === 'DOCUMENT/SET_ACTIVE_NODE' &&
+                action.context?.ctrlKey;
+            if (!skipAligning)
+                alignBranchDebounced(
+                    documentStore.getValue(),
+                    viewState,
+                    container,
+                    settings,
+                    type === 'DOCUMENT/MOVE_NODE' ? 'instant' : undefined,
+                );
         }
     }
 };

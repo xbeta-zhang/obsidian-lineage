@@ -55,6 +55,9 @@ type SetActiveNodeAction = {
     payload: {
         id: string;
     };
+    context?: {
+        ctrlKey: boolean;
+    };
 };
 export type NodeSelectionAction =
     | JumpToNodeAction
