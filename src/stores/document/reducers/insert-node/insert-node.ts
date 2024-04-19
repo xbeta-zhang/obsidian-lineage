@@ -42,6 +42,7 @@ export const insertNode = (
         const insertionIndex =
             action.payload.position === 'up' ? groupIndex : groupIndex + 1;
         group.nodes.splice(insertionIndex, 0, newNodeId);
+        group.nodes = [...group.nodes];
     }
     document.content[newNodeId] = {
         content: action.payload.content || '',

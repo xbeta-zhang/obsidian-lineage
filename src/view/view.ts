@@ -20,6 +20,7 @@ import { viewReducer } from 'src/stores/view/view-reducer';
 import { viewSubscriptions } from 'src/stores/view/subscriptions/view-subscriptions';
 import { SilentError } from 'src/stores/view/helpers/errors';
 import { InlineEditor } from 'src/obsidian/helpers/inline-editor';
+import { id } from 'src/helpers/id';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -32,6 +33,7 @@ export class LineageView extends TextFileView {
     viewStore: ViewStore;
     container: HTMLElement | null;
     inlineEditor: InlineEditor;
+    id: string;
     private readonly onDestroyCallbacks: Set<Unsubscriber> = new Set();
     private activeFilePath: null | string;
     constructor(
@@ -49,12 +51,21 @@ export class LineageView extends TextFileView {
             viewReducer,
             this.onViewStoreError as OnError<ViewStoreAction>,
         );
+        this.id = id.view();
     }
 
     get isActive() {
         return (
             this === this.plugin.app.workspace.getActiveViewOfType(LineageView)
         );
+    }
+
+    get isViewOfFile() {
+        const path = this.file?.path;
+        return path
+            ? this.id ===
+                  this.plugin.documents.getValue().documents[path]?.viewId
+            : false;
     }
 
     getViewData(): string {
@@ -65,8 +76,10 @@ export class LineageView extends TextFileView {
         if (!this.activeFilePath && this.file) {
             this.activeFilePath = this.file?.path;
             this.loadInitialData();
+        } else {
+            this.data = data;
+            this.loadDocumentToStore();
         }
-        this.data = data;
     }
     async onUnloadFile() {
         if (this.component) {
@@ -202,6 +215,7 @@ export class LineageView extends TextFileView {
             payload: {
                 path: this.file.path,
                 documentStore: this.documentStore,
+                viewId: this.id,
             },
         });
         this.documentStore.dispatch({
@@ -215,7 +229,9 @@ export class LineageView extends TextFileView {
     private useExistingStore = () => {
         if (!this.file) return;
         this.documentStore =
-            this.plugin.documents.getValue().documents[this.file.path];
+            this.plugin.documents.getValue().documents[
+                this.file.path
+            ].documentStore;
     };
 
     private loadDocumentToStore = () => {

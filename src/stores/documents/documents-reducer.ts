@@ -9,7 +9,7 @@ const updateDocumentsState = (
         const path = action.payload.path;
         if (path in state.documents) {
             const oldEntry = state.documents[path];
-            oldEntry.dispatch({
+            oldEntry.documentStore.dispatch({
                 type: 'RESET_STORE',
             });
             delete state.documents[path];
@@ -21,7 +21,7 @@ const updateDocumentsState = (
             const oldEntry = state.documents[oldPath];
             delete state.documents[oldPath];
             state.documents[newPath] = oldEntry;
-            oldEntry.dispatch({
+            oldEntry.documentStore.dispatch({
                 type: 'FS/SET_FILE_PATH',
                 payload: {
                     path: newPath,
@@ -29,9 +29,16 @@ const updateDocumentsState = (
             });
         }
     } else if (action.type === 'DOCUMENTS/ADD_DOCUMENT') {
-        state.documents[action.payload.path] = action.payload.documentStore;
+        state.documents[action.payload.path] = {
+            documentStore: action.payload.documentStore,
+            viewId: action.payload.viewId,
+        };
     } else if (action.type === 'DOCUMENTS/SET_CLIPBOARD') {
         state.clipboard.branch = action.payload.branch;
+    } else if (action.type === 'DOCUMENTS/SET_VIEW_OF_FILE') {
+        if (state.documents[action.payload.path]) {
+            state.documents[action.payload.path].viewId = action.payload.viewId;
+        }
     }
 };
 

@@ -23,6 +23,7 @@ export const alignBranch = (
     const localState: AlignBranchState = {
         columns: new Set<string>(),
     };
+
     alignParentsAndActiveNode(
         viewState,
         container,

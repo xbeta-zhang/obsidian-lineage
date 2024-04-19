@@ -1,10 +1,8 @@
 import { MarkdownRenderer } from 'obsidian';
 import { getPlugin, getView } from 'src/view/components/container/context';
+import { contentStore } from 'src/stores/document/derived/content-store';
 
-export const markdownPreviewAction = (
-    element: HTMLElement,
-    content: string,
-) => {
+export const markdownPreviewAction = (element: HTMLElement, nodeId: string) => {
     const plugin = getPlugin();
     const view = getView();
     const store = view.documentStore;
@@ -21,10 +19,14 @@ export const markdownPreviewAction = (
             );
         }
     };
-    render(content);
+
+    const $content = contentStore(view, nodeId);
+    const unsub = $content.subscribe((content) => {
+        render(content);
+    });
     return {
-        update: (content: string) => {
-            render(content);
+        destroy: () => {
+            unsub();
         },
     };
 };

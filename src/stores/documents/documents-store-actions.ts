@@ -5,7 +5,8 @@ export type DocumentsStoreAction =
     | SetClipboard
     | DeleteDocument
     | UpdateDocumentPath
-    | AddDocument;
+    | AddDocument
+    | SetViewOfFile;
 
 export type SetClipboard = {
     type: 'DOCUMENTS/SET_CLIPBOARD';
@@ -18,6 +19,7 @@ export type AddDocument = {
     payload: {
         path: string;
         documentStore: DocumentStore;
+        viewId: string;
     };
 };
 export type DeleteDocument = {
@@ -32,5 +34,13 @@ export type UpdateDocumentPath = {
     payload: {
         oldPath: string;
         newPath: string;
+    };
+};
+
+export type SetViewOfFile = {
+    type: 'DOCUMENTS/SET_VIEW_OF_FILE';
+    payload: {
+        path: string;
+        viewId: string;
     };
 };

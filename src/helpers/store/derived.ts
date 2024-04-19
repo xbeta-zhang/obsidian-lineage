@@ -27,7 +27,7 @@ export const derived = <Value, Action extends { type: string }, DerivedValue>(
                     },
                 );
             }
-            run(derivedValue, undefined, true);
+
             return () => {
                 subscribers.delete(run);
                 if (unsubFromSource && subscribers.size === 0) {

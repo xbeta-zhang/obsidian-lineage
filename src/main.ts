@@ -69,6 +69,19 @@ export default class Lineage extends Plugin {
         registerFileMenuEvent(this);
         registerFileRenameEvent(this);
         registerFileDeleteEvent(this);
+        this.registerEvent(
+            this.app.workspace.on('active-leaf-change', (leaf) => {
+                if (leaf?.view instanceof LineageView && leaf.view.file?.path) {
+                    this.documents.dispatch({
+                        type: 'DOCUMENTS/SET_VIEW_OF_FILE',
+                        payload: {
+                            path: leaf.view.file?.path,
+                            viewId: leaf.view.id,
+                        },
+                    });
+                }
+            }),
+        );
     }
 
     private registerEffects() {

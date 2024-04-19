@@ -7,8 +7,7 @@
     } from 'src/view/components/container/column/components/group/components/card/components/content/event-handlers/handle-links';
 
     export let active: ActiveStatus | null;
-
-    export let content: string;
+    export let nodeId: string;
 
     const view = getView();
     const onClick = handleClick(view);
@@ -17,7 +16,7 @@
 <div
     class={'preview-container markdown-preview-view markdown-preview-section'}
     on:click={onClick}
-    use:markdownPreviewAction={content}
+    use:markdownPreviewAction={nodeId}
 ></div>
 
 <style>

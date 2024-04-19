@@ -6,7 +6,11 @@ export const contentStore = (view: LineageView, nodeId: string) => {
     let nodeContent: Content[string];
     let documentContent: Content;
     return derived(view.documentStore, (state) => {
-        if (!nodeContent || documentContent !== state.document.content) {
+        if (
+            !nodeContent ||
+            documentContent !== state.document.content ||
+            nodeContent !== documentContent[nodeId]
+        ) {
             documentContent = state.document.content;
             nodeContent = documentContent[nodeId];
             if (!nodeContent) return '';

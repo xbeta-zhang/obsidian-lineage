@@ -113,11 +113,12 @@ const viewEffectsAndActions = (
         }
 
         // effects
+        if (!container || !view.isViewOfFile) return;
         if (e.content || structuralChange) {
             const maybeViewIsClosing = !view.isActive;
             view.saveDocument(maybeViewIsClosing);
         }
-        if (!container || !view.isActive) return;
+
         if (e.zoom) {
             applyZoom(container, viewState);
         }
@@ -178,8 +179,9 @@ export const viewSubscriptions = (view: LineageView) => {
                 } else if (type === 'SET_CARD_WIDTH') {
                     applyCardWidth(view, state.view.cardWidth);
                 } else if (
-                    type === 'SET_HORIZONTAL_SCROLLING_MODE' ||
-                    type === 'UPDATE_AXIS_OFFSET'
+                    view.isActive &&
+                    (type === 'SET_HORIZONTAL_SCROLLING_MODE' ||
+                        type === 'UPDATE_AXIS_OFFSET')
                 ) {
                     alignBranchDebounced(
                         view.documentStore.getValue(),

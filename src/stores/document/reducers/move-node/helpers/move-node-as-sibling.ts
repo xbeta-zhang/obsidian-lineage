@@ -20,6 +20,7 @@ export const moveNodeAsSibling = (
         if (adjacentGroup && adjacentGroup.parentId !== targetGroup.parentId) {
             if (direction === 'down') {
                 targetGroup.nodes.splice(0, 0, node);
+                targetGroup.nodes = [...targetGroup.nodes];
             } else if (direction === 'up') {
                 targetGroup.nodes.push(node);
                 targetGroup.nodes = [...targetGroup.nodes];
@@ -29,6 +30,7 @@ export const moveNodeAsSibling = (
             const index = targetGroup.nodes.findIndex((n) => n === targetNode);
             insertionIndex = direction === 'up' ? index : index + 1;
             targetGroup.nodes.splice(insertionIndex, 0, node);
+            targetGroup.nodes = [...targetGroup.nodes];
         }
     }
 };

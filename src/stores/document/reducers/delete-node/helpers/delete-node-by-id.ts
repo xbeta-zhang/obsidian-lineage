@@ -11,6 +11,7 @@ export const deleteNodeById = (
                 const _nodeId = group.nodes[i];
                 if (_nodeId === nodeId) {
                     group.nodes.splice(i, 1);
+                    group.nodes = [...group.nodes];
                     delete content[_nodeId];
                     return;
                 }
