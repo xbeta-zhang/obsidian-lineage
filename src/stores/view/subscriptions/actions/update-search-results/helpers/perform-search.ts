@@ -8,7 +8,11 @@ type State = {
 export const searchState: State = {
     fuse: new Map(),
 };
-export const performSearch = (documentStore: DocumentStore, query: string) => {
+export const performSearch = (
+    documentStore: DocumentStore,
+    query: string,
+    fuzzyMode: boolean,
+) => {
     let fuse: DocumentFuse | undefined = searchState.fuse.get(documentStore);
     if (!fuse) {
         const documentState = documentStore.getValue();
@@ -24,7 +28,7 @@ export const performSearch = (documentStore: DocumentStore, query: string) => {
         }
         fuse = new Fuse(items, {
             keys: ['content'],
-            threshold: 0.4,
+            threshold: fuzzyMode ? 0.4 : 0.1,
             shouldSort: true,
             isCaseSensitive: false,
             ignoreLocation: true,

@@ -27,6 +27,7 @@ export type ViewState = {
         results: Set<NodeId>;
         searching: boolean;
         showInput: boolean;
+        fuzzySearch: boolean;
     };
     ui: {
         controls: {

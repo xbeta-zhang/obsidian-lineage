@@ -123,7 +123,11 @@ const viewEffectsAndActions = (
         if (e.zoom) {
             applyZoom(container, viewState);
         }
-        if (e.content || structuralChange) {
+        if (
+            e.content ||
+            structuralChange ||
+            type === 'SEARCH/TOGGLE_FUZZY_MODE'
+        ) {
             resetSearchFuse(documentStore);
         }
         if (structuralChange) {

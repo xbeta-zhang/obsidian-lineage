@@ -10,6 +10,7 @@ import { UpdateActiveBranchAction } from 'src/stores/view/reducers/document/help
 import { JumpToNodeAction } from 'src/stores/view/reducers/document/jump-to-node';
 import { ChangeActiveNodeAction } from 'src/stores/view/reducers/document/navigate-using-keyboard';
 import { NavigationAction } from 'src/stores/view/reducers/ui/navigate-active-node';
+import { ToggleFuzzySearchAction } from 'src/stores/view/reducers/search/toggle-fuzzy-search';
 
 export type ViewStoreAction =
     | SearchAction
@@ -21,7 +22,8 @@ export type ViewStoreAction =
 export type SearchAction =
     | SetSearchQueryAction
     | SetSearchResultsAction
-    | ToggleSearchInputAction;
+    | ToggleSearchInputAction
+    | ToggleFuzzySearchAction;
 
 export type ViewUIAction =
     | ChangeZoomLevelAction

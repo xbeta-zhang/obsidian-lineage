@@ -1,6 +1,7 @@
 <script lang="ts">
     import { getView } from '../../context';
     import { searchStore } from 'src/stores/view/derived/search-store';
+    import { Text } from 'lucide-svelte';
 
     const view = getView();
     const viewStore = view.viewStore;
@@ -18,7 +19,7 @@
     };
 </script>
 
-<div class="search-input-wrapper">
+<div class="search-input-wrapper search-input-container">
     <input
         aria-label="Search document"
         autofocus={true}
@@ -43,18 +44,36 @@
         }}
         style={$search.query ? '' : 'display: none'}
     ></div>
+    <div
+        aria-label="Fuzzy search"
+        class={"input-right-decorator clickable-icon" +(
+            $search.fuzzySearch?" is-active":""
+        )}
+        on:click={() => {
+            viewStore.dispatch({
+                type: 'SEARCH/TOGGLE_FUZZY_MODE',
+            });
+            viewStore.dispatch({
+                type: 'SEARCH/SET_QUERY',
+                payload: {
+                    query: viewStore.getValue().search.query,
+                },
+            });
+        }}
+    >
+        <Text class="svg-icon" />
+    </div>
 </div>
 
 <style>
     .search-input-element {
         height: 34px;
-        width: 250px;
-        max-width: 100%;
+        padding-right: 64px;
     }
 
     @media(max-width: 568px){
         .search-input-element {
-            width: 100%
+            width: 100%;
         }
         .search-input-wrapper {
             width: 100%;

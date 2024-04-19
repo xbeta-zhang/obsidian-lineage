@@ -15,6 +15,7 @@ import { navigateActiveNode } from 'src/stores/view/reducers/ui/navigate-active-
 import { jumpToNode } from 'src/stores/view/reducers/document/jump-to-node';
 
 import { removeDeletedNavigationItems } from 'src/stores/view/reducers/ui/helpers/remove-deleted-navigation-items';
+import { toggleFuzzySearch } from 'src/stores/view/reducers/search/toggle-fuzzy-search';
 
 const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
     if (action.type === 'DOCUMENT/SET_ACTIVE_NODE') {
@@ -82,6 +83,8 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
         jumpToNode(state.document, state, action);
     } else if (action.type === 'NAVIGATION/REMOVE_OBSOLETE') {
         removeDeletedNavigationItems(state, action.payload.content);
+    } else if (action.type === 'SEARCH/TOGGLE_FUZZY_MODE') {
+        toggleFuzzySearch(state);
     }
 };
 export const viewReducer = (
