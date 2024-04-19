@@ -14,7 +14,7 @@ export const markdownPreviewAction = (
             element.empty();
             MarkdownRenderer.render(
                 plugin.app,
-                content,
+                content.replace(/\n/g, '&nbsp;\n'),
                 element,
                 store.getValue().file.path as string,
                 view,
