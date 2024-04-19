@@ -55,15 +55,21 @@ export type Content = {
 // document change history
 export type DocumentHistory = History<Snapshot, { activeSection: string }>;
 
+export type SnapshotContext = {
+    affectedSection: string;
+    newActiveSection: string;
+    numberOfSections: number;
+    action: UndoableAction;
+};
+
 export type Snapshot = {
     data: {
         content: string;
         columns: string;
-        activeSection: string;
     };
+    context: SnapshotContext;
     created: number;
     id: string;
-    action: UndoableAction;
 };
 
 // navigation history

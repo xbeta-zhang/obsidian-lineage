@@ -17,6 +17,7 @@ module.exports = {
                 'build',
                 // custom
                 'tweak',
+                'enhance',
             ],
         ],
     },

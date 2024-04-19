@@ -4,7 +4,10 @@ import { loadDocumentFromFile } from 'src/stores/document/reducers/load-document
 import { setNodeContent } from 'src/stores/document/reducers/content/set-node-content';
 import { deleteNode } from 'src/stores/document/reducers/delete-node/delete-node';
 import { moveNode } from 'src/stores/document/reducers/move-node/move-node';
-import { DocumentState } from 'src/stores/document/document-state-type';
+import {
+    DocumentState,
+    SnapshotContext,
+} from 'src/stores/document/document-state-type';
 import { mergeNode } from 'src/stores/document/reducers/merge-node/merge-node';
 import { addSnapshot } from 'src/stores/document/reducers/history/add-snapshot';
 import { selectSnapshot } from 'src/stores/document/reducers/history/select-snapshot';
@@ -24,32 +27,40 @@ import { cutNode } from 'src/stores/document/reducers/clipboard/cut-node/cut-nod
 import { updateSectionsDictionary } from 'src/stores/document/reducers/state/update-sections-dictionary';
 import { getIdOfSection } from 'src/stores/view/subscriptions/actions/get-id-of-section';
 import { extractNode } from 'src/stores/document/reducers/extract-node/extract-node';
+import { getSectionOfId } from 'src/stores/view/subscriptions/actions/get-section-of-id';
 
 const updateDocumentState = (
     state: DocumentState,
     action: DocumentStoreAction,
 ) => {
-    let activeNodeId: null | string = null;
+    let newActiveNodeId: null | string = null;
+    let affectedActiveNodeId: null | string = null;
     if (action.type === 'DOCUMENT/SET_NODE_CONTENT') {
         setNodeContent(state.document.content, action);
-        activeNodeId = action.payload.nodeId;
+        newActiveNodeId = action.payload.nodeId;
     } else if (action.type === 'DOCUMENT/INSERT_NODE') {
-        activeNodeId = insertNode(state.document, action);
+        newActiveNodeId = insertNode(state.document, action);
     } else if (action.type === 'DOCUMENT/DELETE_NODE') {
-        activeNodeId = deleteNode(state.document, action.payload.activeNodeId);
+        newActiveNodeId = deleteNode(
+            state.document,
+            action.payload.activeNodeId,
+        );
+        affectedActiveNodeId = action.payload.activeNodeId;
     } else if (action.type === 'DOCUMENT/EXTRACT_BRANCH') {
         extractNode(state.document, action);
-        activeNodeId = action.payload.nodeId;
+        newActiveNodeId = action.payload.nodeId;
     } else if (action.type === 'DOCUMENT/DROP_NODE') {
         dropNode(state.document, action);
-        activeNodeId = action.payload.droppedNodeId;
+        newActiveNodeId = action.payload.droppedNodeId;
     } else if (action.type === 'DOCUMENT/MOVE_NODE') {
         moveNode(state.document, action);
-        activeNodeId = action.payload.activeNodeId;
+        newActiveNodeId = action.payload.activeNodeId;
+        affectedActiveNodeId = newActiveNodeId;
     } else if (action.type === 'DOCUMENT/MERGE_NODE') {
-        activeNodeId = mergeNode(state.document, action);
+        newActiveNodeId = mergeNode(state.document, action);
+        affectedActiveNodeId = action.payload.activeNodeId;
     } else if (action.type === 'DOCUMENT/LOAD_FILE') {
-        activeNodeId = loadDocumentFromFile(state, action);
+        newActiveNodeId = loadDocumentFromFile(state, action);
     } else if (action.type === 'RESET_STORE') {
         const newState = defaultDocumentState();
         state.document = newState.document;
@@ -69,12 +80,12 @@ const updateDocumentState = (
         state.file.path = action.payload.path;
     } else if (action.type === 'DOCUMENT/FORMAT_HEADINGS') {
         formatHeadings(state.document.content, state.sections);
-        activeNodeId = getIdOfSection(
+        newActiveNodeId = getIdOfSection(
             state.sections,
             state.history.context.activeSection,
         );
     } else if (action.type === 'DOCUMENT/PASTE_NODE') {
-        activeNodeId = pasteNode(state.document, action);
+        newActiveNodeId = pasteNode(state.document, action);
     } else if (action.type === 'DOCUMENT/COPY_NODE') {
         copyNode(
             state.document.columns,
@@ -83,35 +94,40 @@ const updateDocumentState = (
             action.payload.nodeId,
         );
     } else if (action.type === 'DOCUMENT/CUT_NODE') {
-        activeNodeId = cutNode(
+        newActiveNodeId = cutNode(
             state.document,
             state.clipboard,
             action.payload.nodeId,
         );
+        affectedActiveNodeId = action.payload.nodeId;
     } else if (action.type === 'DOCUMENTS/CLEAR_CLIPBOARD') {
         state.clipboard.branch = null;
     }
 
-    const eventType = getDocumentEventType(action.type);
+    const e = getDocumentEventType(action.type);
 
-    if (
-        eventType.dropOrMove ||
-        eventType.createOrDelete ||
-        eventType.changeHistory ||
-        eventType.clipboard
-    ) {
+    let affectedSection: string | null = null;
+
+    if (affectedActiveNodeId) {
+        affectedSection = getSectionOfId(state.sections, affectedActiveNodeId);
+    }
+    if (e.dropOrMove || e.createOrDelete || e.changeHistory || e.clipboard) {
         updateSectionsDictionary(state);
     }
-    const contentShapeCreation =
-        eventType.content || eventType.dropOrMove || eventType.createOrDelete;
-    if (activeNodeId && (contentShapeCreation || eventType.clipboard)) {
-        addSnapshot(
-            state.document,
+
+    const contentShapeCreation = e.content || e.dropOrMove || e.createOrDelete;
+    if (newActiveNodeId && (contentShapeCreation || e.clipboard)) {
+        const newActiveSection = getSectionOfId(
             state.sections,
-            state.history,
-            action as UndoableAction,
-            activeNodeId,
+            newActiveNodeId,
         );
+        const context: SnapshotContext = {
+            numberOfSections: Object.keys(state.document.content).length,
+            affectedSection: affectedSection || newActiveSection,
+            newActiveSection,
+            action: action as UndoableAction,
+        };
+        addSnapshot(state.document, state.history, context);
         state.history = { ...state.history };
     }
 };

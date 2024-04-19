@@ -40,7 +40,8 @@
         display: flex;
         flex-direction: column;
         gap: 5px;
-        max-height: 200px;
+        height: fit-content;
+        max-height: 400px;
         overflow-y: auto;
     }
 </style>

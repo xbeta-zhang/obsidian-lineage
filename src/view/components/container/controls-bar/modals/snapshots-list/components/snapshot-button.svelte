@@ -1,12 +1,12 @@
 <script lang="ts">
-    import { relativeTime } from '../../../../../../../helpers/relative-time';
-    import { FileQuestion } from 'lucide-svelte';
+    import { relativeTime } from 'src/helpers/relative-time';
     import {
         actionInfo
     } from 'src/view/components/container/controls-bar/modals/snapshots-list/components/helpers/action-info';
-    import { Snapshot } from '../../../../../../../stores/document/document-state-type';
+    import { Snapshot } from 'src/stores/document/document-state-type';
     import { getView } from '../../../../context';
     import { Notice } from 'obsidian';
+    import invariant from 'tiny-invariant';
 
     export let snapshot: Snapshot;
     export let active: boolean;
@@ -15,18 +15,13 @@
     const view = getView();
     const documentStore = view.documentStore;
     const viewStore = view.viewStore;
-    const icon = (
-        actionInfo[snapshot.action.type]
-            ? actionInfo[snapshot.action.type]
-            : {
-                  label: snapshot.action.type || 'unknown',
-                  icon: FileQuestion,
-              }
-    ) as { icon: typeof FileQuestion; label: string };
+    const infoFactory = actionInfo[snapshot.context.action.type];
+    invariant(infoFactory);
+    const info = infoFactory(snapshot);
 </script>
 
 <div
-    aria-label={icon.label}
+    aria-label={info.label}
     class="snapshot"
     class:selected={active}
     on:click={() => {
@@ -35,31 +30,54 @@
         else
             documentStore.dispatch({
                 type: 'HISTORY/SELECT_SNAPSHOT',
-                payload: { snapshotId: snapshot.id, },
+                payload: { snapshotId: snapshot.id },
             });
-
     }}
 >
-    <svelte:component class="svg-icon label" this={icon.icon} />
-    <span class="time" data-created={snapshot.created}>
-        {relativeTime(snapshot.created)}
-    </span>
-    <span class="index">{reverseIndex}</span>
+    <div
+        style="width: 32px; display: flex; align-items: center; justify-content: center;"
+    >
+        <svelte:component class="svg-icon label" this={info.icon} />
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 5px; width: 100%">
+        <div style="display: flex; justify-content: space-between">
+            <span class="text">
+                {info.label}
+            </span>
+        </div>
+        <div style="display: flex; justify-content: space-between; width: 100%">
+            <span class="time" data-created={snapshot.created}>
+                {relativeTime(snapshot.created)}
+            </span>
+            <span class="index"
+                >{snapshot.context.numberOfSections}{snapshot.context
+                    .numberOfSections === 1
+                    ? ' card'
+                    : ' cards'}</span
+            >
+        </div>
+    </div>
 </div>
 
 <style>
     .snapshot {
-        padding: 8px 4px;
+        padding: 10px 6px;
         cursor: pointer;
         display: flex;
         align-items: center;
         border-radius: 4px;
-        gap: 8px;
+        gap: 4px;
+        height: 52px;
+        width: 230px;
     }
-    .label {
+    .text {
         font-size: 14px;
         color: var(--color-base-70);
         display: block;
+        max-width: 210px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .index {
         font-size: 12px;
