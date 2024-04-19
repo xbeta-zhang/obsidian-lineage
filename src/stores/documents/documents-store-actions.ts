@@ -6,7 +6,8 @@ export type DocumentsStoreAction =
     | DeleteDocument
     | UpdateDocumentPath
     | AddDocument
-    | SetViewOfFile;
+    | ActiveLineageViewChange
+    | WorkspaceEvents;
 
 export type SetClipboard = {
     type: 'DOCUMENTS/SET_CLIPBOARD';
@@ -37,10 +38,16 @@ export type UpdateDocumentPath = {
     };
 };
 
-export type SetViewOfFile = {
-    type: 'DOCUMENTS/SET_VIEW_OF_FILE';
+export type WorkspaceEvents = ActiveLineageViewChange | ActiveLeafChange;
+
+export type ActiveLineageViewChange = {
+    type: 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW';
     payload: {
         path: string;
         viewId: string;
     };
+};
+
+export type ActiveLeafChange = {
+    type: 'WORKSPACE/ACTIVE_LEAF_CHANGE';
 };

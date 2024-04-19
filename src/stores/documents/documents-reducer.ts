@@ -35,7 +35,7 @@ const updateDocumentsState = (
         };
     } else if (action.type === 'DOCUMENTS/SET_CLIPBOARD') {
         state.clipboard.branch = action.payload.branch;
-    } else if (action.type === 'DOCUMENTS/SET_VIEW_OF_FILE') {
+    } else if (action.type === 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW') {
         if (state.documents[action.payload.path]) {
             state.documents[action.payload.path].viewId = action.payload.viewId;
         }

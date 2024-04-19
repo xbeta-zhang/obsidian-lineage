@@ -73,13 +73,16 @@ export default class Lineage extends Plugin {
             this.app.workspace.on('active-leaf-change', (leaf) => {
                 if (leaf?.view instanceof LineageView && leaf.view.file?.path) {
                     this.documents.dispatch({
-                        type: 'DOCUMENTS/SET_VIEW_OF_FILE',
+                        type: 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW',
                         payload: {
                             path: leaf.view.file?.path,
                             viewId: leaf.view.id,
                         },
                     });
                 }
+                this.documents.dispatch({
+                    type: 'WORKSPACE/ACTIVE_LEAF_CHANGE',
+                });
             }),
         );
     }

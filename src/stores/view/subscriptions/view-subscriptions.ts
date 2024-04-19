@@ -28,6 +28,7 @@ import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
 import { getUsedHotkeys } from 'src/obsidian/helpers/get-used-hotkeys';
 import { updateStatusBar } from 'src/stores/view/subscriptions/effects/update-status-bar';
 import { Notice } from 'obsidian';
+import { saveNodeContent } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-content';
 
 const viewEffectsAndActions = (
     view: LineageView,
@@ -160,6 +161,25 @@ export const viewSubscriptions = (view: LineageView) => {
         },
     );
 
+    const unsubFromDocuments = view.plugin.documents.subscribe((_, action) => {
+        if (!action) return;
+        if (!view.container) return;
+        if (action.type === 'WORKSPACE/ACTIVE_LEAF_CHANGE') {
+            if (view.viewStore.getValue().document.editing.activeNodeId) {
+                saveNodeContent(view);
+            }
+        }
+        if (action.type === 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW') {
+            alignBranchDebounced(
+                view.documentStore.getValue(),
+                view.viewStore.getValue(),
+                view.container,
+                view.plugin.settings.getValue(),
+                'instant',
+            );
+        }
+    });
+
     const unsubFromSettings = view.plugin.settings.subscribe(
         (state, action, isInitialRun) => {
             if (!view.container) return;
@@ -206,5 +226,6 @@ export const viewSubscriptions = (view: LineageView) => {
         unsubFromDocument();
         unsubFromView();
         unsubFromSettings();
+        unsubFromDocuments();
     };
 };
