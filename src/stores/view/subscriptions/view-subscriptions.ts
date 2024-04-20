@@ -115,9 +115,10 @@ const viewEffectsAndActions = (
 
         // effects
         if (!container || !view.isViewOfFile) return;
-        if (e.content || structuralChange) {
+        const postInlineEditor = type === 'DOCUMENT/CONFIRM_DISABLE_EDIT';
+        if (e.content || structuralChange || postInlineEditor) {
             const maybeViewIsClosing = !view.isActive;
-            view.saveDocument(maybeViewIsClosing);
+            view.saveDocument(maybeViewIsClosing, postInlineEditor);
         }
 
         if (e.zoom) {

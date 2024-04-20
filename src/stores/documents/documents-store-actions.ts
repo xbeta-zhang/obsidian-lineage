@@ -7,7 +7,8 @@ export type DocumentsStoreAction =
     | UpdateDocumentPath
     | AddDocument
     | ActiveLineageViewChange
-    | WorkspaceEvents;
+    | WorkspaceEvents
+    | { type: 'BACKUPS/SET_PROCESSED' };
 
 export type SetClipboard = {
     type: 'DOCUMENTS/SET_CLIPBOARD';
@@ -41,7 +42,8 @@ export type UpdateDocumentPath = {
 export type WorkspaceEvents =
     | ActiveLineageViewChange
     | ActiveLeafChange
-    | WorkspaceResize;
+    | WorkspaceResize
+    | LayoutReady;
 
 export type ActiveLineageViewChange = {
     type: 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW';
@@ -57,4 +59,7 @@ export type ActiveLeafChange = {
 
 export type WorkspaceResize = {
     type: 'WORKSPACE/RESIZE';
+};
+export type LayoutReady = {
+    type: 'WORKSPACE/LAYOUT_READY';
 };

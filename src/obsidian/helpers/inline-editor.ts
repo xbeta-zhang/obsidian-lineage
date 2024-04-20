@@ -39,6 +39,14 @@ export class InlineEditor {
     }
 
     loadNode(target: HTMLElement, nodeId: string) {
+        if (!this.view.file) return;
+        this.view.plugin.settings.dispatch({
+            type: 'BACKUP/ADD_FILE',
+            payload: {
+                path: this.view.file.path,
+                content: this.view.data,
+            },
+        });
         const content =
             this.view.documentStore.getValue().document.content[nodeId];
         this.setContent(content?.content || '');

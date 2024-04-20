@@ -17,4 +17,5 @@ export const DEFAULT_SETTINGS = (): Settings => ({
         },
         limitPreviewHeight: true,
     },
+    backup: {},
 });

@@ -24,6 +24,10 @@ export type ScrollingSettings = {
     horizontalScrollingMode: ScrollingMode;
 };
 
+export type DocumentBackup = {
+    content: string;
+    created: number;
+};
 export type Settings = {
     documents: Record<string, true>;
     hotkeys: {
@@ -36,5 +40,10 @@ export type Settings = {
         minimumCardHeight?: number;
         scrolling: ScrollingSettings;
         limitPreviewHeight: boolean;
+    };
+    // when view.inlineEditor is enabled, and the file is opened by another markdown view, inlineEditor overrides file.data with card.data
+    // a copy of file.data is saved in case obsidian closes while file.data is set tod card.data
+    backup: {
+        [file_path: string]: DocumentBackup;
     };
 };

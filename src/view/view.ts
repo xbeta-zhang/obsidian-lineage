@@ -1,4 +1,4 @@
-import { IconName, Notice, TextFileView, WorkspaceLeaf } from 'obsidian';
+import { IconName, TextFileView, WorkspaceLeaf } from 'obsidian';
 
 import Component from './components/container/main.svelte';
 import Lineage from '../main';
@@ -18,9 +18,10 @@ import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { defaultViewState } from 'src/stores/view/default-view-state';
 import { viewReducer } from 'src/stores/view/view-reducer';
 import { viewSubscriptions } from 'src/stores/view/subscriptions/view-subscriptions';
-import { SilentError } from 'src/stores/view/helpers/errors';
+import { onStoreError } from 'src/helpers/store/on-store-error';
 import { InlineEditor } from 'src/obsidian/helpers/inline-editor';
 import { id } from 'src/helpers/id';
+import invariant from 'tiny-invariant';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -149,16 +150,11 @@ export class LineageView extends TextFileView {
                 setFileViewType(this.plugin, this.file, this.leaf, 'markdown');
             }
         }
-        if (!(error instanceof SilentError)) {
-            // eslint-disable-next-line no-console
-            console.error(`[${location}] action: `, action);
-            // eslint-disable-next-line no-console
-            console.error(`[${location}]`, error);
-            new Notice('Lineage plugin: ' + error.message);
-        }
+        onStoreError(error, location, action);
     };
 
-    saveDocument = async (immediate = false) => {
+    saveDocument = async (immediate = false, force = false) => {
+        invariant(this.file);
         const state = clone(this.documentStore.getValue());
         const data: string =
             state.file.frontmatter +
@@ -168,10 +164,19 @@ export class LineageView extends TextFileView {
                     state.document.content,
                 ),
             );
-        if (data !== this.data) {
+        if (data !== this.data || force) {
             this.setViewData(data);
             if (immediate) await this.save();
             else this.requestSave();
+            if (!this.plugin.documents.getValue().processedBackups) {
+                throw new Error('Unprocessed backups');
+            }
+            this.plugin.settings.dispatch({
+                type: 'BACKUP/DELETE_FILE',
+                payload: {
+                    path: this.file.path,
+                },
+            });
         }
     };
 

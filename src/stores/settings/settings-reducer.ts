@@ -74,6 +74,19 @@ export type SettingsActions =
           payload: {
               limit: boolean;
           };
+      }
+    | {
+          type: 'BACKUP/ADD_FILE';
+          payload: {
+              content: string;
+              path: string;
+          };
+      }
+    | {
+          type: 'BACKUP/DELETE_FILE';
+          payload: {
+              path: string;
+          };
       };
 
 const updateState = (store: Settings, action: SettingsActions) => {
@@ -103,6 +116,16 @@ const updateState = (store: Settings, action: SettingsActions) => {
         store.view.scrolling.verticalOffset += action.payload.movementY;
     } else if (action.type === 'SET_LIMIT_PREVIEW_HEIGHT') {
         store.view.limitPreviewHeight = action.payload.limit;
+    } else if (action.type === 'BACKUP/ADD_FILE') {
+        if (store.backup[action.payload.path]) {
+            throw new Error(`a backup of '${action.payload.path}' exists`);
+        }
+        store.backup[action.payload.path] = {
+            content: action.payload.content,
+            created: Date.now(),
+        };
+    } else if (action.type === 'BACKUP/DELETE_FILE') {
+        delete store.backup[action.payload.path];
     }
 };
 export const settingsReducer = (

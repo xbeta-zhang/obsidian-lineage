@@ -22,6 +22,11 @@ import { DocumentsStoreAction } from 'src/stores/documents/documents-store-actio
 import { documentsReducer } from 'src/stores/documents/documents-reducer';
 import { DefaultDocumentsState } from 'src/stores/documents/default-documents-state';
 import { StatusBar } from 'src/obsidian/status-bar/status-bar';
+import { documentsStoreSubscriptions } from 'src/stores/documents/subscriptions/documents-store-subscriptions';
+import { onStoreError } from 'src/helpers/store/on-store-error';
+import { registerActiveLeafChange } from 'src/obsidian/events/workspace/register-active-leaf-change';
+import { registerWorkspaceResize } from 'src/obsidian/events/workspace/register-workspace-resize';
+import { registerLayoutReady } from 'src/obsidian/events/workspace/register-layout-ready';
 
 export type SettingsStore = Store<Settings, SettingsActions>;
 export type DocumentsStore = Store<DocumentsState, DocumentsStoreAction>;
@@ -35,6 +40,7 @@ export default class Lineage extends Plugin {
         this.documents = new Store<DocumentsState, DocumentsStoreAction>(
             DefaultDocumentsState(),
             documentsReducer,
+            onStoreError,
         );
         this.registerView(
             FILE_VIEW_TYPE,
@@ -42,10 +48,10 @@ export default class Lineage extends Plugin {
         );
         // @ts-ignore
         this.register(around(WorkspaceLeaf.prototype, { setViewState }));
+        this.registerEffects();
         this.registerEvents();
         addCommands(this);
         loadCommands(this);
-        this.registerEffects();
         this.statusBar = new StatusBar(this);
     }
 
@@ -58,6 +64,7 @@ export default class Lineage extends Plugin {
         this.settings = new Store<Settings, SettingsActions>(
             deepMerge(settings, DEFAULT_SETTINGS()),
             settingsReducer,
+            onStoreError,
         );
         this.settings.subscribe(() => {
             this.saveSettings();
@@ -69,32 +76,13 @@ export default class Lineage extends Plugin {
         registerFileMenuEvent(this);
         registerFileRenameEvent(this);
         registerFileDeleteEvent(this);
-        this.registerEvent(
-            this.app.workspace.on('active-leaf-change', (leaf) => {
-                if (leaf?.view instanceof LineageView && leaf.view.file?.path) {
-                    this.documents.dispatch({
-                        type: 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW',
-                        payload: {
-                            path: leaf.view.file?.path,
-                            viewId: leaf.view.id,
-                        },
-                    });
-                }
-                this.documents.dispatch({
-                    type: 'WORKSPACE/ACTIVE_LEAF_CHANGE',
-                });
-            }),
-        );
-        this.registerEvent(
-            this.app.workspace.on('resize', () => {
-                this.documents.dispatch({
-                    type: 'WORKSPACE/RESIZE',
-                });
-            }),
-        );
+        registerActiveLeafChange(this);
+        registerWorkspaceResize(this);
+        registerLayoutReady(this);
     }
 
     private registerEffects() {
         hotkeySubscriptions(this);
+        documentsStoreSubscriptions(this);
     }
 }

@@ -9,4 +9,5 @@ export type DocumentsState = {
         };
     };
     clipboard: Clipboard;
+    processedBackups: boolean;
 };

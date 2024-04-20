@@ -39,6 +39,8 @@ const updateDocumentsState = (
         if (state.documents[action.payload.path]) {
             state.documents[action.payload.path].viewId = action.payload.viewId;
         }
+    } else if (action.type === 'BACKUPS/SET_PROCESSED') {
+        state.processedBackups = true;
     }
 };
 

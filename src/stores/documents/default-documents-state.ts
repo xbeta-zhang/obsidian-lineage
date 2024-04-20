@@ -6,4 +6,5 @@ export const DefaultDocumentsState = (): DocumentsState => ({
     clipboard: {
         branch: null,
     },
+    processedBackups: false,
 });
