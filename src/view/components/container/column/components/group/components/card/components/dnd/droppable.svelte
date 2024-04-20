@@ -78,6 +78,10 @@
         font-size: 16px;
         --scrollbar-thumb-bg: var(--color-base-30);
         --scrollbar-active-thumb-bg: var(--color-base-40);
+
+    }
+    .lineage-card::-webkit-scrollbar {
+        display: initial;
     }
     .node-border--active {
         border-left: 5px var(--lineage-accent) solid;

@@ -67,4 +67,7 @@
         --scrollbar-active-thumb-bg: transparent;
         --scrollbar-bg: transparent;
     }
+    .hide-scrollbars::-webkit-scrollbar {
+        display: none;
+    }
 </style>
