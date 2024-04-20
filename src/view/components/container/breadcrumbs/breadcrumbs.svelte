@@ -5,12 +5,12 @@
 
     const view = getView();
     const activeBranch = activeBranchStore(view);
- 
+
 </script>
 
 <div class="breadcrumbs-container">
     <div class="breadcrumbs">
-        {#each $activeBranch.sortedParentNodes as parentId, index}
+        {#each $activeBranch.sortedParentNodes as parentId, index (parentId)}
             <Item {parentId} {index} />
         {/each}
     </div>
