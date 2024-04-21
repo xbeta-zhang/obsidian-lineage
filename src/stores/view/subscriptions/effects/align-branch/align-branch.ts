@@ -32,17 +32,21 @@ export const alignBranch = (
         behavior,
     );
 
+    let activeBranchNodeOfPreviousColumn: string | null =
+        viewState.document.activeNode;
     for (const column of documentState.document.columns) {
         if (localState.columns.has(column.id)) continue;
 
         const activeNodesOfColumn =
             viewState.document.activeNodesOfColumn[column.id];
 
-        const activeDirectChildNode = activeNodesOfColumn
-            ? activeNodesOfColumn[viewState.document.activeNode]
-            : null;
-        if (activeDirectChildNode) {
-            const element = getNodeElement(container, activeDirectChildNode);
+        const activeBranchNode: string | null =
+            activeNodesOfColumn && activeBranchNodeOfPreviousColumn
+                ? activeNodesOfColumn[activeBranchNodeOfPreviousColumn]
+                : null;
+        activeBranchNodeOfPreviousColumn = activeBranchNode;
+        if (activeBranchNode) {
+            const element = getNodeElement(container, activeBranchNode);
             if (element) {
                 const columnId = alignElement(
                     container,

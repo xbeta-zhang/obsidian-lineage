@@ -82,7 +82,7 @@ const input = {
     state: {},
 };
 const gs: ActiveNodesOfColumn = {
-    [c2]: {
+    [c3]: {
         [n1_2_1]: n1_2_1_2,
         [n3_2_2]: n3_2_2_2,
     },

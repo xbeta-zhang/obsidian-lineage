@@ -13,16 +13,18 @@ export const findNextActiveNodeOnKeyboardNavigation = (
 ) => {
     if (!node) return;
     let nextNode: NodeId | null = null;
-    const columnIndex = findNodeColumn(columns, node);
-    const column = columns[columnIndex];
-    if (!column) return;
+
     if (direction === 'left') {
         const group = findGroupByNodeId(columns, node);
         if (group && !group.parentId.startsWith('r')) nextNode = group.parentId;
     } else if (direction === 'right') {
         const group = findChildGroup(columns, node);
         if (group) {
-            const activeNode = activeNodeOfGroup[column.id]?.[group.parentId];
+            const columnIndex = findNodeColumn(columns, node);
+            const nextColumn = columns[columnIndex + 1];
+            if (!nextColumn) return;
+            const activeNode =
+                activeNodeOfGroup[nextColumn.id]?.[group.parentId];
             if (activeNode) nextNode = activeNode;
             else nextNode = group.nodes[0];
         }
@@ -33,6 +35,9 @@ export const findNextActiveNodeOnKeyboardNavigation = (
 			nextNode = nextColumn.groups[0]?.nodes?.[0];
 		}*/
     } else {
+        const columnIndex = findNodeColumn(columns, node);
+        const column = columns[columnIndex];
+        if (!column) return;
         const allNodes = column.groups.map((g) => g.nodes).flat();
         const nodeIndex = allNodes.findIndex((n) => n === node);
 
