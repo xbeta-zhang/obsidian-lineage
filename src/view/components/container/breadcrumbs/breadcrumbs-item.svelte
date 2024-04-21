@@ -1,20 +1,19 @@
 <script lang="ts">
     import { ChevronRight } from 'lucide-svelte';
     import { getView } from 'src/view/components/container/context';
-    import { contentStore } from 'src/stores/document/derived/content-store';
 
     export let parentId: string;
     export let index: number
     const view = getView();
     const viewStore = view.viewStore;
-    const content = contentStore(view,parentId)
+    export let content: string
 </script>
 
 {#if index > 0}
     <ChevronRight class="svg-icon chevron" size="12" />
 {/if}
 <button
-    aria-label={$content}
+    aria-label={content}
     class="breadcrumbs-item"
     data-tooltip-position="top"
     on:click={() => {
@@ -25,7 +24,7 @@
     }}
 >
     <span class="breadcrumbs-item-text">
-        {$content || '(empty)'}
+        {content || '(empty)'}
     </span>
 </button>
 

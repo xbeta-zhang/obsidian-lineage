@@ -3,19 +3,42 @@
     import { getView } from 'src/view/components/container/context';
     import { scrollOnDndY } from 'src/view/actions/dnd/scroll-on-dnd-y';
     import { groupsStore } from 'src/stores/document/derived/groups-store';
-    import { dndStore } from 'src/stores/view/derived/dnd-store';
+
+    export let columnId: string;
+    export let activeChildGroups: Set<string>;
+    export let dndChildGroups: Set<string>;
+    export let parentNodes: Set<string>;
+    export let activeGroup: string;
+    export let activeNode: string;
+    export let editedNode: string;
+    export let disableEditConfirmation: boolean;
+    export let searchQuery: string;
+    export let searchResults: Set<string>;
+    export let searching: boolean;
+    export let idSection: Record<string,string>;
 
     const view = getView();
-    export let columnId: string;
-    const groups = groupsStore(view,columnId);
-    const dnd = dndStore(view)
+    const groups = groupsStore(view, columnId);
 </script>
 
-<div class="column" id={columnId}  use:scrollOnDndY>
+<div class="column" id={columnId} use:scrollOnDndY>
     <div class="column-buffer" />
     {#each $groups as group (group.parentId)}
-        {#if !$dnd.childGroups.has(group.parentId)}
-            <Group groupId={group.parentId} {columnId} />
+        {#if !dndChildGroups.has(group.parentId)}
+            <Group
+                groupId={group.parentId}
+                {columnId}
+                {parentNodes}
+                {activeGroup}
+                {editedNode}
+                {disableEditConfirmation}
+                {searchQuery}
+                {searchResults}
+                {searching}
+                {activeChildGroups}
+                {activeNode}
+                {idSection}
+            />
         {/if}
     {/each}
     <div class="column-buffer" />

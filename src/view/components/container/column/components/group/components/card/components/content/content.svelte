@@ -5,19 +5,18 @@
     import {
         handleClick
     } from 'src/view/components/container/column/components/group/components/card/components/content/event-handlers/handle-links';
-    import { limitPreviewHeightStore } from 'src/stores/settings/derived/limit-preview-height-store';
 
     export let active: ActiveStatus | null;
     export let nodeId: string;
 
     const view = getView();
     const onClick = handleClick(view);
-    const limitPreviewHeight = limitPreviewHeightStore(view);
+
 </script>
 
 <div
-    class={'preview-container markdown-preview-view markdown-preview-section ' +
-        ($limitPreviewHeight ? 'limit-card-height' : '')}
+    class={'preview-container markdown-preview-view markdown-preview-section '
+       }
     on:click={onClick}
     use:markdownPreviewAction={nodeId}
 ></div>
@@ -31,7 +30,5 @@
         padding: 6px 6px 6px 12px;
         color-scheme: light;
     }
-    .limit-card-height {
-        max-height: 65vh;
-    }
+
 </style>

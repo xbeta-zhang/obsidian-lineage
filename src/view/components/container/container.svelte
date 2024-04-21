@@ -6,10 +6,28 @@
     import { columnsStore } from 'src/stores/document/derived/columns-store';
     import ColumnsBuffer from './buffers/columns-buffer.svelte';
     import { scrollingModeStore } from 'src/stores/settings/derived/scrolling-store';
+    import { dndStore } from 'src/stores/view/derived/dnd-store';
+    import { activeBranchStore } from 'src/stores/view/derived/active-branch-store';
+    import { activeNodeStore } from 'src/stores/view/derived/active-node-store';
+    import { documentStateStore } from 'src/stores/view/derived/editing-store';
+    import { searchStore } from 'src/stores/view/derived/search-store';
+    import { NodeId } from 'src/stores/document/document-state-type';
+    import { limitPreviewHeightStore } from 'src/stores/settings/derived/limit-preview-height-store';
+    import { idSectionStore } from 'src/stores/document/derived/id-section-store';
 
     const view = getView();
     const columns = columnsStore(view);
     const scrolling = scrollingModeStore(view);
+    const dnd = dndStore(view);
+    const activeBranch = activeBranchStore(view);
+    const activeNode = activeNodeStore(view);
+    const editing = documentStateStore(view);
+    const search = searchStore(view);
+    const limitPreviewHeight = limitPreviewHeightStore(view);
+    const idSection = idSectionStore(view,);
+    let parentNodes: Set<NodeId> = new Set<NodeId>();
+    $: parentNodes = new Set($activeBranch.sortedParentNodes);
+
 </script>
 
 <div
@@ -17,7 +35,8 @@
         ($scrolling === 'fixed-position' ||
         $scrolling === 'keep-active-card-at-center'
             ? 'hide-scrollbars'
-            : '')}
+            : '') +
+        ($limitPreviewHeight ? ' limit-card-height' : '')}
     id="columns-container"
     tabindex="0"
     use:keyboardShortcuts={{ view }}
@@ -28,7 +47,20 @@
             <ColumnsBuffer />
         {/if}
         {#each $columns as column (column.id)}
-            <Column columnId={column.id} />
+            <Column
+                columnId={column.id}
+                dndChildGroups={$dnd.childGroups}
+                {parentNodes}
+                activeGroup={$activeBranch.group}
+                activeChildGroups={$activeBranch.childGroups}
+                activeNode={$activeNode}
+                editedNode={$editing.activeNodeId}
+                disableEditConfirmation={$editing.disableEditConfirmation}
+                searchQuery={$search.query}
+                searchResults={$search.results}
+                searching={$search.searching}
+                idSection={$idSection}
+            />
         {/each}
         {#if $scrolling === 'fixed-position' || $scrolling === 'keep-active-card-at-center'}
             <ColumnsBuffer />
@@ -69,5 +101,10 @@
     }
     .hide-scrollbars::-webkit-scrollbar {
         display: none;
+    }
+    .limit-card-height {
+        & .preview-container {
+            max-height: 65vh;
+        }
     }
 </style>

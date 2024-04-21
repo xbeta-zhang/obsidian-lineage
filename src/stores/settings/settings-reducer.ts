@@ -117,8 +117,14 @@ const updateState = (store: Settings, action: SettingsActions) => {
     } else if (action.type === 'SET_LIMIT_PREVIEW_HEIGHT') {
         store.view.limitPreviewHeight = action.payload.limit;
     } else if (action.type === 'BACKUP/ADD_FILE') {
-        if (store.backup[action.payload.path]) {
-            throw new Error(`a backup of '${action.payload.path}' exists`);
+        const overridingExistingBackup =
+            store.backup[action.payload.path] &&
+            store.backup[action.payload.path].content !==
+                action.payload.content;
+        if (overridingExistingBackup) {
+            throw new Error(
+                `a different backup of '${action.payload.path}' exists`,
+            );
         }
         store.backup[action.payload.path] = {
             content: action.payload.content,

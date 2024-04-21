@@ -14,8 +14,7 @@
     export let hasChildren: boolean;
     export let parentId: string;
     export let disableEditConfirmation: boolean
-
-
+    export let section: string;
 </script>
 
 <Droppable {active}{disableEditConfirmation} {editing} {hasChildren} nodeId={node} {parentId}>
@@ -26,7 +25,7 @@
             <Content {active} nodeId={node} />
         </Draggable>
     {/if}
-    <CardButtons {active} {editing} nodeId={node}/>
+    <CardButtons {active} {editing} nodeId={node} {section}/>
 </Droppable>
 
 

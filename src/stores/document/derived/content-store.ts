@@ -19,3 +19,9 @@ export const contentStore = (view: LineageView, nodeId: string) => {
         return nodeContent.content;
     });
 };
+
+export const documentContentStore = (view: LineageView) => {
+    return derived(view.documentStore, (state) => {
+        return state.document.content;
+    });
+};

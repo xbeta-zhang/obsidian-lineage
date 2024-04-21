@@ -4,13 +4,13 @@
     import { parseDelimiter } from 'src/stores/view/helpers/json-to-md/markdown-to-json/helpers/delimiter';
     import { get } from 'svelte/store';
     import { MarkdownView, TFile } from 'obsidian';
-    import { idSectionStore } from 'src/stores/document/derived/id-section-store';
 
     const plugin = getPlugin();
     const view = getView();
     const documentStore = view.documentStore;
     export let nodeId: string;
     export let activeStatus: ActiveStatus | null;
+    export let section: string
 
     const openFileAndJumpToLine = async (file: TFile, line: number,ch: number) => {
         const leaf = plugin.app.workspace.getLeaf('split');
@@ -49,7 +49,8 @@
         [ActiveStatus.parent]: 'is-active-parent',
         [ActiveStatus.sibling]: 'is-active-parent',
     };
-    const section = idSectionStore(view,nodeId);
+    // move this the fuck up
+
 
 </script>
 
@@ -58,7 +59,7 @@
     class={'tree-index ' + (activeStatus ? classes[activeStatus] : '')}
     on:click={openFile}
 >
-    {$section}
+    {section}
 </div>
 
 <style>
