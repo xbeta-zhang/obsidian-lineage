@@ -165,7 +165,7 @@ export class LineageView extends TextFileView {
                 ),
             );
         if (data !== this.data || force) {
-            this.setViewData(data);
+            this.data = data;
             if (immediate) await this.save();
             else this.requestSave();
             if (!this.plugin.documents.getValue().processedBackups) {
