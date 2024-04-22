@@ -9,7 +9,7 @@ describe('extractFrontmatter', () => {
             '# Content\nThis is the content of the markdown file.\n',
         );
         expect(frontmatter).toEqual(
-            '---\ntitle: Example\ndate: 2024-02-27\n---',
+            '---\ntitle: Example\ndate: 2024-02-27\n---\n',
         );
     });
 
@@ -32,6 +32,6 @@ describe('extractFrontmatter', () => {
         const input = `---\ntitle: Only Frontmatter\n---\n`;
         const { data, frontmatter } = extractFrontmatter(input);
         expect(data).toEqual('');
-        expect(frontmatter).toEqual('---\ntitle: Only Frontmatter\n---');
+        expect(frontmatter).toEqual('---\ntitle: Only Frontmatter\n---\n');
     });
 });

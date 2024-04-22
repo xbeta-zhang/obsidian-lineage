@@ -7,7 +7,7 @@ export const extractFrontmatter = (
     if (match) {
         const frontmatter = match[0];
         const data = markdown.slice(frontmatter.length);
-        return { data, frontmatter: frontmatter.trim() };
+        return { data, frontmatter: frontmatter.trim() + '\n' };
     } else {
         return { data: markdown, frontmatter: '' };
     }
