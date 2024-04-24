@@ -69,6 +69,7 @@
     .search-input-element {
         height: 34px;
         padding-right: 64px;
+        padding-left: 12px
     }
 
     @media(max-width: 568px){
@@ -82,5 +83,9 @@
 
     .search-input-wrapper {
         max-width: 100%;
+    }
+
+    .search-input-container::before{
+        display: none;
     }
 </style>

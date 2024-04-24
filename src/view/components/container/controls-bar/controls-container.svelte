@@ -106,7 +106,7 @@
 <div class="controls-container">
     <div class="buttons-group controls-toggle">
         <Button
-            data-active={$showControls}
+            active={$showControls}
             label={'Toggle controls'}
             on:click={toggleShowControls}
             tooltipPosition="left"
@@ -127,8 +127,8 @@
             <File class="svg-icon" />
         </Button>
         <Button
+            active={$controls.showSettingsSidebar}
             class="control-item"
-            data-active={$controls.showSettingsSidebar}
             label={'Settings'}
             on:click={toggleSettings}
             tooltipPosition="left"
@@ -136,8 +136,8 @@
             <Settings class="svg-icon" />
         </Button>
         <Button
+            active={$controls.showHelpSidebar}
             class="control-item"
-            data-active={$controls.showHelpSidebar}
             label="Keyboard shortcuts"
             on:click={toggleHelp}
             tooltipPosition="left"
@@ -150,8 +150,8 @@
         data-visible={$showControls}
     >
         <Button
+            active={$controls.showHistorySidebar}
             class="control-item"
-            data-active={$controls.showHistorySidebar}
             disabled={$history.items.length === 0}
             label="History"
             on:click={() => {

@@ -85,7 +85,8 @@ const viewEffectsAndActions = (
             type === 'DOCUMENT/DELETE_NODE' ||
             type === 'DOCUMENT/CUT_NODE' ||
             e.changeHistory ||
-            type === 'DOCUMENT/EXTRACT_BRANCH'
+            type === 'DOCUMENT/EXTRACT_BRANCH' ||
+            type === 'DOCUMENT/LOAD_FILE'
         ) {
             removeObsoleteNavigationItems(viewStore, documentState);
         }

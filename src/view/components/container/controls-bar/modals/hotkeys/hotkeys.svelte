@@ -39,7 +39,7 @@
         display: flex;
         flex-direction: column;
         gap: var(--size-4-2);
-        max-height: 400px;
+        max-height: 360px;
         overflow-y: auto;
     }
 

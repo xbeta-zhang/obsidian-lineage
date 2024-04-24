@@ -21,8 +21,19 @@
     cursor: not-allowed;
     color: var(--color-base-40) !important;
 }
-.lineage-view-button[data-active='true']{
-    background-color: var(--color-base-50);
+
+.theme-dark {
+    & .lineage-view-button[data-active='true'] {
+        background-color: var(--color-base-40);
+
+    }
+}
+
+.theme-light {
+    & .lineage-view-button[data-active='true'] {
+        background-color: var(--color-base-25);
+
+    }
 }
 
 .buttons-group{
@@ -30,7 +41,7 @@
     overflow: hidden;
     box-shadow: var(--input-shadow);
     display: flex;
-
+    background-color: var(--interactive-normal);
 }
 
 .buttons-group--vertical{

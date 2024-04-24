@@ -27,6 +27,7 @@
         bottom: var(--size-4-2);
         display: flex;
         position: absolute;
+        max-width: calc(100% - var(--size-4-2) * 2);
     }
     .breadcrumbs {
         display: flex;
@@ -36,6 +37,7 @@
         background-color: var(--interactive-normal);
         border: 1px solid var(--background-modifier-border);
         box-shadow: var(--input-shadow);
-        overflow: hidden;
+        max-width: 100%;
+        overflow: auto;
     }
 </style>
