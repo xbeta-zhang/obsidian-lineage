@@ -39,22 +39,25 @@ export const scrollingAxis = (
         container.removeEventListener('keyup', onKeyUp);
     };
 
-    let movementX = 0;
-    let movementY = 0;
+    let clientX = 0;
+    let clientY = 0;
     const dispatch = debounce(() => {
+        const container = view.container;
+        invariant(container);
+        const containerRect = container.getBoundingClientRect();
         view.plugin.settings.dispatch({
             type: 'UPDATE_AXIS_OFFSET',
             payload: {
-                movementX,
-                movementY,
+                relativeClientX:
+                    (clientX - containerRect.left) / containerRect.width,
+                relativeClientY:
+                    (clientY - containerRect.top) / containerRect.height,
             },
         });
-        movementX = 0;
-        movementY = 0;
     }, 16);
     const onMouseMove = (e: MouseEvent) => {
-        movementX += e.movementX;
-        movementY += e.movementY;
+        clientX = e.clientX;
+        clientY = e.clientY;
         dispatch();
     };
     const hookMouseEvents = () => {

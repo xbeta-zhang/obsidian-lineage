@@ -28,7 +28,9 @@ export const calculateScrollLeft = (
         scrollLeft = deltaLeft;
     } else if (settings.horizontalScrollingMode === 'fixed-position') {
         scrollLeft =
-            containerRect.left + settings.horizontalOffset - elementRect.left;
+            containerRect.left +
+            settings.horizontalOffset * containerRect.width -
+            elementRect.left;
     } else if (
         settings.horizontalScrollingMode === 'keep-active-card-at-center'
     ) {

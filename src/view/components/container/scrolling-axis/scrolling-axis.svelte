@@ -2,17 +2,15 @@
     import { writable } from 'svelte/store';
     import { getView } from 'src/view/components/container/context';
     import { scrollingAxis } from 'src/view/actions/scrolling-axis/scrolling-axis';
-    import { horizontalOffsetStore, verticalOffsetStore } from 'src/stores/settings/derived/scrolling-store';
+    import { verticalOffsetStore } from 'src/stores/settings/derived/scrolling-store';
 
     const pressed = writable(false);
     const view = getView();
-    const horizontalOffset = horizontalOffsetStore(view);
     const verticalOffset = verticalOffsetStore(view);
 </script>
 
 <div
-    class={'scrolling-axis-h ' + ($pressed ? 'show-axis' : '')}
-    style={`left: ${$horizontalOffset}px`}
+    style="position: absolute; right: 0; bottom: 0; z-index: 1; width: 1px; height: 1px;"
     use:scrollingAxis="{{ view, pressed }}"
 ></div>
 <div
@@ -28,30 +26,6 @@
 {/if}
 
 <style>
-    .scrolling-axis-h {
-        position: absolute;
-        height: 100%;
-        min-width: 2px;
-        /*left: calc(50% - 1px);*/
-        top: 0;
-        background-color: var(--color-base-40);
-        z-index: 20;
-        display: none;
-    }
-    .scrolling-axis-v {
-        position: absolute;
-        width: 100%;
-        min-height: 2px;
-        /*left: calc(50% - 1px);*/
-        left: 0;
-        background-color: var(--color-base-40);
-        z-index: 20;
-        display: none;
-    }
-
-    .show-axis {
-        display: block;
-    }
 
     .center-indicator {
         position: absolute;
@@ -62,6 +36,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        pointer-events: none;
     }
     .center-indicator-x {
         min-width: 100%;

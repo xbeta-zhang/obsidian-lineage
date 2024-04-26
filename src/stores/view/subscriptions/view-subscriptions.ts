@@ -220,7 +220,7 @@ export const viewSubscriptions = (view: LineageView) => {
                         state.view.scrolling.horizontalScrollingMode ===
                             'fixed-position'
                     ) {
-                        new Notice('Hold space to change axis position');
+                        new Notice('Hold space to change card position');
                     }
                 }
             }

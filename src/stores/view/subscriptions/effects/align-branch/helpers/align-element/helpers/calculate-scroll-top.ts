@@ -15,7 +15,9 @@ export const calculateScrollTop = (
         scrollTop = deltaTop;
     } else if (settings.horizontalScrollingMode === 'fixed-position') {
         scrollTop =
-            containerRect.top + settings.verticalOffset - elementRect.top;
+            containerRect.top +
+            settings.verticalOffset * containerRect.height -
+            elementRect.top;
     } else {
         const verticalMiddle = containerRect.height / 2;
         scrollTop =

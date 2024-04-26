@@ -65,8 +65,8 @@ export type SettingsActions =
     | {
           type: 'UPDATE_AXIS_OFFSET';
           payload: {
-              movementX: number;
-              movementY: number;
+              relativeClientX: number;
+              relativeClientY: number;
           };
       }
     | {
@@ -112,8 +112,8 @@ const updateState = (store: Settings, action: SettingsActions) => {
     } else if (action.type === 'SET_HORIZONTAL_SCROLLING_MODE') {
         store.view.scrolling.horizontalScrollingMode = action.payload.mode;
     } else if (action.type === 'UPDATE_AXIS_OFFSET') {
-        store.view.scrolling.horizontalOffset += action.payload.movementX;
-        store.view.scrolling.verticalOffset += action.payload.movementY;
+        store.view.scrolling.horizontalOffset = action.payload.relativeClientX;
+        store.view.scrolling.verticalOffset = action.payload.relativeClientY;
     } else if (action.type === 'SET_LIMIT_PREVIEW_HEIGHT') {
         store.view.limitPreviewHeight = action.payload.limit;
     } else if (action.type === 'BACKUP/ADD_FILE') {
