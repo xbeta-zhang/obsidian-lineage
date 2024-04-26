@@ -1,6 +1,8 @@
 import { PluginCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
 import { isActiveAndNotEditing } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
-import { copyActiveBranchToClipboard } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/clipboard/copy-active-branch-to-clipboard';
+import { copyNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/copy-node';
+import { cutNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/cut-node';
+import { pasteNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/paste-node';
 
 export const clipboardCommands = () => {
     return [
@@ -9,13 +11,7 @@ export const clipboardCommands = () => {
             check: isActiveAndNotEditing,
             callback: async (view, event) => {
                 event.preventDefault();
-                await copyActiveBranchToClipboard(view);
-                view.documentStore.dispatch({
-                    type: 'DOCUMENT/COPY_NODE',
-                    payload: {
-                        nodeId: view.viewStore.getValue().document.activeNode,
-                    },
-                });
+                copyNode(view);
             },
             hotkeys: [{ key: 'C', modifiers: ['Ctrl'] }],
         },
@@ -24,13 +20,7 @@ export const clipboardCommands = () => {
             check: isActiveAndNotEditing,
             callback: async (view, event) => {
                 event.preventDefault();
-                await copyActiveBranchToClipboard(view);
-                view.documentStore.dispatch({
-                    type: 'DOCUMENT/CUT_NODE',
-                    payload: {
-                        nodeId: view.viewStore.getValue().document.activeNode,
-                    },
-                });
+                cutNode(view);
             },
             hotkeys: [{ key: 'X', modifiers: ['Ctrl'] }],
         },
@@ -39,15 +29,7 @@ export const clipboardCommands = () => {
             check: isActiveAndNotEditing,
             callback: async (view, event) => {
                 event.preventDefault();
-                const viewState = view.viewStore.getValue();
-                const text = await navigator.clipboard.readText();
-                view.documentStore.dispatch({
-                    type: 'DOCUMENT/PASTE_NODE',
-                    payload: {
-                        targetNodeId: viewState.document.activeNode,
-                        text,
-                    },
-                });
+                pasteNode(view);
             },
             hotkeys: [{ key: 'V', modifiers: ['Ctrl'] }],
         },

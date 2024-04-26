@@ -14,6 +14,7 @@
     import { NodeId } from 'src/stores/document/document-state-type';
     import { limitPreviewHeightStore } from 'src/stores/settings/derived/limit-preview-height-store';
     import { idSectionStore } from 'src/stores/document/derived/id-section-store';
+    import { contextMenu } from 'src/view/actions/context-menu/context-menu';
 
     const view = getView();
     const columns = columnsStore(view);
@@ -39,6 +40,7 @@
         ($limitPreviewHeight ? ' limit-card-height' : '')}
     id="columns-container"
     tabindex="0"
+    use:contextMenu={view}
     use:keyboardShortcuts={{ view }}
     use:scrollOnDndX
 >
