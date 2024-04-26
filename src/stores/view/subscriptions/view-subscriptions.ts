@@ -106,19 +106,6 @@ const viewEffectsAndActions = (
                 }, 50);
         }
 
-        if (
-            (type === 'DOCUMENT/COPY_NODE' || type === 'DOCUMENT/CUT_NODE') &&
-            documentState.clipboard.branch
-        ) {
-            view.plugin.documents.dispatch({
-                type: 'DOCUMENTS/SET_CLIPBOARD',
-                payload: {
-                    branch: documentState.clipboard.branch,
-                },
-            });
-            documentStore.dispatch({ type: 'DOCUMENTS/CLEAR_CLIPBOARD' });
-        }
-
         // effects
         if (!container || !view.isViewOfFile) return;
         const postInlineEditor = type === 'DOCUMENT/CONFIRM_DISABLE_EDIT';

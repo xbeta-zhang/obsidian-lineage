@@ -1,8 +1,6 @@
-import { ClipboardBranch } from 'src/stores/document/document-state-type';
 import { DocumentStore } from 'src/view/view';
 
 export type DocumentsStoreAction =
-    | SetClipboard
     | DeleteDocument
     | UpdateDocumentPath
     | AddDocument
@@ -10,12 +8,6 @@ export type DocumentsStoreAction =
     | WorkspaceEvents
     | { type: 'BACKUPS/SET_PROCESSED' };
 
-export type SetClipboard = {
-    type: 'DOCUMENTS/SET_CLIPBOARD';
-    payload: {
-        branch: ClipboardBranch;
-    };
-};
 export type AddDocument = {
     type: 'DOCUMENTS/ADD_DOCUMENT';
     payload: {

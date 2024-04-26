@@ -33,8 +33,6 @@ const updateDocumentsState = (
             documentStore: action.payload.documentStore,
             viewId: action.payload.viewId,
         };
-    } else if (action.type === 'DOCUMENTS/SET_CLIPBOARD') {
-        state.clipboard.branch = action.payload.branch;
     } else if (action.type === 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW') {
         if (state.documents[action.payload.path]) {
             state.documents[action.payload.path].viewId = action.payload.viewId;

@@ -1,5 +1,4 @@
 import { DocumentStore } from 'src/view/view';
-import { Clipboard } from 'src/stores/document/document-state-type';
 
 export type DocumentsState = {
     documents: {
@@ -8,6 +7,5 @@ export type DocumentsState = {
             viewId: string;
         };
     };
-    clipboard: Clipboard;
     processedBackups: boolean;
 };

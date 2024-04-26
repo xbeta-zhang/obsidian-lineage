@@ -7,10 +7,6 @@ export type ClipboardBranch = {
     mode: 'cut' | 'copy';
 };
 
-export type Clipboard = {
-    branch: ClipboardBranch | null;
-};
-
 export type Sections = {
     section_id: Record<string, string>;
     id_section: Record<string, string>;
@@ -24,7 +20,6 @@ export type DocumentState = {
     };
 
     history: DocumentHistory;
-    clipboard: Clipboard;
 };
 
 // document

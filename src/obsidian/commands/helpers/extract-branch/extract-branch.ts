@@ -1,5 +1,5 @@
 import { LineageView } from 'src/view/view';
-import { getBranch } from 'src/stores/document/reducers/clipboard/cut-node/helpers/get-branch';
+import { getBranch } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-branch';
 import { branchToText } from 'src/obsidian/commands/helpers/extract-branch/helpers/branch-to-text';
 import { createNewFile } from 'src/obsidian/commands/helpers/create-new-file';
 import invariant from 'tiny-invariant';

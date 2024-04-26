@@ -24,7 +24,4 @@ export const defaultDocumentState = (): DocumentState => ({
             activeSection: '',
         },
     },
-    clipboard: {
-        branch: null,
-    },
 });

@@ -9,8 +9,6 @@ import { DeleteNodeAction } from 'src/stores/document/reducers/delete-node/delet
 import { MoveNodeAction } from 'src/stores/document/reducers/move-node/move-node';
 import { MergeNodeAction } from 'src/stores/document/reducers/merge-node/merge-node';
 import { FormatHeadingsAction } from 'src/stores/document/reducers/content/format-content/format-headings';
-import { CopyNodeAction } from 'src/stores/document/reducers/clipboard/copy-node/copy-node';
-import { CutNodeAction } from 'src/stores/document/reducers/clipboard/cut-node/cut-node';
 import { PasteNodeAction } from 'src/stores/document/reducers/clipboard/paste-node/paste-node';
 import { ExtractNodeAction } from 'src/stores/document/reducers/extract-node/extract-node';
 
@@ -60,12 +58,21 @@ export type UndoableAction =
     | CutNodeAction
     | ExtractNodeAction;
 
+export type CopyNodeAction = {
+    type: 'DOCUMENT/COPY_NODE';
+    payload: {
+        nodeId: string;
+    };
+};
+
+export type CutNodeAction = {
+    type: 'DOCUMENT/CUT_NODE';
+    payload: {
+        nodeId: string;
+    };
+};
+
 export type DocumentClipboardActions =
     | CopyNodeAction
     | PasteNodeAction
-    | CutNodeAction
-    | ClearClipboard;
-
-export type ClearClipboard = {
-    type: 'DOCUMENTS/CLEAR_CLIPBOARD';
-};
+    | CutNodeAction;

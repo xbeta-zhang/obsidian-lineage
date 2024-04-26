@@ -15,4 +15,7 @@
     & .callout {
         mix-blend-mode: initial;
     }
+    & button.copy-code-button{
+        display: none;
+    }
 }

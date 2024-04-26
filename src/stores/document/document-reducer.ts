@@ -22,8 +22,6 @@ import {
 import { defaultDocumentState } from 'src/stores/document/default-document-state';
 import { formatHeadings } from 'src/stores/document/reducers/content/format-content/format-headings';
 import { pasteNode } from 'src/stores/document/reducers/clipboard/paste-node/paste-node';
-import { copyNode } from 'src/stores/document/reducers/clipboard/copy-node/copy-node';
-import { cutNode } from 'src/stores/document/reducers/clipboard/cut-node/cut-node';
 import { updateSectionsDictionary } from 'src/stores/document/reducers/state/update-sections-dictionary';
 import { getIdOfSection } from 'src/stores/view/subscriptions/actions/get-id-of-section';
 import { extractNode } from 'src/stores/document/reducers/extract-node/extract-node';
@@ -66,7 +64,6 @@ const updateDocumentState = (
         state.document = newState.document;
         state.history = newState.history;
         state.file = newState.file;
-        state.clipboard = newState.clipboard;
     } else if (action.type === 'HISTORY/SELECT_SNAPSHOT') {
         selectSnapshot(state.document, state.history, action);
         state.history = { ...state.history };
@@ -86,22 +83,9 @@ const updateDocumentState = (
         );
     } else if (action.type === 'DOCUMENT/PASTE_NODE') {
         newActiveNodeId = pasteNode(state.document, action);
-    } else if (action.type === 'DOCUMENT/COPY_NODE') {
-        copyNode(
-            state.document.columns,
-            state.document.content,
-            state.clipboard,
-            action.payload.nodeId,
-        );
     } else if (action.type === 'DOCUMENT/CUT_NODE') {
-        newActiveNodeId = cutNode(
-            state.document,
-            state.clipboard,
-            action.payload.nodeId,
-        );
+        newActiveNodeId = deleteNode(state.document, action.payload.nodeId);
         affectedActiveNodeId = action.payload.nodeId;
-    } else if (action.type === 'DOCUMENTS/CLEAR_CLIPBOARD') {
-        state.clipboard.branch = null;
     }
 
     const e = getDocumentEventType(action.type);
