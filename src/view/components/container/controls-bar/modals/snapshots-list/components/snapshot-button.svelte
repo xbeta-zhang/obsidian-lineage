@@ -21,7 +21,7 @@
 </script>
 
 <div
-    aria-label={info.label}
+    aria-label={snapshot.context.contentOfAffectedSection}
     class="snapshot"
     class:selected={active}
     on:click={() => {
@@ -34,32 +34,37 @@
             });
     }}
 >
-    <div
-        style="width: 32px; display: flex; align-items: center; justify-content: center;"
-    >
+    <div class="icon-wrapper">
         <svelte:component class="svg-icon label" this={info.icon} />
     </div>
-    <div style="display: flex; flex-direction: column; gap: 5px; width: 100%">
-        <div style="display: flex; justify-content: space-between">
-            <span class="text">
+    <div class="snapshot-content">
+        <div class="snapshot-body">
+            <div class="snapshot-label">
                 {info.label}
-            </span>
-        </div>
-        <div style="display: flex; justify-content: space-between; width: 100%">
-            <span class="time" data-created={snapshot.created}>
-                {relativeTime(snapshot.created)}
-            </span>
-            <span class="index"
+            </div>
+
+            <span class="snapshot-section-number"
                 >{snapshot.context.numberOfSections}{snapshot.context
                     .numberOfSections === 1
                     ? ' card'
                     : ' cards'}</span
             >
         </div>
+        <div class="snapshot-footer">
+            <div class="snapshot-card-content">
+                {snapshot.context.contentOfAffectedSection}
+            </div>
+            <span class="snapshot-time" data-created={snapshot.created}>
+                {relativeTime(snapshot.created)}
+            </span>
+        </div>
     </div>
 </div>
 
 <style>
+    :root {
+        --icon-wrapper-width: 32px;
+    }
     .snapshot {
         padding: 10px 6px;
         cursor: pointer;
@@ -68,18 +73,46 @@
         border-radius: 4px;
         gap: 4px;
         height: 52px;
-        width: 230px;
+        width: 300px;
     }
-    .text {
-        font-size: 14px;
+
+    .selected {
+        background-color: var(--nav-item-background-selected);
+    }
+
+    .icon-wrapper {
+        width: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .snapshot-content {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: calc(100% - var(--icon-wrapper-width));
+    }
+
+    .snapshot-body {
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+        width: 100%;
+    }
+
+    .snapshot-label {
+        font-size: 12px;
         color: var(--color-base-70);
         display: block;
+        flex: 1;
         max-width: 210px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .index {
+
+    .snapshot-section-number {
         font-size: 12px;
         color: var(--color-base-50);
         min-width: 16px;
@@ -87,11 +120,26 @@
         margin-left: auto;
     }
 
-    .selected {
-        background-color: var(--nav-item-background-selected);
+    .snapshot-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
     }
-    .time {
+
+    .snapshot-card-content {
         font-size: 12px;
         color: var(--color-base-60);
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 190px;
+        text-overflow: ellipsis;
+        font-style: italic;
+        opacity: 0.9;
+    }
+    .snapshot-time {
+        font-size: 12px;
+        color: var(--color-base-50);
     }
 </style>

@@ -55,6 +55,7 @@ export type SnapshotContext = {
     newActiveSection: string;
     numberOfSections: number;
     action: UndoableAction;
+    contentOfAffectedSection: string;
 };
 
 export type Snapshot = {

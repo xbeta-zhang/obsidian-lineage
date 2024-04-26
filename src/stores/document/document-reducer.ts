@@ -5,6 +5,7 @@ import { setNodeContent } from 'src/stores/document/reducers/content/set-node-co
 import { deleteNode } from 'src/stores/document/reducers/delete-node/delete-node';
 import { moveNode } from 'src/stores/document/reducers/move-node/move-node';
 import {
+    Content,
     DocumentState,
     SnapshotContext,
 } from 'src/stores/document/document-state-type';
@@ -32,19 +33,23 @@ const updateDocumentState = (
     action: DocumentStoreAction,
 ) => {
     let newActiveNodeId: null | string = null;
-    let affectedActiveNodeId: null | string = null;
+    let affectedNodeId: null | string = null;
+    let affectedNodeContent: Content[string] | null = null;
     if (action.type === 'DOCUMENT/SET_NODE_CONTENT') {
         setNodeContent(state.document.content, action);
         newActiveNodeId = action.payload.nodeId;
     } else if (action.type === 'DOCUMENT/INSERT_NODE') {
         newActiveNodeId = insertNode(state.document, action);
     } else if (action.type === 'DOCUMENT/DELETE_NODE') {
+        affectedNodeContent =
+            state.document.content[action.payload.activeNodeId];
         newActiveNodeId = deleteNode(
             state.document,
             action.payload.activeNodeId,
         );
-        affectedActiveNodeId = action.payload.activeNodeId;
+        affectedNodeId = action.payload.activeNodeId;
     } else if (action.type === 'DOCUMENT/EXTRACT_BRANCH') {
+        affectedNodeContent = state.document.content[action.payload.nodeId];
         extractNode(state.document, action);
         newActiveNodeId = action.payload.nodeId;
     } else if (action.type === 'DOCUMENT/DROP_NODE') {
@@ -53,10 +58,12 @@ const updateDocumentState = (
     } else if (action.type === 'DOCUMENT/MOVE_NODE') {
         moveNode(state.document, action);
         newActiveNodeId = action.payload.activeNodeId;
-        affectedActiveNodeId = newActiveNodeId;
+        affectedNodeId = newActiveNodeId;
     } else if (action.type === 'DOCUMENT/MERGE_NODE') {
+        affectedNodeContent =
+            state.document.content[action.payload.activeNodeId];
         newActiveNodeId = mergeNode(state.document, action);
-        affectedActiveNodeId = action.payload.activeNodeId;
+        affectedNodeId = action.payload.activeNodeId;
     } else if (action.type === 'DOCUMENT/LOAD_FILE') {
         newActiveNodeId = loadDocumentFromFile(state, action);
     } else if (action.type === 'RESET_STORE') {
@@ -84,16 +91,17 @@ const updateDocumentState = (
     } else if (action.type === 'DOCUMENT/PASTE_NODE') {
         newActiveNodeId = pasteNode(state.document, action);
     } else if (action.type === 'DOCUMENT/CUT_NODE') {
+        affectedNodeContent = state.document.content[action.payload.nodeId];
         newActiveNodeId = deleteNode(state.document, action.payload.nodeId);
-        affectedActiveNodeId = action.payload.nodeId;
+        affectedNodeId = action.payload.nodeId;
     }
 
     const e = getDocumentEventType(action.type);
 
     let affectedSection: string | null = null;
 
-    if (affectedActiveNodeId) {
-        affectedSection = getSectionOfId(state.sections, affectedActiveNodeId);
+    if (affectedNodeId) {
+        affectedSection = getSectionOfId(state.sections, affectedNodeId);
     }
     if (e.dropOrMove || e.createOrDelete || e.changeHistory || e.clipboard) {
         updateSectionsDictionary(state);
@@ -105,11 +113,17 @@ const updateDocumentState = (
             state.sections,
             newActiveNodeId,
         );
+        affectedNodeId = affectedNodeId || newActiveNodeId;
+        affectedNodeContent =
+            affectedNodeContent || state.document.content[affectedNodeId];
+
         const context: SnapshotContext = {
             numberOfSections: Object.keys(state.document.content).length,
             affectedSection: affectedSection || newActiveSection,
             newActiveSection,
             action: action as UndoableAction,
+            contentOfAffectedSection:
+                affectedNodeContent?.content?.substring(0, 300) || '',
         };
         addSnapshot(state.document, state.history, context);
         state.history = { ...state.history };
