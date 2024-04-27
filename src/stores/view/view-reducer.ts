@@ -51,7 +51,7 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
         };
     } else if (action.type === 'CLOSE_MODALS') {
         state.ui.controls = {
-            showHistorySidebar: false,
+            showHistorySidebar: state.ui.controls.showHistorySidebar,
             showHelpSidebar: false,
             showSettingsSidebar: false,
         };

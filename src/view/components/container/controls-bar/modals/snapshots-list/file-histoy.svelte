@@ -28,7 +28,7 @@
     .sidebar {
         min-width: 165px;
 		width: fit-content;
-        background-color: var(--background-secondary);
+        background-color:var(--background-primary);
         position: absolute;
         right: var(--sidebar-right);
         top: var(--size-4-2);
@@ -39,7 +39,7 @@
     .snapshots-list {
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap:  var(--size-4-2);
         height: fit-content;
         max-height: 400px;
         overflow-y: auto;

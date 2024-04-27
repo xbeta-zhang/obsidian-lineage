@@ -18,6 +18,13 @@
     const infoFactory = actionInfo[snapshot.context.action.type];
     invariant(infoFactory);
     const info = infoFactory(snapshot);
+
+    const numberOfCharacters = snapshot.context.numberOfCharacters;
+    const numberOfSections = snapshot.context.numberOfSections;
+    const sections = `${numberOfSections} card${
+        numberOfSections === 1 ? '' : 's'
+    }`;
+    const chars = `${numberOfCharacters} char${numberOfCharacters === 1 ? '' : 's'}`;
 </script>
 
 <div
@@ -42,22 +49,17 @@
             <div class="snapshot-label">
                 {info.label}
             </div>
-
-            <span class="snapshot-section-number"
-                >{snapshot.context.numberOfSections}{snapshot.context
-                    .numberOfSections === 1
-                    ? ' card'
-                    : ' cards'}</span
-            >
         </div>
-        <div class="snapshot-footer">
-            <div class="snapshot-card-content">
-                {snapshot.context.contentOfAffectedSection}
-            </div>
-            <span class="snapshot-time" data-created={snapshot.created}>
-                {relativeTime(snapshot.created)}
-            </span>
+        <div class="snapshot-card-content">
+            {snapshot.context.contentOfAffectedSection}
         </div>
+    </div>
+    <div class="snapshot-context">
+        <span class="snapshot-section-number">{sections} </span>
+        <span class="snapshot-section-number">{chars}</span>
+        <span class="snapshot-time" data-created={snapshot.created}>
+            {relativeTime(snapshot.created)}
+        </span>
     </div>
 </div>
 
@@ -66,14 +68,15 @@
         --icon-wrapper-width: 32px;
     }
     .snapshot {
-        padding: 10px 6px;
+        padding: var(--size-4-2);
         cursor: pointer;
         display: flex;
         align-items: center;
         border-radius: 4px;
         gap: 4px;
-        height: 52px;
-        width: 300px;
+        height: 66px;
+        width: 330px;
+        background-color:  var(--background-secondary);
     }
 
     .selected {
@@ -91,7 +94,7 @@
         display: flex;
         flex-direction: column;
         gap: 5px;
-        width: calc(100% - var(--icon-wrapper-width));
+        flex: 1;
     }
 
     .snapshot-body {
@@ -102,7 +105,7 @@
     }
 
     .snapshot-label {
-        font-size: 12px;
+        font-size: 14px;
         color: var(--color-base-70);
         display: block;
         flex: 1;
@@ -112,23 +115,8 @@
         text-overflow: ellipsis;
     }
 
-    .snapshot-section-number {
-        font-size: 12px;
-        color: var(--color-base-50);
-        min-width: 16px;
-        text-align: left;
-        margin-left: auto;
-    }
-
-    .snapshot-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-    }
-
     .snapshot-card-content {
-        font-size: 12px;
+        font-size: 14px;
         color: var(--color-base-60);
         display: block;
         white-space: nowrap;
@@ -138,8 +126,23 @@
         font-style: italic;
         opacity: 0.9;
     }
+
+    .snapshot-context {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        height: 100%;
+        justify-content: space-between;
+    }
+    .snapshot-section-number {
+        font-size: 11px;
+        color: var(--color-base-40);
+        min-width: 16px;
+        text-align: left;
+        margin-left: auto;
+    }
     .snapshot-time {
-        font-size: 12px;
-        color: var(--color-base-50);
+        font-size: 11px;
+        color: var(--color-base-40);
     }
 </style>

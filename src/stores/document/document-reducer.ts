@@ -124,6 +124,9 @@ const updateDocumentState = (
             action: action as UndoableAction,
             contentOfAffectedSection:
                 affectedNodeContent?.content?.substring(0, 300) || '',
+            numberOfCharacters: Object.values(state.document.content)
+                .map((x) => x.content.length)
+                .reduce((acc, v) => acc + v),
         };
         addSnapshot(state.document, state.history, context);
         state.history = { ...state.history };

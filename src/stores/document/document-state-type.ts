@@ -56,6 +56,7 @@ export type SnapshotContext = {
     numberOfSections: number;
     action: UndoableAction;
     contentOfAffectedSection: string;
+    numberOfCharacters: number;
 };
 
 export type Snapshot = {
