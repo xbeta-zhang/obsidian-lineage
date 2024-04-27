@@ -87,6 +87,12 @@ export type SettingsActions =
           payload: {
               path: string;
           };
+      }
+    | {
+          type: 'UPDATE_DOCUMENTS_DICTIONARY';
+          payload: {
+              documents: Record<string, true>;
+          };
       };
 
 const updateState = (store: Settings, action: SettingsActions) => {
@@ -132,6 +138,8 @@ const updateState = (store: Settings, action: SettingsActions) => {
         };
     } else if (action.type === 'BACKUP/DELETE_FILE') {
         delete store.backup[action.payload.path];
+    } else if (action.type === 'UPDATE_DOCUMENTS_DICTIONARY') {
+        store.documents = action.payload.documents;
     }
 };
 export const settingsReducer = (
