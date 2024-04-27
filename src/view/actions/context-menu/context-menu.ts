@@ -68,7 +68,9 @@ export const contextMenu = (element: HTMLElement, view: LineageView) => {
     const listener = (e: MouseEvent) => {
         if (e.button === 2) {
             const target = e.target as HTMLElement;
-            const isActive = Boolean(target.closest('.active-node'));
+            const isActive = Boolean(
+                target.closest('.active-node.node-border--active'),
+            );
             if (isActive) {
                 showMenu(e);
             }

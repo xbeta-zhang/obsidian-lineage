@@ -4,8 +4,11 @@ import { branchToText } from 'src/obsidian/commands/helpers/extract-branch/helpe
 import { createNewFile } from 'src/obsidian/commands/helpers/create-new-file';
 import invariant from 'tiny-invariant';
 import { openFile } from 'src/obsidian/commands/helpers/open-file';
+import { getFileNameOfExtractedBranch } from 'src/obsidian/commands/helpers/extract-branch/helpers/get-file-name-of-extracted-branch/get-file-name-of-extracted-branch';
 
 export const extractBranch = async (view: LineageView) => {
+    invariant(view.file);
+    invariant(view.file.parent);
     const viewState = view.viewStore.getValue();
     const documentState = view.documentStore.getValue();
     const branch = getBranch(
@@ -16,12 +19,16 @@ export const extractBranch = async (view: LineageView) => {
     );
 
     const text = branchToText(branch);
-    invariant(view.file?.parent);
+
     const newFile = await createNewFile(
         view.plugin,
-        view.file?.parent,
+        view.file.parent,
         text,
-        branch.content[branch.nodeId].content.substring(0, 100),
+        getFileNameOfExtractedBranch(
+            branch.content[branch.nodeId].content,
+            view.file.basename,
+            documentState.sections.id_section[branch.nodeId],
+        ),
     );
     await openFile(view.plugin, newFile, 'split', 'lineage');
     view.documentStore.dispatch({

@@ -8,6 +8,7 @@ import { createNewFile } from 'src/obsidian/commands/helpers/create-new-file';
 import { removeStructuralComments } from 'src/obsidian/commands/helpers/remove-structural-comments';
 import { openFile } from 'src/obsidian/commands/helpers/open-file';
 import { extractBranch } from 'src/obsidian/commands/helpers/extract-branch/extract-branch';
+import { isActiveAndNotEditing } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
 
 const createCommands = (plugin: Lineage) => {
     const commands: Omit<Command, 'id'>[] = [];
@@ -97,7 +98,7 @@ const createCommands = (plugin: Lineage) => {
         checkCallback: (checking) => {
             const view = plugin.app.workspace.getActiveViewOfType(LineageView);
             if (view) {
-                if (checking) return true;
+                if (checking) return isActiveAndNotEditing(view);
                 else {
                     extractBranch(view);
                 }
