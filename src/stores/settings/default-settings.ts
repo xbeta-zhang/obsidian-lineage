@@ -1,6 +1,6 @@
 import { Settings } from './settings-type';
 
-export const DEFAULT_CARD_WIDTH = 650;
+export const DEFAULT_CARD_WIDTH = 550;
 export const DEFAULT_SETTINGS = (): Settings => ({
     documents: {},
     hotkeys: {

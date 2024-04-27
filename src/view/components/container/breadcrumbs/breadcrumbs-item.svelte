@@ -1,36 +1,37 @@
 <script lang="ts">
-    import { ChevronRight } from 'lucide-svelte';
     import { getView } from 'src/view/components/container/context';
 
     export let parentId: string;
-    export let index: number
+    export let index: number;
+    export let section: string;
+    export let content: string;
     const view = getView();
     const viewStore = view.viewStore;
-    export let content: string
-</script>
-
-{#if index > 0}
-    <ChevronRight class="svg-icon chevron" size="12" />
-{/if}
-<button
-    aria-label={content}
-    class="breadcrumbs-item"
-    data-tooltip-position="top"
-    on:click={() => {
+    const onClick = () => {
         viewStore.dispatch({
             type: 'DOCUMENT/SET_ACTIVE_NODE',
             payload: { id: parentId },
         });
-    }}
+    };
+</script>
+
+{#if index > 0}
+    <span class="separator">/</span>
+{/if}
+
+<span
+    aria-label={section+"\n"+content}
+    class={`breadcrumbs-item ${content?'':'section-number'}`}
+    data-tooltip-position="top"
+    on:click={onClick}
 >
-    <span class="breadcrumbs-item-text">
-        {content || '(empty)'}
-    </span>
-</button>
+    {content || section}
+</span>
 
 <style>
-    .chevron {
-        color: var(--text-muted);
+    .separator {
+        padding: 2px 1px;
+        color: var(--text-faint);
     }
     .breadcrumbs-item {
         box-shadow: none;
@@ -40,13 +41,18 @@
         font-size: inherit;
         align-items: center;
         justify-content: center;
-        padding: var(--size-4-2);
         border-bottom: 1px solid var(--background-modifier-border);
         color: var(--text-muted);
         background-color: var(--interactive-normal);
         --icon-size: var(--icon-s);
         --icon-stroke: var(--icon-s-stroke-width);
         cursor: pointer;
+        padding: 2px 4px;
+        border-radius: var(--radius-s);
+        max-width: 300px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .breadcrumbs-item:hover {
@@ -55,10 +61,9 @@
     .breadcrumbs-item:last-child {
         border-bottom: none;
     }
-    .breadcrumbs-item-text {
-        max-width: 300px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+
+    .section-number{
+        font-style: italic;
+        color: var(--text-faint);
     }
 </style>

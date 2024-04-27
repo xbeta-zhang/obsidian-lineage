@@ -3,16 +3,18 @@
     import Item from './breadcrumbs-item.svelte';
     import { activeBranchStore } from 'src/stores/view/derived/active-branch-store';
     import { documentContentStore } from 'src/stores/document/derived/content-store';
+    import { idSectionStore } from 'src/stores/document/derived/id-section-store';
 
     const view = getView();
     const activeBranch = activeBranchStore(view);
     const contents = documentContentStore(view);
+    const sections = idSectionStore(view)
 </script>
 
 <div class="breadcrumbs-container">
     <div class="breadcrumbs">
         {#each $activeBranch.sortedParentNodes as parentId, index (parentId)}
-            <Item {parentId} {index} content={$contents[parentId]?.content} />
+            <Item {parentId} {index} content={$contents[parentId]?.content} section={$sections[parentId]} />
         {/each}
     </div>
 </div>
@@ -35,9 +37,11 @@
         justify-content: center;
         border-radius: var(--radius-s);
         background-color: var(--interactive-normal);
-        border: 1px solid var(--background-modifier-border);
         box-shadow: var(--input-shadow);
         max-width: 100%;
         overflow: auto;
+        font-size: var(--file-header-font-size);
+        color: var(--text-muted);
+        gap: 0;
     }
 </style>

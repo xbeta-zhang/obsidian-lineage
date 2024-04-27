@@ -18,7 +18,7 @@ import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { defaultViewState } from 'src/stores/view/default-view-state';
 import { viewReducer } from 'src/stores/view/view-reducer';
 import { viewSubscriptions } from 'src/stores/view/subscriptions/view-subscriptions';
-import { onStoreError } from 'src/helpers/store/on-store-error';
+import { onPluginError } from 'src/helpers/store/on-plugin-error';
 import { InlineEditor } from 'src/obsidian/helpers/inline-editor';
 import { id } from 'src/helpers/id';
 import invariant from 'tiny-invariant';
@@ -150,7 +150,7 @@ export class LineageView extends TextFileView {
                 setFileViewType(this.plugin, this.file, this.leaf, 'markdown');
             }
         }
-        onStoreError(error, location, action);
+        onPluginError(error, location, action);
     };
 
     saveDocument = async (immediate = false, force = false) => {

@@ -1,9 +1,9 @@
 import { SilentError } from 'src/stores/view/helpers/errors';
 import { Notice } from 'obsidian';
 
-export const onStoreError = (
+export const onPluginError = (
     error: Error,
-    location: 'reducer' | 'subscriber',
+    location: 'reducer' | 'subscriber' | 'command',
     action: unknown,
 ) => {
     if (!(error instanceof SilentError)) {

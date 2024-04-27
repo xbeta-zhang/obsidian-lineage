@@ -49,6 +49,12 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
             showHelpSidebar: false,
             showSettingsSidebar: !showSettingsSidebar,
         };
+    } else if (action.type === 'CLOSE_MODALS') {
+        state.ui.controls = {
+            showHistorySidebar: false,
+            showHelpSidebar: false,
+            showSettingsSidebar: false,
+        };
     } else if (action.type === 'UI/CHANGE_ZOOM_LEVEL') {
         changeZoomLevel(state, action.payload);
     } else if (action.type === 'DOCUMENT/ENABLE_EDIT_MODE') {

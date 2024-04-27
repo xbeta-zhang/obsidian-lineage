@@ -2,17 +2,17 @@
     import { lang } from 'src/lang/lang';
     import { maxZoomLevel, minZoomLevel } from 'src/stores/view/reducers/ui/change-zoom-level';
     import {
-        File,
+        FileText,
         HistoryIcon,
         Keyboard,
         Maximize,
+        Minus as ZoomOut,
         MoreVertical,
-        RedoIcon,
+        Plus as ZoomIn,
+        Redo2 as RedoIcon,
         RotateCcw,
         Settings,
-        UndoIcon,
-        ZoomIn,
-        ZoomOut
+        Undo2 as UndoIcon
     } from 'lucide-svelte';
     import { getPlugin, getView } from '../context';
     import { historyStore } from 'src/stores/document/derived/history-store';
@@ -124,7 +124,7 @@
             on:click={openAsMarkdown}
             tooltipPosition="left"
         >
-            <File class="svg-icon" />
+            <FileText class="svg-icon" />
         </Button>
         <Button
             active={$controls.showSettingsSidebar}

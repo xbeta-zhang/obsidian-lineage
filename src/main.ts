@@ -23,7 +23,7 @@ import { documentsReducer } from 'src/stores/documents/documents-reducer';
 import { DefaultDocumentsState } from 'src/stores/documents/default-documents-state';
 import { StatusBar } from 'src/obsidian/status-bar/status-bar';
 import { documentsStoreSubscriptions } from 'src/stores/documents/subscriptions/documents-store-subscriptions';
-import { onStoreError } from 'src/helpers/store/on-store-error';
+import { onPluginError } from 'src/helpers/store/on-plugin-error';
 import { registerActiveLeafChange } from 'src/obsidian/events/workspace/register-active-leaf-change';
 import { registerWorkspaceResize } from 'src/obsidian/events/workspace/register-workspace-resize';
 import { registerLayoutReady } from 'src/obsidian/events/workspace/register-layout-ready';
@@ -40,7 +40,7 @@ export default class Lineage extends Plugin {
         this.documents = new Store<DocumentsState, DocumentsStoreAction>(
             DefaultDocumentsState(),
             documentsReducer,
-            onStoreError,
+            onPluginError,
         );
         this.registerView(
             FILE_VIEW_TYPE,
@@ -64,7 +64,7 @@ export default class Lineage extends Plugin {
         this.settings = new Store<Settings, SettingsActions>(
             deepMerge(settings, DEFAULT_SETTINGS()),
             settingsReducer,
-            onStoreError,
+            onPluginError,
         );
         this.settings.subscribe(() => {
             this.saveSettings();

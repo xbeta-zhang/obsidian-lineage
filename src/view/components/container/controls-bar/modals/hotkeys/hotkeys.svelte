@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { filteredHotkeys } from '../../../../../../stores/hotkeys/derived/filtered-hotkeys';
+    import { filteredHotkeys } from 'src/stores/hotkeys/derived/filtered-hotkeys';
     import Group from './group.svelte';
     import Front from './front.svelte';
+    import { numberOfConflictingHotkeys } from 'src/stores/hotkeys/derived/number-of-conflicting-hotkeys';
 </script>
 
 <div class="sidebar">
@@ -11,7 +12,14 @@
             <Group {groupName} {group} />
         {/each}
     </div>
-
+    {#if $numberOfConflictingHotkeys}
+        <div class="conflicts-indicator">
+            {$numberOfConflictingHotkeys} command{$numberOfConflictingHotkeys ===
+            1
+                ? ''
+                : 's'} with conflicts
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -27,15 +35,14 @@
         gap: var(--size-4-2);
         z-index: 10;
     }
-    :global(.is-mobile){
-       & .sidebar {
-            width: fit-content
+    :global(.is-mobile) {
+        & .sidebar {
+            width: fit-content;
         }
-
     }
 
     .groups {
-        padding:0 var(--size-4-2);
+        padding: 0 var(--size-4-2);
         display: flex;
         flex-direction: column;
         gap: var(--size-4-2);
@@ -43,9 +50,9 @@
         overflow-y: auto;
     }
 
-    .note {
+    .conflicts-indicator {
         font-size: 12px;
-        color: var(--color-base-40);
-        padding: var(--size-4-2);
+        color: var(--color-red);
+        padding-left: 18px;
     }
 </style>

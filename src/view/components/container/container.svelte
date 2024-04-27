@@ -15,6 +15,7 @@
     import { limitPreviewHeightStore } from 'src/stores/settings/derived/limit-preview-height-store';
     import { idSectionStore } from 'src/stores/document/derived/id-section-store';
     import { contextMenu } from 'src/view/actions/context-menu/context-menu';
+    import { closeModalsWhenClickingOutside } from 'src/view/actions/close-modals-when-clicking-outside';
 
     const view = getView();
     const columns = columnsStore(view);
@@ -40,6 +41,7 @@
         ($limitPreviewHeight ? ' limit-card-height' : '')}
     id="columns-container"
     tabindex="0"
+    use:closeModalsWhenClickingOutside={view}
     use:contextMenu={view}
     use:keyboardShortcuts={{ view }}
     use:scrollOnDndX

@@ -29,7 +29,8 @@ export type ViewUIAction =
     | ChangeZoomLevelAction
     | ToggleHelpSidebarAction
     | ToggleHistorySidebarAction
-    | ToggleSettingsSidebarAction;
+    | ToggleSettingsSidebarAction
+    | { type: 'CLOSE_MODALS' };
 
 export type ViewDocumentAction =
     | DisableEditModeAction
