@@ -52,7 +52,14 @@ const viewEffectsAndActions = (
         updateStatusBar(view);
         // effects
         if (view.isActive && container)
-            alignBranchDebounced(documentState, viewState, container, settings);
+            alignBranchDebounced(
+                documentState,
+                viewState,
+                container,
+                settings,
+                undefined,
+                true,
+            );
     } else if (action) {
         const type = action.type;
 
@@ -134,7 +141,13 @@ const viewEffectsAndActions = (
         ) {
             focusContainer(container);
         }
-        if (activeNodeChange || e.zoom || e.search || structuralChange) {
+        if (
+            activeNodeChange ||
+            e.zoom ||
+            e.search ||
+            structuralChange ||
+            e.content
+        ) {
             const skipAligning =
                 action.type === 'DOCUMENT/SET_ACTIVE_NODE' &&
                 action.context?.ctrlKey;

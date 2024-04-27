@@ -9,6 +9,7 @@ import { ViewState } from 'src/stores/view/view-state-type';
 import { debounce } from 'obsidian';
 import { getNodeElement } from 'src/stores/view/subscriptions/effects/align-branch/helpers/get-node-element';
 import { Settings } from 'src/stores/settings/settings-type';
+import { alignInactiveColumn } from 'src/stores/view/subscriptions/effects/align-branch/align-inactive-column';
 
 export const alignBranch = (
     documentState: DocumentState,
@@ -16,6 +17,7 @@ export const alignBranch = (
     container: HTMLElement,
     settings: Settings,
     behavior?: ScrollBehavior,
+    alignInactiveColumns = false,
 ) => {
     if (!container) return;
     const nodeId = viewState.document.activeNode;
@@ -68,9 +70,9 @@ export const alignBranch = (
                     settings,
                     behavior,
                 );
-            } /*else {
-            alignInactiveColumn(column, container, behavior);
-        }*/
+            } else if (alignInactiveColumns) {
+                alignInactiveColumn(column, container, settings, behavior);
+            }
         }
     }
 };

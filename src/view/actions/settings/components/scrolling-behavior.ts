@@ -18,7 +18,7 @@ export const ScrollingBehavior = (
             'reveal-active-card-and-direct-child':
                 'Reveal active card and its children',
             'keep-active-card-at-center': 'Keep active card in the center',
-            'fixed-position': 'Keep active card in a custom position',
+            'fixed-position': 'Keep active card in a fixed position',
         } satisfies Record<ScrollingMode, string>)
             .setValue(value)
             .onChange((mode) => {
