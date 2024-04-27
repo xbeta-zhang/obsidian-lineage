@@ -1,26 +1,30 @@
 import { SettingsStore } from 'src/main';
-import { Setting } from 'obsidian';
+import { Setting, SliderComponent } from 'obsidian';
 
 export const FontSize = (
     element: HTMLElement,
     settingsStore: SettingsStore,
 ) => {
     const settingsState = settingsStore.getValue();
-    element.empty();
+    let input: SliderComponent;
+
+    const setValue = () => {
+        input.setValue(settingsState.view.fontSize);
+    };
     new Setting(element)
         .setName('Font size')
         .addSlider((cb) => {
-            cb.setValue(settingsState.view.fontSize)
-                .onChange((fontSize) => {
-                    settingsStore.dispatch({
-                        type: 'SET_FONT_SIZE',
-                        payload: {
-                            fontSize,
-                        },
-                    });
-                })
-                .setLimits(8, 36, 1)
-                .setDynamicTooltip();
+            input = cb;
+            cb.onChange((fontSize) => {
+                settingsStore.dispatch({
+                    type: 'SET_FONT_SIZE',
+                    payload: {
+                        fontSize,
+                    },
+                });
+            });
+            cb.setLimits(8, 36, 1).setDynamicTooltip();
+            setValue();
         })
         .addExtraButton((cb) => {
             cb.setIcon('reset')
@@ -31,7 +35,7 @@ export const FontSize = (
                             fontSize: 16,
                         },
                     });
-                    FontSize(element, settingsStore);
+                    setValue();
                 })
                 .setTooltip('Reset');
         });

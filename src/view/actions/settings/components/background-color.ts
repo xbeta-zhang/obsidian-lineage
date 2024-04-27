@@ -1,5 +1,5 @@
 import { SettingsStore } from 'src/main';
-import { Setting } from 'obsidian';
+import { ColorComponent, Setting } from 'obsidian';
 import { getDefaultTheme } from 'src/stores/view/subscriptions/effects/css-variables/helpers/get-default-theme';
 
 export const BackgroundColor = (
@@ -7,14 +7,19 @@ export const BackgroundColor = (
     settingsStore: SettingsStore,
 ) => {
     const settingsState = settingsStore.getValue();
-    element.empty();
+    let colorPicker: ColorComponent;
+
+    const setValue = () => {
+        colorPicker.setValue(
+            settingsState.view.theme.containerBg ||
+                getDefaultTheme().containerBg,
+        );
+    };
     new Setting(element)
         .setName('Background color')
         .addColorPicker((cb) => {
-            cb.setValue(
-                settingsState.view.theme.containerBg ||
-                    getDefaultTheme().containerBg,
-            ).onChange((color) => {
+            colorPicker = cb;
+            cb.onChange((color) => {
                 settingsStore.dispatch({
                     type: 'SET_CONTAINER_BG',
                     payload: {
@@ -22,6 +27,7 @@ export const BackgroundColor = (
                     },
                 });
             });
+            setValue();
         })
         .addExtraButton((cb) => {
             cb.setIcon('reset')
@@ -32,7 +38,7 @@ export const BackgroundColor = (
                             backgroundColor: undefined,
                         },
                     });
-                    BackgroundColor(element, settingsStore);
+                    setValue();
                 })
                 .setTooltip('Reset');
         });

@@ -10,7 +10,7 @@
     .sidebar {
         min-width: 165px;
 
-        width: fit-content;
+        width: 500px;
         background-color: var(--background-primary);
         position: absolute;
         right: var(--sidebar-right);
@@ -26,14 +26,15 @@
         display: flex;
         flex-direction: column;
         padding: 20px;
-        width: fit-content;
         & .setting-item {
             padding: 10px 0;
         }
     }
-    :global(.is-mobile){
-
-       & .setting-items{
+    :global(.is-mobile) {
+        & .sidebar {
+            width: fit-content;
+        }
+        & .setting-items {
             padding: 5px 10px;
         }
         & :global(.setting-item) {

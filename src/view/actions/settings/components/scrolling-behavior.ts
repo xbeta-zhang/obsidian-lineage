@@ -7,7 +7,6 @@ export const ScrollingBehavior = (
     settingsStore: SettingsStore,
 ) => {
     const settingsState = settingsStore.getValue();
-    element.empty();
     const setting = new Setting(element).setName('Scrolling behavior');
 
     setting.addDropdown((cb) => {

@@ -10,12 +10,12 @@ export const renderSettings = (element: HTMLElement) => {
     const view = getView();
     const settingsStore = view.plugin.settings;
     const render = () => {
-        LimitCardHeight(element.createDiv(), settingsStore);
-        CardWidth(element.createDiv(), settingsStore);
-        FontSize(element.createDiv(), settingsStore);
-        BackgroundColor(element.createDiv(), settingsStore);
-        ActiveBranchColor(element.createDiv(), settingsStore);
-        ScrollingBehavior(element.createDiv(), settingsStore);
+        BackgroundColor(element, settingsStore);
+        ActiveBranchColor(element, settingsStore);
+        FontSize(element, settingsStore);
+        CardWidth(element, settingsStore);
+        LimitCardHeight(element, settingsStore);
+        ScrollingBehavior(element, settingsStore);
     };
     render();
     return {

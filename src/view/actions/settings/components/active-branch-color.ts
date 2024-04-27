@@ -1,20 +1,26 @@
 import { SettingsStore } from 'src/main';
-import { Setting } from 'obsidian';
+import { ColorComponent, Setting } from 'obsidian';
 import { getDefaultTheme } from 'src/stores/view/subscriptions/effects/css-variables/helpers/get-default-theme';
 
 export const ActiveBranchColor = (
-    element: HTMLElement,
+    container: HTMLElement,
     settingsStore: SettingsStore,
 ) => {
     const settingsState = settingsStore.getValue();
-    element.empty();
-    new Setting(element)
+
+    let input: ColorComponent;
+
+    const setValue = () => {
+        input.setValue(
+            settingsState.view.theme.activeBranchBg ||
+                getDefaultTheme().activeBranchBg,
+        );
+    };
+    new Setting(container)
         .setName('Active branch color')
         .addColorPicker((cb) => {
-            cb.setValue(
-                settingsState.view.theme.activeBranchBg ||
-                    getDefaultTheme().activeBranchBg,
-            ).onChange((color) => {
+            input = cb;
+            cb.onChange((color) => {
                 settingsStore.dispatch({
                     type: 'SET_ACTIVE_BRANCH_BG',
                     payload: {
@@ -22,6 +28,7 @@ export const ActiveBranchColor = (
                     },
                 });
             });
+            setValue();
         })
         .addExtraButton((cb) => {
             cb.setIcon('reset')
@@ -32,7 +39,7 @@ export const ActiveBranchColor = (
                             backgroundColor: undefined,
                         },
                     });
-                    ActiveBranchColor(element, settingsStore);
+                    setValue();
                 })
                 .setTooltip('Reset');
         });

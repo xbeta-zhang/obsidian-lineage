@@ -93,7 +93,7 @@ export class LineageView extends TextFileView {
             documentReducer,
             this.onViewStoreError as OnError<DocumentStoreAction>,
         );
-        await this.inlineEditor.unloadFile();
+        if (this.inlineEditor) await this.inlineEditor.unloadFile();
         for (const s of this.onDestroyCallbacks) {
             s();
         }

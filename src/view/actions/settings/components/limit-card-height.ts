@@ -6,7 +6,6 @@ export const LimitCardHeight = (
     settingsStore: SettingsStore,
 ) => {
     const settingsState = settingsStore.getValue();
-    element.empty();
     new Setting(element).setName('Limit card height').addToggle((cb) => {
         cb.setValue(settingsState.view.limitPreviewHeight).onChange((limit) => {
             settingsStore.dispatch({
