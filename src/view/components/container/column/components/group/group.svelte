@@ -1,52 +1,56 @@
 <script lang="ts">
-    import { NodeGroup, NodeId } from 'src/stores/document/document-state-type';
     import Node from './components/card/card.svelte';
     import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
     import { getView } from 'src/view/components/container/context';
     import clx from 'classnames';
+    import { nodesStore } from 'src/stores/document/derived/nodes-store';
+
+    export let groupId: string;
+    export let columnId: string;
+    export let activeChildGroups: Set<string>;
+    export let parentNodes: Set<string>;
+    export let activeGroup: string;
+    export let activeNode: string;
+    export let editedNode: string;
+    export let disableEditConfirmation: boolean;
+    export let searchQuery: string;
+    export let searchResults: Set<string>;
+    export let searching: boolean;
+    export let idSection: Record<string,string>;
 
     const view = getView();
-    const viewStore = view.viewStore;
-    export let group: NodeGroup;
-    let parentNodes: Set<NodeId> = new Set<NodeId>();
-    $: parentNodes = new Set(
-        $viewStore.document.activeBranch.sortedParentNodes,
-    );
+    const nodes = nodesStore(view, columnId, groupId);
 </script>
 
-{#if group.nodes.length > 0 && ($viewStore.search.query.length === 0 || group.nodes.some( (n) => $viewStore.search.results.has(n), ))}
+{#if $nodes.length > 0 && (searchQuery.length === 0 || $nodes.some( (n) => searchResults.has(n), ))}
     <div
         class={clx(
             'group',
-            $viewStore.document.activeBranch.childGroups.has(group.parentId) &&
-                'group-has-active-parent',
-            $viewStore.document.activeBranch.group === group.parentId &&
-                'group-has-active-node',
+            activeChildGroups.has(groupId) && 'group-has-active-parent',
+            activeGroup === groupId && 'group-has-active-node',
         )}
-        id={'group-' + group.parentId}
+        id={'group-' + groupId}
     >
-        {#each group.nodes as node (node)}
-            {#if $viewStore.search.query.length === 0 || (!$viewStore.search.searching && $viewStore.search.results.has(node))}
+        {#each $nodes as node (node)}
+            {#if searchQuery.length === 0 || (!searching && searchResults.has(node))}
                 <Node
                     {node}
-                    active={node === $viewStore.document.activeNode
+                    active={node === activeNode
                         ? ActiveStatus.node
                         : parentNodes.has(node)
                           ? ActiveStatus.parent
-                          : $viewStore.document.activeBranch.childGroups.has(
-                                  group.parentId,
-                              )
+                          : activeChildGroups.has(groupId)
                             ? ActiveStatus.child
-                            : $viewStore.document.activeBranch.group ===
-                                group.parentId
+                            : activeGroup === groupId
                               ? ActiveStatus.sibling
                               : null}
-                    editing={$viewStore.document.editing.activeNodeId === node}
-                    hasChildren={$viewStore.document.activeBranch.childGroups
-                        .size > 0}
-                    parentId={group.parentId}
-                    disableEditConfirmation={$viewStore.document.editing.activeNodeId ===
-                        node && $viewStore.document.editing.disableEditConfirmation}
+                    editing={editedNode === node}
+                    hasChildren={activeChildGroups.size > 0}
+                    parentId={groupId}
+                    disableEditConfirmation={editedNode === node &&
+                        disableEditConfirmation}
+                    section={idSection[node]}
+
                 />
             {/if}
         {/each}

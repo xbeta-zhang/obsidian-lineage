@@ -12,11 +12,15 @@
     export let editing: boolean;
     export let disableEditConfirmation: boolean;
 
-    const setActive = () => {
+    // eslint-disable-next-line no-undef
+    const setActive = (e: MouseEvent) => {
         if (!editing)
             viewStore.dispatch({
                 type: 'DOCUMENT/SET_ACTIVE_NODE',
                 payload: { id: nodeId },
+                context:{
+                    ctrlKey: e.ctrlKey
+                }
             });
     };
     const view = getView();
@@ -45,8 +49,8 @@
     )}
     id={nodeId}
     on:click={setActive}
-    on:dblclick={() => {
-        setActive();
+    on:dblclick={(e) => {
+        setActive(e);
         viewStore.dispatch({
             type: 'DOCUMENT/ENABLE_EDIT_MODE',
             payload: {
@@ -72,6 +76,12 @@
         display: flex;
         position: relative;
         font-size: 16px;
+        --scrollbar-thumb-bg: var(--color-base-30);
+        --scrollbar-active-thumb-bg: var(--color-base-40);
+
+    }
+    .lineage-card::-webkit-scrollbar {
+        display: initial;
     }
     .node-border--active {
         border-left: 5px var(--lineage-accent) solid;

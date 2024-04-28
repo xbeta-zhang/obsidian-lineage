@@ -32,7 +32,7 @@ describe('format headings', () => {
     it('should handle missing content or treeIndexDict entries', () => {
         const content = {
             node1: { content: '### Title' },
-            node2: null,
+            node2: { content: '' },
             node3: { content: '## Subtitle' },
         };
 
@@ -42,7 +42,7 @@ describe('format headings', () => {
 
         const expectedOutput = {
             node1: { content: '### Title' },
-            node2: null,
+            node2: { content: '' },
             node3: { content: '## Subtitle' },
         };
 
@@ -60,7 +60,7 @@ describe('format headings', () => {
     it('should handle depths below 6', () => {
         const content = {
             node1: { content: '### Title' },
-            node2: null,
+            node2: { content: '' },
             node3: { content: '## Subtitle' },
         };
 
@@ -71,7 +71,7 @@ describe('format headings', () => {
 
         const expectedOutput = {
             node1: { content: '#### Title' },
-            node2: null,
+            node2: { content: '' },
             node3: { content: '###### Subtitle' },
         };
 

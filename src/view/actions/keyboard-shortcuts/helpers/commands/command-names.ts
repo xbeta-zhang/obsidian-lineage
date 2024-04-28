@@ -33,6 +33,8 @@ export const hotkeysLang = {
     copy_node: 'Copy branch',
     cut_node: 'Cut branch',
     paste_node: 'Paste branch',
+    navigate_back: 'Navigate back',
+    navigate_forward: 'Navigate forward',
 };
 export type PluginCommand = {
     check: (view: LineageView) => boolean;
@@ -73,6 +75,8 @@ export const groupedHotkeys = {
         'go_to_end_of_group',
         'go_to_beginning_of_column',
         'go_to_end_of_column',
+        'navigate_back',
+        'navigate_forward',
     ]),
     History: new Set(['undo_change', 'redo_change']),
     Search: new Set(['toggle_search_input']),

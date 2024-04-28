@@ -15,16 +15,13 @@ import { navigateActiveNode } from 'src/stores/view/reducers/ui/navigate-active-
 import { jumpToNode } from 'src/stores/view/reducers/document/jump-to-node';
 
 import { removeDeletedNavigationItems } from 'src/stores/view/reducers/ui/helpers/remove-deleted-navigation-items';
+import { toggleFuzzySearch } from 'src/stores/view/reducers/search/toggle-fuzzy-search';
 
 const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
     if (action.type === 'DOCUMENT/SET_ACTIVE_NODE') {
-        updateActiveNode(
-            state.document,
-            action.payload.id,
-            state.navigationHistory,
-        );
+        updateActiveNode(state.document, action.payload.id, state);
     } else if (action.type === 'DOCUMENT/NAVIGATE_USING_KEYBOARD') {
-        navigateUsingKeyboard(state.document, state.navigationHistory, action);
+        navigateUsingKeyboard(state.document, state, action);
     } else if (action.type === 'SEARCH/SET_QUERY') {
         setSearchQuery(state, action.payload.query);
     } else if (action.type === 'SEARCH/SET_RESULTS') {
@@ -32,49 +29,68 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
     } else if (action.type === 'SEARCH/TOGGLE_INPUT') {
         toggleSearchInput(state);
     } else if (action.type === 'UI/TOGGLE_HISTORY_SIDEBAR') {
-        state.ui.showHistorySidebar = !state.ui.showHistorySidebar;
-        state.ui.showHelpSidebar = false;
-        state.ui.showSettingsSidebar = false;
+        const showHistorySidebar = state.ui.controls.showHistorySidebar;
+        state.ui.controls = {
+            showHistorySidebar: !showHistorySidebar,
+            showHelpSidebar: false,
+            showSettingsSidebar: false,
+        };
     } else if (action.type === 'UI/TOGGLE_HELP_SIDEBAR') {
-        state.ui.showHistorySidebar = false;
-        state.ui.showHelpSidebar = !state.ui.showHelpSidebar;
-        state.ui.showSettingsSidebar = false;
+        const showHelpSidebar = state.ui.controls.showHelpSidebar;
+        state.ui.controls = {
+            showHistorySidebar: false,
+            showHelpSidebar: !showHelpSidebar,
+            showSettingsSidebar: false,
+        };
     } else if (action.type === 'UI/TOGGLE_SETTINGS_SIDEBAR') {
-        state.ui.showHistorySidebar = false;
-        state.ui.showHelpSidebar = false;
-        state.ui.showSettingsSidebar = !state.ui.showSettingsSidebar;
+        const showSettingsSidebar = state.ui.controls.showSettingsSidebar;
+        state.ui.controls = {
+            showHistorySidebar: false,
+            showHelpSidebar: false,
+            showSettingsSidebar: !showSettingsSidebar,
+        };
+    } else if (action.type === 'CLOSE_MODALS') {
+        state.ui.controls = {
+            showHistorySidebar: state.ui.controls.showHistorySidebar,
+            showHelpSidebar: false,
+            showSettingsSidebar: false,
+        };
     } else if (action.type === 'UI/CHANGE_ZOOM_LEVEL') {
         changeZoomLevel(state, action.payload);
     } else if (action.type === 'DOCUMENT/ENABLE_EDIT_MODE') {
-        enableEditMode(state.document.editing, action);
+        enableEditMode(state.document, action);
     } else if (action.type === 'DOCUMENT/CONFIRM_DISABLE_EDIT') {
-        state.document.editing.disableEditConfirmation = true;
+        state.document.editing = {
+            ...state.document.editing,
+            disableEditConfirmation: true,
+        };
     } else if (action.type === 'DOCUMENT/RESET_DISABLE_EDIT_CONFIRMATION') {
-        state.document.editing.disableEditConfirmation = false;
+        state.document.editing = {
+            ...state.document.editing,
+            disableEditConfirmation: false,
+        };
     } else if (action.type === 'DOCUMENT/DISABLE_EDIT_MODE') {
-        disableEditMode(state.document.editing);
+        disableEditMode(state.document);
     } else if (action.type === 'SET_DRAG_STARTED') {
-        onDragStart(state.document.dnd, action);
+        onDragStart(state.document, action);
     } else if (action.type === 'DOCUMENT/SET_DRAG_ENDED') {
-        onDragEnd(state.document.dnd);
+        onDragEnd(state.document);
     } else if (action.type === 'UPDATE_ACTIVE_BRANCH') {
         updateActiveBranch(
-            state.document.activeBranch,
-            state.document.activeNode,
+            state.document,
             action.payload.columns,
-            state.document.activeNodeOfGroup,
+            state.document.activeNodesOfColumn,
         );
     } else if (action.type === 'NAVIGATION/NAVIGATE_FORWARD') {
-        navigateActiveNode(state.document, state.navigationHistory, true);
+        navigateActiveNode(state.document, state, true);
     } else if (action.type === 'NAVIGATION/NAVIGATE_BACK') {
-        navigateActiveNode(state.document, state.navigationHistory);
+        navigateActiveNode(state.document, state);
     } else if (action.type === 'DOCUMENT/JUMP_TO_NODE') {
-        jumpToNode(state.document, state.navigationHistory, action);
+        jumpToNode(state.document, state, action);
     } else if (action.type === 'NAVIGATION/REMOVE_OBSOLETE') {
-        removeDeletedNavigationItems(
-            state.navigationHistory,
-            action.payload.content,
-        );
+        removeDeletedNavigationItems(state, action.payload.content);
+    } else if (action.type === 'SEARCH/TOGGLE_FUZZY_MODE') {
+        toggleFuzzySearch(state);
     }
 };
 export const viewReducer = (

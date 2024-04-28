@@ -1,6 +1,6 @@
 import { Direction } from 'src/stores/document/document-store-actions';
 import { changeNodePosition } from 'src/stores/document/reducers/move-node/helpers/change-node-position';
-import { Column } from 'src/stores/document/document-state-type';
+import { LineageDocument } from 'src/stores/document/document-state-type';
 import { cleanAndSortColumns } from 'src/stores/document/reducers/move-node/helpers/clean-and-sort-columns';
 import invariant from 'tiny-invariant';
 
@@ -14,7 +14,7 @@ export type DropAction = {
 };
 
 export const dropNode = (
-    columns: Column[],
+    document: Pick<LineageDocument, 'columns'>,
     action: Pick<DropAction, 'payload'>,
 ) => {
     const droppedNode = action.payload.droppedNodeId;
@@ -22,12 +22,12 @@ export const dropNode = (
     invariant(droppedNode);
     invariant(targetNode);
     changeNodePosition(
-        columns,
+        document,
         droppedNode,
         targetNode,
         action.payload.position,
         'drop',
     );
 
-    cleanAndSortColumns(columns);
+    cleanAndSortColumns(document);
 };

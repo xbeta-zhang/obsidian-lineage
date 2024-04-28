@@ -1,19 +1,44 @@
 <script lang="ts">
-    import { Column } from 'src/stores/document/document-state-type';
     import Group from './components/group/group.svelte';
     import { getView } from 'src/view/components/container/context';
     import { scrollOnDndY } from 'src/view/actions/dnd/scroll-on-dnd-y';
+    import { groupsStore } from 'src/stores/document/derived/groups-store';
+
+    export let columnId: string;
+    export let activeChildGroups: Set<string>;
+    export let dndChildGroups: Set<string>;
+    export let parentNodes: Set<string>;
+    export let activeGroup: string;
+    export let activeNode: string;
+    export let editedNode: string;
+    export let disableEditConfirmation: boolean;
+    export let searchQuery: string;
+    export let searchResults: Set<string>;
+    export let searching: boolean;
+    export let idSection: Record<string,string>;
 
     const view = getView();
-    const viewStore = view.viewStore;
-    export let column: Column;
+    const groups = groupsStore(view, columnId);
 </script>
 
-<div class="column" id={column.id}  use:scrollOnDndY>
+<div class="column" id={columnId} use:scrollOnDndY>
     <div class="column-buffer" />
-    {#each column.groups as group (group.parentId)}
-        {#if !$viewStore.document.dnd.childGroups.has(group.parentId)}
-            <Group {group} />
+    {#each $groups as group (group.parentId)}
+        {#if !dndChildGroups.has(group.parentId)}
+            <Group
+                groupId={group.parentId}
+                {columnId}
+                {parentNodes}
+                {activeGroup}
+                {editedNode}
+                {disableEditConfirmation}
+                {searchQuery}
+                {searchResults}
+                {searching}
+                {activeChildGroups}
+                {activeNode}
+                {idSection}
+            />
         {/if}
     {/each}
     <div class="column-buffer" />
@@ -31,7 +56,7 @@
         display: none;
     }
     .column-buffer {
-        height: 60%;
+        height: 90%;
         min-width: var(--node-width);
     }
 </style>

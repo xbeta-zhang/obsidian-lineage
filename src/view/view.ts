@@ -1,4 +1,4 @@
-import { IconName, Notice, TextFileView, WorkspaceLeaf } from 'obsidian';
+import { IconName, TextFileView, WorkspaceLeaf } from 'obsidian';
 
 import Component from './components/container/main.svelte';
 import Lineage from '../main';
@@ -18,8 +18,10 @@ import { ViewStoreAction } from 'src/stores/view/view-store-actions';
 import { defaultViewState } from 'src/stores/view/default-view-state';
 import { viewReducer } from 'src/stores/view/view-reducer';
 import { viewSubscriptions } from 'src/stores/view/subscriptions/view-subscriptions';
-import { SilentError } from 'src/stores/view/helpers/errors';
+import { onPluginError } from 'src/helpers/store/on-plugin-error';
 import { InlineEditor } from 'src/obsidian/helpers/inline-editor';
+import { id } from 'src/helpers/id';
+import invariant from 'tiny-invariant';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -32,6 +34,7 @@ export class LineageView extends TextFileView {
     viewStore: ViewStore;
     container: HTMLElement | null;
     inlineEditor: InlineEditor;
+    id: string;
     private readonly onDestroyCallbacks: Set<Unsubscriber> = new Set();
     private activeFilePath: null | string;
     constructor(
@@ -49,12 +52,21 @@ export class LineageView extends TextFileView {
             viewReducer,
             this.onViewStoreError as OnError<ViewStoreAction>,
         );
+        this.id = id.view();
     }
 
     get isActive() {
         return (
             this === this.plugin.app.workspace.getActiveViewOfType(LineageView)
         );
+    }
+
+    get isViewOfFile() {
+        const path = this.file?.path;
+        return path
+            ? this.id ===
+                  this.plugin.documents.getValue().documents[path]?.viewId
+            : false;
     }
 
     getViewData(): string {
@@ -65,8 +77,10 @@ export class LineageView extends TextFileView {
         if (!this.activeFilePath && this.file) {
             this.activeFilePath = this.file?.path;
             this.loadInitialData();
+        } else {
+            this.data = data;
+            this.loadDocumentToStore();
         }
-        this.data = data;
     }
     async onUnloadFile() {
         if (this.component) {
@@ -79,10 +93,11 @@ export class LineageView extends TextFileView {
             documentReducer,
             this.onViewStoreError as OnError<DocumentStoreAction>,
         );
-        await this.inlineEditor.unloadFile();
+        if (this.inlineEditor) await this.inlineEditor.unloadFile();
         for (const s of this.onDestroyCallbacks) {
             s();
         }
+        this.deleteBackup();
     }
 
     clear(): void {
@@ -136,16 +151,11 @@ export class LineageView extends TextFileView {
                 setFileViewType(this.plugin, this.file, this.leaf, 'markdown');
             }
         }
-        if (!(error instanceof SilentError)) {
-            // eslint-disable-next-line no-console
-            console.error(`[${location}] action: `, action);
-            // eslint-disable-next-line no-console
-            console.error(`[${location}]`, error);
-            new Notice('Lineage plugin: ' + error.message);
-        }
+        onPluginError(error, location, action);
     };
 
-    saveDocument = async (immediate = false) => {
+    saveDocument = async (immediate = false, force = false) => {
+        invariant(this.file);
         const state = clone(this.documentStore.getValue());
         const data: string =
             state.file.frontmatter +
@@ -155,10 +165,22 @@ export class LineageView extends TextFileView {
                     state.document.content,
                 ),
             );
-        if (data !== this.data) {
-            this.setViewData(data);
+        if (data !== this.data || force) {
+            this.data = data;
             if (immediate) await this.save();
             else this.requestSave();
+            this.deleteBackup();
+        }
+    };
+
+    deleteBackup = () => {
+        if (this.file && this.plugin.documents.getValue().processedBackups) {
+            this.plugin.settings.dispatch({
+                type: 'BACKUP/DELETE_FILE',
+                payload: {
+                    path: this.file.path,
+                },
+            });
         }
     };
 
@@ -202,6 +224,7 @@ export class LineageView extends TextFileView {
             payload: {
                 path: this.file.path,
                 documentStore: this.documentStore,
+                viewId: this.id,
             },
         });
         this.documentStore.dispatch({
@@ -215,7 +238,9 @@ export class LineageView extends TextFileView {
     private useExistingStore = () => {
         if (!this.file) return;
         this.documentStore =
-            this.plugin.documents.getValue().documents[this.file.path];
+            this.plugin.documents.getValue().documents[
+                this.file.path
+            ].documentStore;
     };
 
     private loadDocumentToStore = () => {

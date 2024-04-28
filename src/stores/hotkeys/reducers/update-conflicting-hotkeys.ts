@@ -11,6 +11,7 @@ export const updateConflictingHotkeys = (
     state: HotkeyState,
     action: UpdateConflictingHotkeysAction,
 ) => {
+    let numberOfConflictingHotkeys = 0;
     const groupedByHotkey = new Map<string, Set<CommandHotkeys>>();
     for (const pluginHotkey of state.hotkeys) {
         for (const hotkey of pluginHotkey.hotkeys) {
@@ -22,6 +23,7 @@ export const updateConflictingHotkeys = (
             );
             if (conflict) {
                 hotkey.obsidianConflict = conflict;
+                numberOfConflictingHotkeys++;
             } else {
                 let set = groupedByHotkey.get(hotkey.string_representation);
                 if (!set) {
@@ -41,9 +43,12 @@ export const updateConflictingHotkeys = (
             .join(', ');
         for (const pluginHotkey of hotkeys) {
             for (const hotkey of pluginHotkey.hotkeys) {
-                if (hotkey.string_representation === string_representation)
+                if (hotkey.string_representation === string_representation) {
                     hotkey.pluginConflict = conflicting;
+                    numberOfConflictingHotkeys++;
+                }
             }
         }
     }
+    state.numberOfConflictingHotkeys = numberOfConflictingHotkeys;
 };

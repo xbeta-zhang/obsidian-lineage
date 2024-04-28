@@ -1,17 +1,15 @@
 import {
     ClipboardBranch,
-    Columns,
-    Content,
+    LineageDocument,
 } from 'src/stores/document/document-state-type';
 import { findNodeColumn } from 'src/stores/view/helpers/find-node-column';
 import { id } from 'src/helpers/id';
 
 export const pastChildGroups = (
-    columns: Columns,
-    content: Content,
+    document: LineageDocument,
     branch: ClipboardBranch,
 ) => {
-    const parentColumnIndex = findNodeColumn(columns, branch.nodeId);
+    const parentColumnIndex = findNodeColumn(document.columns, branch.nodeId);
     if (parentColumnIndex === -1) throw new Error('could not find cut node');
 
     for (let i = 0; i < branch.sortedChildGroups.length; i++) {
@@ -19,19 +17,23 @@ export const pastChildGroups = (
 
         for (const group of groups) {
             const targetColumnIndex = parentColumnIndex + 1 + i;
-            if (!columns[targetColumnIndex]) {
-                columns.push({
+            if (!document.columns[targetColumnIndex]) {
+                document.columns.push({
                     id: id.column(),
                     groups: [],
                 });
+                document.columns = [...document.columns];
             }
 
             for (const node of group.nodes) {
                 if (node in branch.content) {
-                    content[node] = branch.content[node];
+                    document.content[node] = branch.content[node];
                 }
             }
-            columns[targetColumnIndex].groups.push(group);
+            document.columns[targetColumnIndex].groups.push(group);
+            document.columns[targetColumnIndex].groups = [
+                ...document.columns[targetColumnIndex].groups,
+            ];
         }
     }
 };

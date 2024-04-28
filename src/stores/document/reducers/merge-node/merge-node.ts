@@ -1,4 +1,4 @@
-import { Column, Content } from 'src/stores/document/document-state-type';
+import { LineageDocument } from 'src/stores/document/document-state-type';
 import { VerticalDirection } from 'src/stores/document/document-store-actions';
 import { findAdjacentSiblingNode } from 'src/stores/document/reducers/move-node/helpers/find-adjacent-sibling-node';
 import { deleteNodeById } from 'src/stores/document/reducers/delete-node/helpers/delete-node-by-id';
@@ -15,20 +15,21 @@ export type MergeNodeAction = {
     };
 };
 export const mergeNode = (
-    columns: Column[],
-    content: Content,
+    document: LineageDocument,
     action: MergeNodeAction,
 ) => {
     const mergedNode = action.payload.activeNodeId;
     const adjacentNode = findAdjacentSiblingNode(
-        columns,
+        document.columns,
         mergedNode,
         action.payload.direction,
     );
     invariant(mergedNode, 'merged node is undefined');
     if (!adjacentNode) throw new SilentError('could not find adjacent node');
-    const mergedNodeContent = content[mergedNode] || { content: '' };
-    const adjacentNodeContent = content[adjacentNode] || { content: '' };
+    const mergedNodeContent = document.content[mergedNode] || { content: '' };
+    const adjacentNodeContent = document.content[adjacentNode] || {
+        content: '',
+    };
 
     let newContent = '';
     if (action.payload.direction === 'up') {
@@ -45,21 +46,21 @@ export const mergeNode = (
         ).trim();
     }
     if (newContent) {
-        const adjacentNodeContentObject = content[adjacentNode];
+        const adjacentNodeContentObject = document.content[adjacentNode];
         if (adjacentNodeContentObject) {
             adjacentNodeContentObject.content = newContent;
         } else {
-            content[adjacentNode] = { content: newContent };
+            document.content[adjacentNode] = { content: newContent };
         }
     }
 
     moveOrphanGroupsToANewParent(
-        columns,
+        document,
         mergedNode,
         adjacentNode,
         action.payload.direction,
     );
-    deleteNodeById(columns, content, mergedNode);
-    cleanAndSortColumns(columns);
+    deleteNodeById(document.columns, document.content, mergedNode);
+    cleanAndSortColumns(document);
     return adjacentNode;
 };

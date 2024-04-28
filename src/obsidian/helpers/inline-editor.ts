@@ -1,6 +1,7 @@
 import { MarkdownView, TFile } from 'obsidian';
 import { LineageView } from 'src/view/view';
 import { AdjustHeight } from 'src/view/actions/inline-editor/expandable-textarea-action';
+import { vimEnterInsertMode } from 'src/obsidian/helpers/vim-enter-insert-mode';
 
 const noop = async () => {};
 
@@ -39,9 +40,18 @@ export class InlineEditor {
     }
 
     loadNode(target: HTMLElement, nodeId: string) {
+        if (!this.view.file) return;
+        this.view.plugin.settings.dispatch({
+            type: 'BACKUP/ADD_FILE',
+            payload: {
+                path: this.view.file.path,
+                content: this.view.data,
+            },
+        });
         const content =
-            this.view.documentStore.getValue().document.content[nodeId];
-        this.setContent(content?.content || '');
+            this.view.documentStore.getValue().document.content[nodeId]
+                ?.content || '';
+        this.setContent(content);
 
         if (!this.appliedExternalCursor)
             this.setCursor(
@@ -56,6 +66,9 @@ export class InlineEditor {
         AdjustHeight(target)();
         this.nodeId = nodeId;
         this.target = target;
+        if (!content) {
+            vimEnterInsertMode(this.view.plugin, this.inlineView);
+        }
     }
 
     unloadNode() {

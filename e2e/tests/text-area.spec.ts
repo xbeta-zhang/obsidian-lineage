@@ -219,11 +219,9 @@ test('should handle multiple text areas in parallel', async () => {
 
     // go to f1
     await goToTab(1);
-    await saveCardUsingHotkey();
     expect(await getTextsOfColumns()).toEqual([[n1]]);
 
     // go to f2
     await goToTab(2);
-    await saveCardUsingHotkey();
     expect(await getTextsOfColumns()).toEqual([[n2]]);
 });

@@ -63,9 +63,7 @@ describe('delete node', () => {
             ],
         } satisfies LineageDocument;
 
-        expect(deleteNode(input.columns, input.content, activeNode)).toEqual(
-            expectedActiveNode,
-        );
+        expect(deleteNode(input, activeNode)).toEqual(expectedActiveNode);
         expect(input).toEqual(output);
     });
 
@@ -148,11 +146,7 @@ describe('delete node', () => {
                 },
             ],
         } satisfies LineageDocument;
-        const nextNode = deleteNode(
-            stateBefore.columns,
-            stateBefore.content,
-            deletedNode,
-        );
+        const nextNode = deleteNode(stateBefore, deletedNode);
         expect(nextNode).toEqual(aboveDeleteNode);
         expect(stateBefore).toEqual(stateAfter);
     });
@@ -188,9 +182,7 @@ describe('delete node', () => {
             ],
         } satisfies LineageDocument;
 
-        expect(deleteNode(state.columns, state.content, activeNodeId)).toEqual(
-            siblingNodId,
-        );
+        expect(deleteNode(state, activeNodeId)).toEqual(siblingNodId);
         expect(state).toEqual(stateAfter);
     });
     it('>1 2 3', () => {
@@ -221,7 +213,7 @@ describe('delete node', () => {
 
             content: { n7D6: { content: '2' }, njBB: { content: '3' } },
         };
-        expect(deleteNode(input.columns, input.content, n1)).toEqual(n2);
+        expect(deleteNode(input, n1)).toEqual(n2);
         expect(input).toEqual(output);
     });
     it('1 >2 3', () => {
@@ -253,7 +245,7 @@ describe('delete node', () => {
 
             content: { nCjW: { content: '1' }, njBB: { content: '3' } },
         };
-        expect(deleteNode(input.columns, input.content, n2)).toEqual(n1);
+        expect(deleteNode(input, n2)).toEqual(n1);
         expect(input).toEqual(output);
     });
     it('1 2 >3', () => {
@@ -285,7 +277,7 @@ describe('delete node', () => {
 
             content: { nCjW: { content: '1' }, n7D6: { content: '2' } },
         };
-        expect(deleteNode(input.columns, input.content, n3)).toEqual(n2);
+        expect(deleteNode(input, n3)).toEqual(n2);
         expect(input).toEqual(output);
     });
     it('>1|* 2|* 3|*', () => {
@@ -346,7 +338,7 @@ describe('delete node', () => {
                 [n3_2]: { content: '3.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n1)).toEqual(n2);
+        expect(deleteNode(input, n1)).toEqual(n2);
         expect(input).toEqual(output);
     });
     it('1|* >2|* 3|*', () => {
@@ -407,7 +399,7 @@ describe('delete node', () => {
                 [n3_2]: { content: '3.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n2)).toEqual(n1);
+        expect(deleteNode(input, n2)).toEqual(n1);
         expect(input).toEqual(output);
     });
     it('1|* 2|* >3|*', () => {
@@ -468,7 +460,7 @@ describe('delete node', () => {
                 [n2_2]: { content: '2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n3)).toEqual(n2);
+        expect(deleteNode(input, n3)).toEqual(n2);
         expect(input).toEqual(output);
     });
     it('>*|1|* *|2|* *|3|*', () => {
@@ -589,7 +581,7 @@ describe('delete node', () => {
                 [n3_2_2]: { content: '3.2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n1_2)).toEqual(n1_1);
+        expect(deleteNode(input, n1_2)).toEqual(n1_1);
         expect(input).toEqual(output);
     });
     it('*|1|* >*|2|* *|3|*', () => {
@@ -710,7 +702,7 @@ describe('delete node', () => {
                 [n3_2_2]: { content: '3.2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n2_1)).toEqual(n2_2);
+        expect(deleteNode(input, n2_1)).toEqual(n2_2);
         expect(input).toEqual(output);
     });
     it('*|1|* *|2|* >*|3|*', () => {
@@ -831,7 +823,7 @@ describe('delete node', () => {
                 [n3_2_2]: { content: '3.2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n3_1)).toEqual(n3_2);
+        expect(deleteNode(input, n3_1)).toEqual(n3_2);
         expect(input).toEqual(output);
     });
     it('*|*|1 *|*|2 >*|*|3', () => {
@@ -955,9 +947,7 @@ describe('delete node', () => {
                 [n3_2_2]: { content: '3.2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n3_2_1)).toEqual(
-            n3_2_2,
-        );
+        expect(deleteNode(input, n3_2_1)).toEqual(n3_2_2);
         expect(input).toEqual(output);
     });
     it('*|*|1 >*|*|2 *|*|3', () => {
@@ -1081,9 +1071,7 @@ describe('delete node', () => {
                 [n3_2_2]: { content: '3.2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n2_1_2)).toEqual(
-            n2_1_1,
-        );
+        expect(deleteNode(input, n2_1_2)).toEqual(n2_1_1);
         expect(input).toEqual(output);
     });
     it('1|*|*|* 2|*|*|* >3|*|*|*', () => {
@@ -1280,7 +1268,7 @@ describe('delete node', () => {
                 [n2_2_2_2]: { content: '2.2.2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n3)).toEqual(n2);
+        expect(deleteNode(input, n3)).toEqual(n2);
         expect(input).toEqual(output);
     });
     it('1|*|*|* >2|*|*|* 3|*|*|*', () => {
@@ -1481,7 +1469,7 @@ describe('delete node', () => {
                 [n3_2_2_2]: { content: '3.2.2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n2)).toEqual(n1);
+        expect(deleteNode(input, n2)).toEqual(n1);
         expect(input).toEqual(output);
     });
 
@@ -1691,7 +1679,7 @@ describe('delete node', () => {
                 [n3_2_2_2]: { content: '3.2.2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n1_2)).toEqual(n1_1);
+        expect(deleteNode(input, n1_2)).toEqual(n1_1);
         expect(input).toEqual(output);
     });
     it('*|1|*|* >*|2|*|* *|3|*|*', () => {
@@ -1904,7 +1892,7 @@ describe('delete node', () => {
                 [n3_2_2_2]: { content: '3.2.2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n2_1)).toEqual(n2_2);
+        expect(deleteNode(input, n2_1)).toEqual(n2_2);
         expect(input).toEqual(output);
     });
     it('*|*|1|* >*|*|2|* *|*|3|*', () => {
@@ -2119,9 +2107,7 @@ describe('delete node', () => {
                 [n3_2_2_2]: { content: '3.2.2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n2_2_1)).toEqual(
-            n2_2_2,
-        );
+        expect(deleteNode(input, n2_2_1)).toEqual(n2_2_2);
         expect(input).toEqual(output);
     });
     it('*|*|1|* >*|*|2|* *|*|3|*', () => {
@@ -2326,7 +2312,7 @@ describe('delete node', () => {
                 [n3_2_2_2]: { content: '3.2.2.2' },
             },
         };
-        expect(deleteNode(input.columns, input.content, n2_2_2)).toEqual(n2_2);
+        expect(deleteNode(input, n2_2_2)).toEqual(n2_2);
         expect(input).toEqual(output);
     });
 });

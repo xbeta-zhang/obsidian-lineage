@@ -22,12 +22,14 @@ export type HotkeyState = {
     hotkeys: CommandHotkeys[];
     searchTerm: string;
     customHotkeys: CustomHotkeys;
+    numberOfConflictingHotkeys: number;
 };
 
 const initialValue: HotkeyState = {
     hotkeys: [],
     searchTerm: '',
     customHotkeys: {},
+    numberOfConflictingHotkeys: 0,
 };
 
 export const hotkeyStore = new Store<HotkeyState, HotkeyAction>(

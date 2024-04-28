@@ -10,4 +10,5 @@ export const toggleSearchInput = (state: ViewState) => {
     if (!state.search.showInput) {
         setSearchQuery(state, '');
     }
+    state.search = { ...state.search };
 };

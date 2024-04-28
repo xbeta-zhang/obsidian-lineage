@@ -84,6 +84,7 @@ describe('update-tree-state', () => {
                 group: 'r-lt8upk0k',
                 column: col,
             } satisfies ActiveBranch,
+            activeNode: activeNodeId,
         };
 
         const output = {
@@ -95,12 +96,7 @@ describe('update-tree-state', () => {
                 column: col,
             } satisfies ActiveBranch,
         };
-        updateActiveBranch(
-            input.activeBranch,
-            activeNodeId,
-            input.document.columns,
-            {},
-        );
+        updateActiveBranch(input, input.document.columns, {});
         expect(input.activeBranch).toEqual(output.activeBranch);
     });
 });

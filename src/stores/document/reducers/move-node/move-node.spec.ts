@@ -30,7 +30,7 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
 
@@ -66,7 +66,7 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('>1 2 left', () => {
@@ -99,7 +99,7 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         input.columns[1].id = col1;
         expect(input.columns).toEqual(output.columns);
     });
@@ -134,7 +134,7 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('1 >2 down', () => {
@@ -169,7 +169,7 @@ describe('move-node', () => {
             },
         };
         try {
-            moveNode(input.columns, action);
+            moveNode(input, action);
             expect(input.columns).toEqual(output.columns);
         } catch (e) {
             expect(e.message).toBe('could not find adjacent node');
@@ -205,7 +205,7 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         input.columns[1].id = col1;
         expect(input.columns).toEqual(output.columns);
     });
@@ -239,7 +239,7 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('2 | >1 left', () => {
@@ -272,7 +272,7 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('>1|*|* 2|*|* down', () => {
@@ -352,7 +352,7 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('>1|*|* 2|*|* right', () => {
@@ -433,7 +433,7 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         input.columns[3].id = col3;
         expect(input.columns).toEqual(output.columns);
     });
@@ -494,7 +494,7 @@ describe('move-node', () => {
             },
         };
         try {
-            moveNode(input.columns, action);
+            moveNode(input, action);
             expect(input.columns).toEqual(output.columns);
         } catch (e) {
             expect(e.message).toBe('could not find adjacent node');
@@ -556,7 +556,7 @@ describe('move-node', () => {
                 activeNode: 'nDVm',
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('1|*|* >2|*|*  right', () => {
@@ -621,7 +621,7 @@ describe('move-node', () => {
                 activeNode: 'nDVm',
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         input.columns[3].id = col3;
         expect(input.columns).toEqual(output.columns);
     });
@@ -682,7 +682,7 @@ describe('move-node', () => {
             },
         };
         try {
-            moveNode(input.columns, action);
+            moveNode(input, action);
             expect(input.columns).toEqual(output.columns);
         } catch (e) {
             expect(e.message).toBe('could not find adjacent node');
@@ -744,7 +744,7 @@ describe('move-node', () => {
                 activeNode: 'nCoJ',
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('>*|1|* *|2|* right', () => {
@@ -810,7 +810,7 @@ describe('move-node', () => {
                 activeNode: 'nPFV',
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         input.columns[3].id = col3;
         expect(input.columns).toEqual(output.columns);
     });
@@ -870,7 +870,7 @@ describe('move-node', () => {
                 activeNode: 'nPFV',
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('>*|1|* *|2|* left', () => {
@@ -931,7 +931,7 @@ describe('move-node', () => {
                 activeNode: 'nyrI',
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('*|1|* >*|2|* up', () => {
@@ -991,7 +991,7 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('*|1|* >*|2|* down', () => {
@@ -1051,7 +1051,7 @@ describe('move-node', () => {
                 activeNode: mov,
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('*|1|* >*|2|* right', () => {
@@ -1117,7 +1117,7 @@ describe('move-node', () => {
                 activeNode: 'n5JK',
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         input.columns[3].id = col3;
         expect(input.columns).toEqual(output.columns);
     });
@@ -1180,7 +1180,7 @@ describe('move-node', () => {
                 activeNode: 'nsYt',
             },
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
 
@@ -1228,7 +1228,7 @@ describe('move-node', () => {
                 },
             ],
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('should move node to end of adjacent group', () => {
@@ -1275,7 +1275,7 @@ describe('move-node', () => {
                 },
             ],
         };
-        moveNode(input.columns, action);
+        moveNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
 });

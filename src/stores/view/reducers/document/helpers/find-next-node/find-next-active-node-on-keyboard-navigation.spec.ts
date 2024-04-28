@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { findNextActiveNodeOnKeyboardNavigation as findNext } from 'src/stores/view/reducers/document/helpers/find-next-node/find-next-active-node-on-keyboard-navigation';
-import { ActiveNodeOfGroup } from 'src/stores/view/view-state-type';
+import { ActiveNodesOfColumn } from 'src/stores/view/view-state-type';
 
 const c0 = 'cAKE';
 const c1 = 'cNHU';
@@ -81,9 +81,11 @@ const input = {
     ],
     state: {},
 };
-const gs: ActiveNodeOfGroup = {
-    [n1_2_1]: n1_2_1_2,
-    [n3_2_2]: n3_2_2_2,
+const gs: ActiveNodesOfColumn = {
+    [c3]: {
+        [n1_2_1]: n1_2_1_2,
+        [n3_2_2]: n3_2_2_2,
+    },
 };
 describe('find next active node after deletion', () => {
     it('1', () => {

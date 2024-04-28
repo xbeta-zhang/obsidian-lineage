@@ -24,7 +24,7 @@ describe('add navigation history item', () => {
             context: undefined,
         };
 
-        addNavigationHistoryItem(input, '4');
+        addNavigationHistoryItem({ navigationHistory: input }, '4');
         expect(input).toEqual(output);
     });
     it('should correct active index', () => {
@@ -48,7 +48,7 @@ describe('add navigation history item', () => {
             context: undefined,
         };
 
-        addNavigationHistoryItem(input, '3');
+        addNavigationHistoryItem({ navigationHistory: input }, '3');
         expect(input).toEqual(output);
     });
 });

@@ -7,8 +7,8 @@ import {
 } from 'src/view/actions/keyboard-shortcuts/helpers/commands/update-commands-dictionary';
 import { Notice } from 'obsidian';
 
-/* using native obsidian hotkeys is not practical because (1) the plugin uses basic
- * hotkeys such as 'ArrowUp' and 'Ctrl+Enter' and (2) the plugin only listens to hotkeys in its
+/* using native obsidian hotkeys is not practical because (1) the plugin uses too many basic
+ * hotkeys such as 'Arrow keys' and 'Enter' and (2) the plugin only listens to hotkeys in its
  * custom view */
 export const keyboardShortcuts = (
     target: HTMLElement,

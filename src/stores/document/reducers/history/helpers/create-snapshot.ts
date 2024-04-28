@@ -2,22 +2,20 @@ import { id } from 'src/helpers/id';
 import {
     LineageDocument,
     Snapshot,
+    SnapshotContext,
 } from 'src/stores/document/document-state-type';
-import { UndoableAction } from 'src/stores/document/document-store-actions';
 
 export const createSnapshot = (
     document: LineageDocument,
-    action: UndoableAction,
-    activeSection: string,
+    context: SnapshotContext,
 ) => {
     return {
         data: {
             columns: JSON.stringify(document.columns),
             content: JSON.stringify(document.content),
-            activeSection,
         },
+        context,
         created: Date.now(),
         id: id.snapshot(),
-        action: action,
-    } as Snapshot;
+    } satisfies Snapshot;
 };

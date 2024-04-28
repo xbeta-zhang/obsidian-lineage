@@ -3,3 +3,5 @@
 @import url('makdown/makdown-preview.css');
 @import url('card/dnd.css');
 @import url('card/card-buttons.css');
+@import url('view/buttons.css');
+@import url('./helpers.css');

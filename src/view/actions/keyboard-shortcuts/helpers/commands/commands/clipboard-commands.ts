@@ -1,50 +1,35 @@
 import { PluginCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
 import { isActiveAndNotEditing } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
+import { copyNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/copy-node';
+import { cutNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/cut-node';
+import { pasteNode } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/paste-node';
 
 export const clipboardCommands = () => {
     return [
         {
             name: 'copy_node',
             check: isActiveAndNotEditing,
-            callback: (view, event) => {
+            callback: async (view, event) => {
                 event.preventDefault();
-                view.documentStore.dispatch({
-                    type: 'DOCUMENT/COPY_NODE',
-                    payload: {
-                        nodeId: view.viewStore.getValue().document.activeNode,
-                    },
-                });
+                copyNode(view);
             },
             hotkeys: [{ key: 'C', modifiers: ['Ctrl'] }],
         },
         {
             name: 'cut_node',
             check: isActiveAndNotEditing,
-            callback: (view, event) => {
+            callback: async (view, event) => {
                 event.preventDefault();
-                view.documentStore.dispatch({
-                    type: 'DOCUMENT/CUT_NODE',
-                    payload: {
-                        nodeId: view.viewStore.getValue().document.activeNode,
-                    },
-                });
+                cutNode(view);
             },
             hotkeys: [{ key: 'X', modifiers: ['Ctrl'] }],
         },
         {
             name: 'paste_node',
             check: isActiveAndNotEditing,
-            callback: (view, event) => {
+            callback: async (view, event) => {
                 event.preventDefault();
-                view.documentStore.dispatch({
-                    type: 'DOCUMENT/PASTE_NODE',
-                    payload: {
-                        targetNodeId:
-                            view.viewStore.getValue().document.activeNode,
-                        branch: view.plugin.documents.getValue().clipboard
-                            .branch,
-                    },
-                });
+                pasteNode(view);
             },
             hotkeys: [{ key: 'V', modifiers: ['Ctrl'] }],
         },

@@ -1,9 +1,6 @@
-import {
-    Content,
-    NavigationHistory,
-    NodeId,
-} from 'src/stores/document/document-state-type';
+import { Content, NodeId } from 'src/stores/document/document-state-type';
 import { updateNavigationState } from 'src/stores/document/reducers/history/helpers/update-navigation-state';
+import { ViewState } from 'src/stores/view/view-state-type';
 
 export type RemoveObsoleteNavigationItemsAction = {
     type: 'NAVIGATION/REMOVE_OBSOLETE';
@@ -12,19 +9,23 @@ export type RemoveObsoleteNavigationItemsAction = {
     };
 };
 export const removeDeletedNavigationItems = (
-    history: NavigationHistory,
+    state: Pick<ViewState, 'navigationHistory'>,
     content: Content,
 ) => {
     const items: NodeId[] = [];
     let previous: NodeId | null = null;
-    for (const item of history.items) {
+    for (const item of state.navigationHistory.items) {
         if (content.hasOwnProperty(item) && item !== previous) {
             items.push(item);
             previous = item;
         }
     }
 
-    history.items = items;
-    history.state.activeIndex = history.items.length - 1;
-    updateNavigationState(history);
+    state.navigationHistory.items = items;
+    state.navigationHistory.state.activeIndex =
+        state.navigationHistory.items.length - 1;
+    updateNavigationState(state.navigationHistory);
+    state.navigationHistory = {
+        ...state.navigationHistory,
+    };
 };

@@ -1,28 +1,52 @@
-export const scrollOnDndY = (node: HTMLElement) => {
+export const scrollOnDndY = (column: HTMLElement) => {
     let verticalScrollTimeout: number;
     let verticalScrollDirection = 0;
     const verticalScrollStep = 10;
-    const T = 50;
-    let container: HTMLElement | null = null;
+    const T = 20;
 
-    const scrollVertically = (dir: number) => {
-        node.scrollTop += dir * verticalScrollStep;
+    const scrollVertically = (
+        dir: number,
+        bufferHeight: number,
+        bufferBottom: number,
+    ) => {
+        column.scrollTop += dir * verticalScrollStep;
+        if (stop(dir, bufferHeight, bufferBottom)) return;
+
         verticalScrollTimeout = requestAnimationFrame(() =>
-            scrollVertically(dir),
+            scrollVertically(dir, bufferHeight, bufferBottom),
         );
     };
 
+    let container: HTMLElement | null = null;
+    let buffer: Element | null = null;
+    const stop = (dir: number, bufferHeight: number, bufferBottom: number) => {
+        if (dir === -1) {
+            return column.scrollTop + 50 <= bufferHeight;
+        } else if (dir === 1) {
+            return column.scrollTop - 50 >= bufferBottom - bufferHeight;
+        }
+    };
     const handleDragEnter = (event: DragEvent) => {
-        if (!container)
-            container = document.getElementById('columns-container');
-        if (!container) return;
-        const rect = container.getBoundingClientRect();
-        const y = event.clientY - rect.top;
+        if (!container) container = column.closest('#columns-container');
+        if (!container) {
+            return;
+        }
 
-        verticalScrollDirection = y < T ? -1 : y > rect.height - T ? 1 : 0;
-
+        const containerRect = container.getBoundingClientRect();
+        const y = event.clientY - containerRect.top;
+        verticalScrollDirection =
+            y < T ? -1 : y > containerRect.height - T ? 1 : 0;
         if (verticalScrollDirection !== 0) {
-            scrollVertically(verticalScrollDirection);
+            if (verticalScrollDirection === -1) {
+                buffer = column.firstElementChild;
+            } else buffer = column.lastElementChild;
+            if (!buffer) return;
+            const bufferRect = buffer.getBoundingClientRect();
+            scrollVertically(
+                verticalScrollDirection,
+                bufferRect.height,
+                bufferRect.bottom,
+            );
         }
     };
 
@@ -31,13 +55,13 @@ export const scrollOnDndY = (node: HTMLElement) => {
         verticalScrollDirection = 0;
     };
 
-    node.addEventListener('dragenter', handleDragEnter);
-    node.addEventListener('dragleave', handleDragLeave);
+    column.addEventListener('dragenter', handleDragEnter);
+    column.addEventListener('dragleave', handleDragLeave);
 
     return {
         destroy() {
-            node.removeEventListener('dragenter', handleDragEnter);
-            node.removeEventListener('dragleave', handleDragLeave);
+            column.removeEventListener('dragenter', handleDragEnter);
+            column.removeEventListener('dragleave', handleDragLeave);
         },
     };
 };

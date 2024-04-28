@@ -1,4 +1,4 @@
-import { DNDState } from 'src/stores/view/default-view-state';
+import { DocumentViewState } from 'src/stores/view/view-state-type';
 
 export type SetDragStartedAction = {
     type: 'SET_DRAG_STARTED';
@@ -7,10 +7,15 @@ export type SetDragStartedAction = {
         childGroups: string[];
     };
 };
-export const onDragStart = (state: DNDState, action: SetDragStartedAction) => {
+export const onDragStart = (
+    state: Pick<DocumentViewState, 'dnd'>,
+    action: SetDragStartedAction,
+) => {
     const node = action.payload.nodeId;
     if (node) {
-        state.node = action.payload.nodeId;
-        state.childGroups = new Set(action.payload.childGroups);
+        state.dnd = {
+            node: action.payload.nodeId,
+            childGroups: new Set(action.payload.childGroups),
+        };
     }
 };

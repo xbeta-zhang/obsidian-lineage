@@ -7,11 +7,14 @@ export const defaultViewState = (): ViewState => ({
         results: new Set(),
         searching: false,
         showInput: false,
+        fuzzySearch: false,
     },
     ui: {
-        showHistorySidebar: false,
-        showHelpSidebar: false,
-        showSettingsSidebar: false,
+        controls: {
+            showHistorySidebar: false,
+            showHelpSidebar: false,
+            showSettingsSidebar: false,
+        },
         zoomLevel: 1,
     },
     document: {
@@ -30,7 +33,7 @@ export const defaultViewState = (): ViewState => ({
             childGroups: new Set<string>(),
         },
         activeNode: '',
-        activeNodeOfGroup: {},
+        activeNodesOfColumn: {},
     },
     navigationHistory: {
         items: [],

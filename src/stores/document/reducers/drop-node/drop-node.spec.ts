@@ -40,7 +40,7 @@ describe('drop-node', () => {
                 activeNode: dropped,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('2 above 1', () => {
@@ -81,7 +81,7 @@ describe('drop-node', () => {
                 activeNode: dropped,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('1 under 2', () => {
@@ -128,7 +128,7 @@ describe('drop-node', () => {
                 activeNode: dropped,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('2 right to 1', () => {
@@ -178,7 +178,7 @@ describe('drop-node', () => {
                 activeNode: dropped,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         input.columns[1].id = column_2;
         expect(input.columns).toEqual(output.columns);
     });
@@ -242,7 +242,7 @@ describe('drop-node', () => {
                 activeNode: dropped,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('1* under 2*', () => {
@@ -305,7 +305,7 @@ describe('drop-node', () => {
                 activeNode: dropped,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('2* right to 1*', () => {
@@ -387,7 +387,7 @@ describe('drop-node', () => {
                 activeNode: dropped,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         input.columns[2].id = created_column_id;
         expect(input.columns).toEqual(output.columns);
     });
@@ -473,7 +473,7 @@ describe('drop-node', () => {
             },
         };
 
-        dropNode(input.columns, action);
+        dropNode(input, action);
         input.columns[2].id = column_3;
         expect(input.columns).toEqual(output.columns);
     });
@@ -581,7 +581,7 @@ describe('drop-node', () => {
                 activeNode: dropped,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('2** under 1**', () => {
@@ -665,7 +665,7 @@ describe('drop-node', () => {
                 activeNode: dro,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         expect(input.columns).toEqual(output.columns);
     });
     test('1*** right to 2***', () => {
@@ -773,7 +773,7 @@ describe('drop-node', () => {
                 activeNode: dro,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         input.columns[4].id = col5;
         expect(input.columns).toEqual(output.columns);
     });
@@ -881,7 +881,7 @@ describe('drop-node', () => {
                 activeNode: dro,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         input.columns[4].id = col5;
         expect(input.columns).toEqual(output.columns);
     });
@@ -994,7 +994,7 @@ describe('drop-node', () => {
                 activeNode: dro,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         input.columns[4].id = col5;
         input.columns[5].id = col6;
         input.columns[6].id = col7;
@@ -1093,7 +1093,7 @@ describe('drop-node', () => {
                 activeNode: dro,
             },
         };
-        dropNode(input.columns, action);
+        dropNode(input, action);
         input.columns[4].id = col5;
         input.columns[5].id = col6;
 

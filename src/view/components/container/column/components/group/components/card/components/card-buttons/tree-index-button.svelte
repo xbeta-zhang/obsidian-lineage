@@ -10,6 +10,7 @@
     const documentStore = view.documentStore;
     export let nodeId: string;
     export let activeStatus: ActiveStatus | null;
+    export let section: string
 
     const openFileAndJumpToLine = async (file: TFile, line: number,ch: number) => {
         const leaf = plugin.app.workspace.getLeaf('split');
@@ -48,6 +49,9 @@
         [ActiveStatus.parent]: 'is-active-parent',
         [ActiveStatus.sibling]: 'is-active-parent',
     };
+    // move this the fuck up
+
+
 </script>
 
 <div
@@ -55,7 +59,7 @@
     class={'tree-index ' + (activeStatus ? classes[activeStatus] : '')}
     on:click={openFile}
 >
-    {$documentStore.sections.id_section[nodeId]}
+    {section}
 </div>
 
 <style>

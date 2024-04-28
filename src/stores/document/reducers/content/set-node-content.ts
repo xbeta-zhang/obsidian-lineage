@@ -10,7 +10,7 @@ export type SetNodeContentAction = {
 };
 export const setNodeContent = (
     content: Content,
-    action: SetNodeContentAction,
+    action: Pick<SetNodeContentAction, 'payload'>,
 ) => {
     const nodeContent = content[action.payload.nodeId];
     const contentString = nodeContent?.content || '';

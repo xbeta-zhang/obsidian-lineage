@@ -1,16 +1,16 @@
 import {
     AlignBranchState,
     alignElement,
-} from 'src/stores/view/subscriptions/effects/align-branch/helpers/align-element';
+} from 'src/stores/view/subscriptions/effects/align-branch/helpers/align-element/align-element';
 import { getNodeElement } from 'src/stores/view/subscriptions/effects/align-branch/helpers/get-node-element';
 import { ViewState } from 'src/stores/view/view-state-type';
-import { Column } from 'src/stores/document/document-state-type';
+import { Settings } from 'src/stores/settings/settings-type';
 
 export const alignParentsAndActiveNode = (
     viewState: ViewState,
     container: HTMLElement,
     localState: AlignBranchState,
-    columns: Column[],
+    settings: Settings,
     behavior?: ScrollBehavior,
 ) => {
     const activeNodeId = viewState.document.activeNode;
@@ -23,6 +23,7 @@ export const alignParentsAndActiveNode = (
         const columnId = alignElement(
             container,
             element,
+            settings,
             behavior,
             'both',
             childGroupElement,
@@ -32,7 +33,12 @@ export const alignParentsAndActiveNode = (
     for (const id of viewState.document.activeBranch.sortedParentNodes) {
         const element = getNodeElement(container, id);
         if (element) {
-            const columnId = alignElement(container, element, behavior);
+            const columnId = alignElement(
+                container,
+                element,
+                settings,
+                behavior,
+            );
             if (columnId) localState.columns.add(columnId);
         }
     }
