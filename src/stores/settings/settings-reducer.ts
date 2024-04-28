@@ -123,21 +123,13 @@ const updateState = (store: Settings, action: SettingsActions) => {
     } else if (action.type === 'SET_LIMIT_PREVIEW_HEIGHT') {
         store.view.limitPreviewHeight = action.payload.limit;
     } else if (action.type === 'BACKUP/ADD_FILE') {
-        const overridingExistingBackup =
-            store.backup[action.payload.path] &&
-            store.backup[action.payload.path].content !==
-                action.payload.content;
-        if (overridingExistingBackup) {
-            throw new Error(
-                `a different backup of '${action.payload.path}' exists`,
-            );
-        }
         store.backup[action.payload.path] = {
             content: action.payload.content,
             created: Date.now(),
         };
     } else if (action.type === 'BACKUP/DELETE_FILE') {
-        delete store.backup[action.payload.path];
+        if (store.backup[action.payload.path])
+            delete store.backup[action.payload.path];
     } else if (action.type === 'UPDATE_DOCUMENTS_DICTIONARY') {
         store.documents = action.payload.documents;
     }

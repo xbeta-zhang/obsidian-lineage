@@ -32,27 +32,22 @@
     .separator {
         padding: 2px 1px;
         color: var(--text-faint);
+        min-width: 8px;
     }
     .breadcrumbs-item {
-        box-shadow: none;
         height: 30px;
-        display: flex;
-        line-height: 1;
-        font-size: inherit;
-        align-items: center;
-        justify-content: center;
         border-bottom: 1px solid var(--background-modifier-border);
         color: var(--text-muted);
         background-color: var(--interactive-normal);
-        --icon-size: var(--icon-s);
-        --icon-stroke: var(--icon-s-stroke-width);
         cursor: pointer;
         padding: 2px 4px;
         border-radius: var(--radius-s);
-        max-width: 300px;
+        max-width: 350px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 14px;
+        line-height: 25px;
     }
 
     .breadcrumbs-item:hover {

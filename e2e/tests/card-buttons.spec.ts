@@ -102,7 +102,7 @@ test.describe('card buttons', () => {
 
         await toggleCardEditUsingButton();
 
-        const n1_text2 = text();
+        const n1_text2 = text(1);
         await typeText(n1_text2);
         await saveCardUsingButton();
         const cs = await getTextsOfColumns();

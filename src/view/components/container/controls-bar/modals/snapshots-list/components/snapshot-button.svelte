@@ -143,6 +143,6 @@
     }
     .snapshot-time {
         font-size: 11px;
-        color: var(--color-base-40);
+        color: var(--color-base-60);
     }
 </style>
