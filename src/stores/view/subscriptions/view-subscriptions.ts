@@ -51,7 +51,8 @@ const viewEffectsAndActions = (
         }
         updateStatusBar(view);
         // effects
-        if (view.isActive && container)
+        if (view.isActive && container) {
+            focusContainer(container);
             alignBranchDebounced(
                 documentState,
                 viewState,
@@ -60,6 +61,7 @@ const viewEffectsAndActions = (
                 undefined,
                 true,
             );
+        }
     } else if (action) {
         const type = action.type;
 
