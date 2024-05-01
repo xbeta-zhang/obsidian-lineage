@@ -9,24 +9,27 @@ export const BackgroundColor = (
     const settingsState = settingsStore.getValue();
     let colorPicker: ColorComponent;
 
+    const onChange = (color: string) => {
+        settingsStore.dispatch({
+            type: 'SET_CONTAINER_BG',
+            payload: {
+                backgroundColor: color,
+            },
+        });
+    };
+
     const setValue = () => {
+        colorPicker.onChange(() => void undefined);
         colorPicker.setValue(
             settingsState.view.theme.containerBg ||
                 getDefaultTheme().containerBg,
         );
+        colorPicker.onChange(onChange);
     };
     new Setting(element)
         .setName('Background color')
         .addColorPicker((cb) => {
             colorPicker = cb;
-            cb.onChange((color) => {
-                settingsStore.dispatch({
-                    type: 'SET_CONTAINER_BG',
-                    payload: {
-                        backgroundColor: color,
-                    },
-                });
-            });
             setValue();
         })
         .addExtraButton((cb) => {

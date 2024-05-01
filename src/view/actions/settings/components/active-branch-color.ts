@@ -10,24 +10,26 @@ export const ActiveBranchColor = (
 
     let input: ColorComponent;
 
+    const onChange = (color: string) => {
+        settingsStore.dispatch({
+            type: 'SET_ACTIVE_BRANCH_BG',
+            payload: {
+                backgroundColor: color,
+            },
+        });
+    };
     const setValue = () => {
+        input.onChange(() => void undefined);
         input.setValue(
             settingsState.view.theme.activeBranchBg ||
                 getDefaultTheme().activeBranchBg,
         );
+        input.onChange(onChange);
     };
     new Setting(container)
         .setName('Active branch color')
         .addColorPicker((cb) => {
             input = cb;
-            cb.onChange((color) => {
-                settingsStore.dispatch({
-                    type: 'SET_ACTIVE_BRANCH_BG',
-                    payload: {
-                        backgroundColor: color,
-                    },
-                });
-            });
             setValue();
         })
         .addExtraButton((cb) => {
