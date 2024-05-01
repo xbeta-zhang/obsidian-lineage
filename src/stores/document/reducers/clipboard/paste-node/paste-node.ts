@@ -20,23 +20,25 @@ export const pasteNode = (
     action: Pick<PasteNodeAction, 'payload'>,
 ) => {
     const branches = textToBranches(action.payload.text);
-    let nextNode: string = '';
-    for (const branch of branches) {
-        nextNode = branch.nodeId;
+    const nextNode = branches[branches.length - 1].nodeId;
+    const targetNode = action.payload.targetNodeId;
+    const position = action.payload.position || 'down';
+    // branches are reversed to allow using a const targetNodeId argument
+    for (const branch of branches.reverse()) {
         insertNode(
             document,
             {
                 payload: {
-                    activeNodeId: action.payload.targetNodeId,
-                    position: action.payload.position || 'down',
+                    activeNodeId: targetNode,
+                    position: position,
                     content: branch.content[branch.nodeId]?.content,
                 },
             },
             branch.nodeId,
         );
         pastChildGroups(document, branch);
-        cleanAndSortColumns(document);
     }
+    cleanAndSortColumns(document);
     invariant(nextNode);
     return nextNode;
 };
