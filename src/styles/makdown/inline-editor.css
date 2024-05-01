@@ -17,4 +17,6 @@
     & .cm-contentContainer div {
         padding-bottom: 0 !important;
     }
+
+    --file-line-width: 100%;
 }
