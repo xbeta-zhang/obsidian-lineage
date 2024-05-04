@@ -152,7 +152,7 @@ const viewEffectsAndActions = (
         ) {
             const skipAligning =
                 action.type === 'DOCUMENT/SET_ACTIVE_NODE' &&
-                action.context?.ctrlKey;
+                action.context?.modKey;
             if (!skipAligning)
                 alignBranchDebounced(
                     documentStore.getValue(),

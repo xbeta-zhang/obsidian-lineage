@@ -11,8 +11,8 @@ export const mergeCommands = () => {
                 mergeNode(view, 'up');
             },
             hotkeys: [
-                { key: 'K', modifiers: ['Ctrl', 'Shift'] },
-                { key: 'ArrowUp', modifiers: ['Ctrl', 'Shift'] },
+                { key: 'K', modifiers: ['Mod', 'Shift'] },
+                { key: 'ArrowUp', modifiers: ['Mod', 'Shift'] },
             ],
         },
         {
@@ -22,8 +22,8 @@ export const mergeCommands = () => {
                 mergeNode(view, 'down');
             },
             hotkeys: [
-                { key: 'J', modifiers: ['Ctrl', 'Shift'] },
-                { key: 'ArrowDown', modifiers: ['Ctrl', 'Shift'] },
+                { key: 'J', modifiers: ['Mod', 'Shift'] },
+                { key: 'ArrowDown', modifiers: ['Mod', 'Shift'] },
             ],
         },
     ] as PluginCommand[];

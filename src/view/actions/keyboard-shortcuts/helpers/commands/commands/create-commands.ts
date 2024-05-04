@@ -18,7 +18,7 @@ export const createCommands = () => {
             hotkeys: [
                 {
                     key: 'ArrowUp',
-                    modifiers: ['Ctrl'],
+                    modifiers: ['Mod'],
                 },
             ],
         },
@@ -32,7 +32,7 @@ export const createCommands = () => {
             hotkeys: [
                 {
                     key: 'ArrowDown',
-                    modifiers: ['Ctrl'],
+                    modifiers: ['Mod'],
                 },
             ],
         },
@@ -45,7 +45,7 @@ export const createCommands = () => {
             hotkeys: [
                 {
                     key: 'ArrowRight',
-                    modifiers: ['Ctrl'],
+                    modifiers: ['Mod'],
                 },
             ],
         },
@@ -56,7 +56,7 @@ export const createCommands = () => {
                 if (isEditing(view)) addNodeAndSplitAtCursor(view, 'up');
                 else saveNodeAndInsertNode(view, 'up');
             },
-            hotkeys: [{ key: 'K', modifiers: ['Ctrl'] }],
+            hotkeys: [{ key: 'K', modifiers: ['Mod'] }],
         },
         {
             name: 'add_below_and_split',
@@ -65,7 +65,7 @@ export const createCommands = () => {
                 if (isEditing(view)) addNodeAndSplitAtCursor(view, 'down');
                 else saveNodeAndInsertNode(view, 'down');
             },
-            hotkeys: [{ key: 'J', modifiers: ['Ctrl'] }],
+            hotkeys: [{ key: 'J', modifiers: ['Mod'] }],
         },
         {
             name: 'add_child_and_split',
@@ -74,7 +74,7 @@ export const createCommands = () => {
                 if (isEditing(view)) addNodeAndSplitAtCursor(view, 'right');
                 else saveNodeAndInsertNode(view, 'right');
             },
-            hotkeys: [{ key: 'L', modifiers: ['Ctrl'] }],
+            hotkeys: [{ key: 'L', modifiers: ['Mod'] }],
         },
     ] satisfies PluginCommand[];
 };

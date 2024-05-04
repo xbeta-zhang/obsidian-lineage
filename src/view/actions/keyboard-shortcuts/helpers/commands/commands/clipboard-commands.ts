@@ -13,7 +13,7 @@ export const clipboardCommands = () => {
                 event.preventDefault();
                 copyNode(view);
             },
-            hotkeys: [{ key: 'C', modifiers: ['Ctrl'] }],
+            hotkeys: [{ key: 'C', modifiers: ['Mod'] }],
         },
         {
             name: 'cut_node',
@@ -22,7 +22,7 @@ export const clipboardCommands = () => {
                 event.preventDefault();
                 cutNode(view);
             },
-            hotkeys: [{ key: 'X', modifiers: ['Ctrl'] }],
+            hotkeys: [{ key: 'X', modifiers: ['Mod'] }],
         },
         {
             name: 'paste_node',
@@ -31,7 +31,7 @@ export const clipboardCommands = () => {
                 event.preventDefault();
                 pasteNode(view);
             },
-            hotkeys: [{ key: 'V', modifiers: ['Ctrl'] }],
+            hotkeys: [{ key: 'V', modifiers: ['Mod'] }],
         },
     ] satisfies PluginCommand[];
 };

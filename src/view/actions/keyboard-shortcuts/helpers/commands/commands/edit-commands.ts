@@ -28,7 +28,7 @@ export const editCommands = () => {
             callback: (view) => {
                 saveNodeContent(view);
             },
-            hotkeys: [{ key: 'Enter', modifiers: ['Shift', 'Ctrl'] }],
+            hotkeys: [{ key: 'Enter', modifiers: ['Shift', 'Mod'] }],
         },
 
         {

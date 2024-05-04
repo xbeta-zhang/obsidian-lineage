@@ -3,8 +3,8 @@
     import EditHotkey from './edit-hotkey.svelte';
     import clx from 'classnames';
 
-    import { CommandName } from '../../../../../../../actions/keyboard-shortcuts/helpers/commands/command-names';
-    import { ExtendedHotkey } from '../../../../../../../../stores/hotkeys/hotkey-store';
+    import { CommandName } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
+    import { ExtendedHotkey } from 'src/stores/hotkeys/hotkey-store';
 
     export let hotkey: ExtendedHotkey;
     export let commandName: CommandName;

@@ -2,11 +2,10 @@
     import { Hotkey } from 'obsidian';
     import { RotateCcw, X } from 'lucide-svelte';
 
-    import { CommandName } from '../../../../../../../actions/keyboard-shortcuts/helpers/commands/command-names';
-    import { hotkeyStore } from '../../../../../../../../stores/hotkeys/hotkey-store';
-    import {
-        Modifiers
-    } from '../../../../../../../actions/keyboard-shortcuts/helpers/commands/update-commands-dictionary';
+    import { CommandName } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
+    import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
+    import { Modifiers } from 'src/view/actions/keyboard-shortcuts/helpers/commands/update-commands-dictionary';
+    import { modKey } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/mod-key';
 
     export let hotkey: Hotkey;
     export let commandName: CommandName;
@@ -14,22 +13,22 @@
     export let onCancel: () => void;
 
     let key = hotkey.key;
-    let CTRL = hotkey.modifiers.includes('Ctrl');
+    let MOD = hotkey.modifiers.includes('Mod');
     let SHIFT = hotkey.modifiers.includes('Shift');
     let ALT = hotkey.modifiers.includes('Alt');
 
     // eslint-disable-next-line no-undef
     const onKeyDown = (e: KeyboardEvent) => {
         e.preventDefault();
-        if (e.shiftKey || e.ctrlKey || e.altKey) return;
+        if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
         if (e.key === ' ' || e.key==="META") return;
         const value = e.key.toUpperCase();
         key = value.length === 1 ? value.toUpperCase() : value;
         save();
     };
 
-    const toggleCtrl = () => {
-        CTRL = !CTRL;
+    const toggleMod = () => {
+        MOD = !MOD;
         save();
     };
     const toggleShift = () => {
@@ -44,7 +43,7 @@
     const save = () => {
         let modifiers: Hotkey['modifiers'] =[]
 
-        if (CTRL) modifiers.push('Ctrl');
+        if (MOD) modifiers.push('Mod');
         if (SHIFT) modifiers.push('Shift');
         if (ALT) modifiers.push('Alt');
         hotkeyStore.dispatch({
@@ -69,7 +68,7 @@
             },
         });
         setTimeout(() => {
-            CTRL = hotkey.modifiers.includes('Ctrl');
+            MOD = hotkey.modifiers.includes('Mod');
             ALT = hotkey.modifiers.includes('Alt');
             SHIFT = hotkey.modifiers.includes('Shift');
             key = hotkey.key
@@ -80,8 +79,8 @@
 <div class="container">
     <div class="hotkey-container">
         <div class="modifiers">
-            <kbd class={!CTRL ? 'disabled' : ''} on:click={toggleCtrl}
-                >{Modifiers.Ctrl}</kbd
+            <kbd class={!MOD ? 'disabled' : ''} on:click={toggleMod}
+                >{modKey}</kbd
             >
             <kbd class={!ALT ? 'disabled' : ''} on:click={toggleAlt}
                 >{Modifiers.Alt}</kbd

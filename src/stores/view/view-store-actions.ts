@@ -59,7 +59,7 @@ type SetActiveNodeAction = {
         id: string;
     };
     context?: {
-        ctrlKey: boolean;
+        modKey: boolean;
     };
 };
 export type NodeSelectionAction =
