@@ -2,7 +2,7 @@
     import { filteredHotkeys } from 'src/stores/hotkeys/derived/filtered-hotkeys';
     import Group from './group.svelte';
     import Front from './front.svelte';
-    import { numberOfConflictingHotkeys } from 'src/stores/hotkeys/derived/number-of-conflicting-hotkeys';
+    import NumberOfConflicts from './number-of-conflicts.svelte';
 </script>
 
 <div class="sidebar">
@@ -12,14 +12,7 @@
             <Group {groupName} {group} />
         {/each}
     </div>
-    {#if $numberOfConflictingHotkeys}
-        <div class="conflicts-indicator">
-            {$numberOfConflictingHotkeys} command{$numberOfConflictingHotkeys ===
-            1
-                ? ''
-                : 's'} with conflicts
-        </div>
-    {/if}
+   <NumberOfConflicts/>
 </div>
 
 <style>
@@ -50,9 +43,5 @@
         overflow-y: auto;
     }
 
-    .conflicts-indicator {
-        font-size: 12px;
-        color: var(--color-red);
-        padding-left: 18px;
-    }
+
 </style>
