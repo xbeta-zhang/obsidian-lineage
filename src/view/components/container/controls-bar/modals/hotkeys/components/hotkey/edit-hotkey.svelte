@@ -7,6 +7,7 @@
     import { Modifiers } from 'src/view/actions/keyboard-shortcuts/helpers/commands/update-commands-dictionary';
     import { modKey } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/mod-key';
 
+    export let isCustom: boolean|undefined;
     export let hotkey: Hotkey;
     export let commandName: CommandName;
     export let isPrimary: boolean;
@@ -99,13 +100,13 @@
         />
     </div>
     <div class="save-and-cancel-buttons">
-        <button aria-label="Reset" class="hotkey-button"
-                on:click={reset}
-            ><RotateCcw class="svg-icon" size={8} /></button
-        >
         <button aria-label="Go back" class="hotkey-button"
                 on:click={onCancel}
             ><X class="svg-icon" size={8} /></button
+        >
+        <button aria-label="Reset" class="hotkey-button" disabled={!isCustom}
+                on:click={reset}
+            ><RotateCcw class="svg-icon" size={8} /></button
         >
     </div>
 </div>
@@ -139,6 +140,10 @@
 
     .disabled {
         background-color: var(--color-base-50);
+    }
+
+    button:disabled {
+        cursor: not-allowed;
     }
 
     .save-and-cancel-buttons {

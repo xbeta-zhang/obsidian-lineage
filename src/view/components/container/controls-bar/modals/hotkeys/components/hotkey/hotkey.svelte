@@ -22,6 +22,7 @@
         'hotkey',
         hotkey.obsidianConflict && 'obsidian-conflict',
         hotkey.pluginConflict && 'plugin-conflict',
+        hotkey.isCustom && 'hotkey--is-custom',
         editing && 'editing',
     )}
 >
@@ -31,6 +32,7 @@
             onCancel={() => (editing = false)}
             {isPrimary}
             {commandName}
+            isCustom={hotkey.isCustom}
         />
     {:else}
         <RenderHotkey {hotkey} enableEditing={() => (editing = true)} />
@@ -50,6 +52,10 @@
 
     .editing {
         background-color: var(--color-base-60);
+    }
+
+    .hotkey--is-custom {
+        background-color:var(--custom-hotkey-bg);
     }
     .obsidian-conflict {
         background-color: var(--color-red);
