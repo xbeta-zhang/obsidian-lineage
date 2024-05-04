@@ -14,7 +14,7 @@ export const markdownPreviewAction = (element: HTMLElement, nodeId: string) => {
                 plugin.app,
                 /^> \w/.test(content)
                     ? content
-                    : content.replace(/\n/g, '<br>'),
+                    : content.replace(/^$/gm, '&nbsp;'),
                 element,
                 store.getValue().file.path as string,
                 view,
