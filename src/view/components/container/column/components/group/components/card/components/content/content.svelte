@@ -1,12 +1,10 @@
 <script lang="ts">
     import { getView } from 'src/view/components/container/context';
-    import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
     import { markdownPreviewAction } from 'src/view/actions/markdown-preview-action';
     import {
         handleClick
     } from 'src/view/components/container/column/components/group/components/card/components/content/event-handlers/handle-links';
 
-    export let active: ActiveStatus | null;
     export let nodeId: string;
 
     const view = getView();

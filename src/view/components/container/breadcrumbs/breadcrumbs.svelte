@@ -20,9 +20,7 @@
 </div>
 
 <style>
-    button:disabled {
-        cursor: not-allowed;
-    }
+
     .breadcrumbs-container {
         z-index: var(--z-index-breadcrumbs);
         left: var(--size-4-2);

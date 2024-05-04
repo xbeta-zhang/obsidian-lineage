@@ -22,7 +22,7 @@
         <InlineEditor nodeId={node} />
     {:else}
         <Draggable nodeId={node}>
-            <Content {active} nodeId={node} />
+            <Content nodeId={node} />
         </Draggable>
     {/if}
     <CardButtons {active} {editing} nodeId={node} {section}/>

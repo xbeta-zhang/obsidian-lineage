@@ -18,7 +18,6 @@
                 {snapshot}
                 active={$history.items.length - index - 1 ===
                     $history.state.activeIndex}
-                reverseIndex={$history.items.length - index}
             />
         {/each}
     </div>

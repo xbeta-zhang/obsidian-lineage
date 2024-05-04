@@ -10,7 +10,6 @@
 
     export let snapshot: Snapshot;
     export let active: boolean;
-    export let reverseIndex: number;
 
     const view = getView();
     const documentStore = view.documentStore;
