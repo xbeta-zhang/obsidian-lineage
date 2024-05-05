@@ -17,7 +17,7 @@
 
 <style>
     .sidebar {
-        width: 350px;
+        width: 430px;
         background-color: var(--background-primary);
         position: absolute;
         right: var(--sidebar-right);

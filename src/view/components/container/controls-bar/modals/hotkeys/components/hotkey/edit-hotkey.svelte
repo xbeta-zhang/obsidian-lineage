@@ -5,9 +5,9 @@
     import { CommandName } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
     import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
     import { Modifiers } from 'src/view/actions/keyboard-shortcuts/helpers/commands/update-commands-dictionary';
-    import { modKey } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/mod-key';
+    import { isMacLike, modKey } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/mod-key';
 
-    export let isCustom: boolean|undefined;
+    export let isCustom: boolean | undefined;
     export let hotkey: Hotkey;
     export let commandName: CommandName;
     export let isPrimary: boolean;
@@ -17,6 +17,7 @@
     let MOD = hotkey.modifiers.includes('Mod');
     let SHIFT = hotkey.modifiers.includes('Shift');
     let ALT = hotkey.modifiers.includes('Alt');
+    let CTRL = hotkey.modifiers.includes('Ctrl');
 
     // eslint-disable-next-line no-undef
     const onKeyDown = (e: KeyboardEvent) => {
@@ -40,6 +41,10 @@
         ALT = !ALT;
         save();
     };
+    const toggleCtrl = () => {
+        CTRL = !CTRL;
+        save();
+    };
 
     const save = () => {
         let modifiers: Hotkey['modifiers'] =[]
@@ -47,6 +52,7 @@
         if (MOD) modifiers.push('Mod');
         if (SHIFT) modifiers.push('Shift');
         if (ALT) modifiers.push('Alt');
+        if (CTRL && isMacLike) modifiers.push('Ctrl');
         hotkeyStore.dispatch({
             type: 'HOTKEY/UPDATE',
             payload: {
@@ -72,6 +78,7 @@
             MOD = hotkey.modifiers.includes('Mod');
             ALT = hotkey.modifiers.includes('Alt');
             SHIFT = hotkey.modifiers.includes('Shift');
+            CTRL = hotkey.modifiers.includes('Ctrl');
             key = hotkey.key
         });
     };
@@ -80,6 +87,11 @@
 <div class="container">
     <div class="hotkey-container">
         <div class="modifiers">
+            {#if isMacLike}
+                <kbd class={!CTRL ? 'disabled' : ''} on:click={toggleCtrl}
+                    >{Modifiers.Ctrl}</kbd
+                >
+            {/if}
             <kbd class={!MOD ? 'disabled' : ''} on:click={toggleMod}
                 >{modKey}</kbd
             >

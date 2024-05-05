@@ -7,6 +7,7 @@ export enum Modifiers {
     'Alt' = 'Alt',
     'Mod' = 'Mod',
     'Shift' = 'Shift',
+    'Ctrl' = 'Ctrl',
 }
 
 export const commandsDictionary: { current: Record<string, PluginCommand> } = {

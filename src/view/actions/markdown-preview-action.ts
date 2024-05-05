@@ -12,7 +12,7 @@ export const markdownPreviewAction = (element: HTMLElement, nodeId: string) => {
             element.empty();
             MarkdownRenderer.render(
                 plugin.app,
-                /^> \w/.test(content)
+                /^> /.test(content)
                     ? content
                     : content.replace(/^$/gm, '&nbsp;'),
                 element,
