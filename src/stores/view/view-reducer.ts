@@ -52,7 +52,7 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
     } else if (action.type === 'CLOSE_MODALS') {
         state.ui.controls = {
             showHistorySidebar: state.ui.controls.showHistorySidebar,
-            showHelpSidebar: false,
+            showHelpSidebar: state.ui.controls.showHelpSidebar,
             showSettingsSidebar: false,
         };
     } else if (action.type === 'UI/CHANGE_ZOOM_LEVEL') {

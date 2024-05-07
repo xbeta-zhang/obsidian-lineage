@@ -51,4 +51,10 @@
         width: 100%;
         position: relative;
     }
+
+    .lineage-main:not(:focus-within) {
+        & .node-border--active {
+            border-left-color: var(--lineage-accent-faint);
+        }
+    }
 </style>

@@ -24,6 +24,7 @@ export const processDocumentBackups = async (plugin: Lineage) => {
                 continue;
             }
         }
+        if (!file) continue;
         const modal = new DocumentBackupModal({
             plugin,
             callbacks: {

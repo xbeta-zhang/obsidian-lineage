@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { renderSettings } from '../../../../../actions/settings/render-settings';
+    import { renderSettings } from 'src/view/actions/settings/render-settings';
 </script>
 
 <div class="sidebar" id="lineage-view-settings">
@@ -10,7 +10,7 @@
     .sidebar {
         min-width: 165px;
 
-        width: 500px;
+        width: fit-content;
         background-color: var(--background-primary);
         position: absolute;
         right: var(--sidebar-right);

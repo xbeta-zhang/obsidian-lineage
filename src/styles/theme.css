@@ -6,12 +6,14 @@
     --background-active-node: var(--background-primary);
     --background-active-parent: #5b637a;
     --background-inactive-node: var(--background-container);
+    --lineage-accent-faint: #628c8c;
 }
 .theme-light {
     --background-container: #899cb3;
     --background-active-node: var(--background-primary);
     --background-active-parent: #cedbeb;
     --background-inactive-node: var(--background-container);
+    --lineage-accent-faint: #adccca;
 }
 
 /* node */
