@@ -139,7 +139,8 @@ const viewEffectsAndActions = (
         if (
             action.type === 'DOCUMENT/DISABLE_EDIT_MODE' ||
             e.content ||
-            structuralChange
+            structuralChange ||
+            action.type === 'SEARCH/TOGGLE_INPUT'
         ) {
             focusContainer(container);
         }

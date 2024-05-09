@@ -6,10 +6,7 @@ import { editCommands } from 'src/view/actions/keyboard-shortcuts/helpers/comman
 import { createCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/create-commands';
 import { moveCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/move-commands';
 import { mergeCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/merge-commands';
-import {
-    isActive,
-    isActiveAndNotEditing,
-} from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
+import { isActiveAndNotEditing } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
 import { historyCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/history-commands';
 import { clipboardCommands } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/clipboard-commands';
 import { mapCtrlToMod } from 'src/stores/settings/migrations/map-ctrl-to-mod';
@@ -45,7 +42,7 @@ export const loadCommands = (plugin: Lineage) => {
         },
         {
             name: 'toggle_search_input',
-            check: isActive,
+            check: isActiveAndNotEditing,
             callback: (view, e) => {
                 e.preventDefault();
                 e.stopPropagation();

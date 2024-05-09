@@ -51,8 +51,10 @@ const updateDocumentState = (state: ViewState, action: ViewStoreAction) => {
         };
     } else if (action.type === 'CLOSE_MODALS') {
         state.ui.controls = {
-            showHistorySidebar: state.ui.controls.showHistorySidebar,
-            showHelpSidebar: state.ui.controls.showHelpSidebar,
+            showHistorySidebar: false,
+            showHelpSidebar: action.payload?.closeAllModals
+                ? false
+                : state.ui.controls.showHelpSidebar,
             showSettingsSidebar: false,
         };
     } else if (action.type === 'UI/CHANGE_ZOOM_LEVEL') {

@@ -34,7 +34,7 @@
     {:else if $controls.showSettingsSidebar}
         <Settings />
     {/if}
-    {#if $scrollingMode==="fixed-position" }
+    {#if $scrollingMode === 'fixed-position'}
         <ScrollingAxis />
     {/if}
 </div>

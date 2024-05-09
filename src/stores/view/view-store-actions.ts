@@ -30,7 +30,7 @@ export type ViewUIAction =
     | ToggleHelpSidebarAction
     | ToggleHistorySidebarAction
     | ToggleSettingsSidebarAction
-    | { type: 'CLOSE_MODALS' };
+    | { type: 'CLOSE_MODALS'; payload?: { closeAllModals: boolean } };
 
 export type ViewDocumentAction =
     | DisableEditModeAction
