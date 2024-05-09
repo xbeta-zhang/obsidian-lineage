@@ -27,6 +27,7 @@ import { onPluginError } from 'src/helpers/store/on-plugin-error';
 import { registerActiveLeafChange } from 'src/obsidian/events/workspace/register-active-leaf-change';
 import { registerWorkspaceResize } from 'src/obsidian/events/workspace/register-workspace-resize';
 import { registerLayoutReady } from 'src/obsidian/events/workspace/register-layout-ready';
+import { loadCustomIcons } from 'src/helpers/load-custom-icons';
 
 export type SettingsStore = Store<Settings, SettingsActions>;
 export type DocumentsStore = Store<DocumentsState, DocumentsStoreAction>;
@@ -42,6 +43,7 @@ export default class Lineage extends Plugin {
             documentsReducer,
             onPluginError,
         );
+        loadCustomIcons();
         this.registerView(
             FILE_VIEW_TYPE,
             (leaf) => new LineageView(leaf, this),

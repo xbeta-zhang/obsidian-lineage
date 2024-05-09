@@ -22,6 +22,7 @@ import { onPluginError } from 'src/helpers/store/on-plugin-error';
 import { InlineEditor } from 'src/obsidian/helpers/inline-editor';
 import { id } from 'src/helpers/id';
 import invariant from 'tiny-invariant';
+import { customIcons } from 'src/helpers/load-custom-icons';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -109,7 +110,7 @@ export class LineageView extends TextFileView {
     }
 
     getIcon(): IconName {
-        return 'list-tree';
+        return customIcons.cards.name;
     }
 
     getDisplayText() {
