@@ -21,7 +21,7 @@
         clearTimeout(focusTimeout);
         focusTimeout = setTimeout(() => {
             e.currentTarget.focus();
-        }, 16);
+        }, 500);
     };
 </script>
 

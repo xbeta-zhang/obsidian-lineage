@@ -8,7 +8,7 @@
     const history = historyStore(view)
 </script>
 
-<div class="sidebar">
+<div class="sidebar" tabindex="0">
     <div
         class="snapshots-list"
         use:updateRelativeTime

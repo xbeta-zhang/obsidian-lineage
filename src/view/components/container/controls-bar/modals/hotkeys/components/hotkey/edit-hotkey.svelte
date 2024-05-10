@@ -6,6 +6,8 @@
     import { hotkeyStore } from 'src/stores/hotkeys/hotkey-store';
     import { Modifiers } from 'src/view/actions/keyboard-shortcuts/helpers/commands/update-commands-dictionary';
     import { isMacLike, modKey } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/mod-key';
+    import { focusContainer } from 'src/stores/view/subscriptions/effects/focus-container';
+    import { getView } from 'src/view/components/container/context';
 
     export let isCustom: boolean | undefined;
     export let hotkey: Hotkey;
@@ -65,6 +67,7 @@
             },
         });
     };
+    const view = getView();
     // eslint-disable-next-line no-undef
     const reset = () => {
         hotkeyStore.dispatch({
@@ -81,6 +84,7 @@
             CTRL = hotkey.modifiers.includes('Ctrl');
             key = hotkey.key
         });
+       focusContainer(view);
     };
 </script>
 

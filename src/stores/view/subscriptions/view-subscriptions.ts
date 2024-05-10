@@ -52,7 +52,7 @@ const viewEffectsAndActions = (
         updateStatusBar(view);
         // effects
         if (view.isActive && container) {
-            focusContainer(container);
+            focusContainer(view);
             alignBranchDebounced(
                 documentState,
                 viewState,
@@ -142,7 +142,7 @@ const viewEffectsAndActions = (
             structuralChange ||
             action.type === 'SEARCH/TOGGLE_INPUT'
         ) {
-            focusContainer(container);
+            focusContainer(view);
         }
         if (
             activeNodeChange ||

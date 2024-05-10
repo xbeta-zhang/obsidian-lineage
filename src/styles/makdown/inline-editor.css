@@ -8,7 +8,7 @@
     & .inline-title,
     & .embedded-backlinks,
     & .cm-gutters {
-        display: none;
+        display: none !important;
     }
     & .cm-editor .cm-scroller {
         padding: 6px !important;

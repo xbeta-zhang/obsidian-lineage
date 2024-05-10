@@ -2,7 +2,7 @@
     import { renderSettings } from 'src/view/actions/settings/render-settings';
 </script>
 
-<div class="sidebar" id="lineage-view-settings">
+<div class="sidebar" id="lineage-view-settings" tabindex="0">
     <div class="setting-items" use:renderSettings></div>
 </div>
 

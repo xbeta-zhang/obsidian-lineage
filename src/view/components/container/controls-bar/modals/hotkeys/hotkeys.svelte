@@ -5,7 +5,7 @@
     import NumberOfConflicts from './number-of-conflicts.svelte';
 </script>
 
-<div class="sidebar">
+<div class="sidebar" tabindex="0">
     <Front />
     <div class="groups">
         {#each Object.entries($filteredHotkeys) as [groupName, group] (groupName)}

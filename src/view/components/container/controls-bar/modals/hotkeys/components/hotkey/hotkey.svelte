@@ -5,11 +5,21 @@
 
     import { CommandName } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
     import { ExtendedHotkey } from 'src/stores/hotkeys/hotkey-store';
+    import { writable } from 'svelte/store';
+    import { getView } from 'src/view/components/container/context';
+    import { onMount } from 'svelte';
+    import { focusContainer } from 'src/stores/view/subscriptions/effects/focus-container';
 
     export let hotkey: ExtendedHotkey;
     export let commandName: CommandName;
     export let isPrimary: boolean;
-    let editing = false;
+    const view = getView();
+    const editing = writable(false);
+    onMount(() => {
+        return editing.subscribe(() => {
+            focusContainer(view);
+        });
+    });
 </script>
 
 <div
@@ -23,19 +33,19 @@
         hotkey.obsidianConflict && 'obsidian-conflict',
         hotkey.pluginConflict && 'plugin-conflict',
         hotkey.isCustom && 'hotkey--is-custom',
-        editing && 'editing',
+        $editing && 'editing',
     )}
 >
-    {#if editing}
+    {#if $editing}
         <EditHotkey
             {hotkey}
-            onCancel={() => (editing = false)}
+            onCancel={() => editing.set(false)}
             {isPrimary}
             {commandName}
             isCustom={hotkey.isCustom}
         />
     {:else}
-        <RenderHotkey {hotkey} enableEditing={() => (editing = true)} />
+        <RenderHotkey {hotkey} enableEditing={() => editing.set(true)} />
     {/if}
 </div>
 
