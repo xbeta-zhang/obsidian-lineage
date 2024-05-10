@@ -5,6 +5,8 @@ export const hotkeysLang = {
     save_changes_and_exit_card: 'Save changes and exit card',
     // toggle_edit_mode: 'Toggle edit',
     enable_edit_mode: 'Edit card',
+    enable_edit_mode_and_place_cursor_at_start:
+        'Edit card and place cursor at the start',
     disable_edit_mode: 'Cancel changes',
     add_child: 'Add child',
     add_below: 'Add card below',
@@ -55,6 +57,7 @@ export const groupedHotkeys = {
     ]),
     'Edit cards': new Set([
         'enable_edit_mode',
+        'enable_edit_mode_and_place_cursor_at_start',
         'disable_edit_mode',
         'save_changes_and_exit_card',
     ]),
