@@ -10,11 +10,13 @@ export const markdownPreviewAction = (element: HTMLElement, nodeId: string) => {
     const render = (content: string) => {
         if (view && element) {
             element.empty();
+            // insert `&nbsp;` in empty lines
+            if (content.length > 0 && !/^> /.test(content)) {
+                content = content.replace(/^$/gm, '&nbsp;');
+            }
             MarkdownRenderer.render(
                 plugin.app,
-                /^> /.test(content)
-                    ? content
-                    : content.replace(/^$/gm, '&nbsp;'),
+                content,
                 element,
                 store.getValue().file.path as string,
                 view,

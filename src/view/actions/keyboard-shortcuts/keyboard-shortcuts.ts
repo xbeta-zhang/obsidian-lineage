@@ -37,6 +37,7 @@ export const keyboardShortcuts = (
             const contain = handleEscapeKey(view);
             if (contain) return;
         }
+        if ((event.target as HTMLElement).localName === 'input') return;
         const command = commandsDictionary.current[eventToString(event)];
         if (command) {
             if (command.check(view)) {

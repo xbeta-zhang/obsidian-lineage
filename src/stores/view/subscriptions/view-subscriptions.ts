@@ -192,6 +192,7 @@ export const viewSubscriptions = (view: LineageView) => {
             (action.type === 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW' ||
                 action.type === 'WORKSPACE/RESIZE')
         ) {
+            focusContainer(view);
             alignBranchDebounced(
                 view.documentStore.getValue(),
                 view.viewStore.getValue(),

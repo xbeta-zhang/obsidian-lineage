@@ -38,7 +38,6 @@
     filter: opacity(0.8);
     --scrollbar-thumb-bg: var(--text-muted) !important;
     --scrollbar-active-thumb-bg: var(--text-normal) !important;
-    --scrollbar-bg: var(--background-active-parent) !important;
 }
 .inactive-node {
     filter: opacity(0.2);

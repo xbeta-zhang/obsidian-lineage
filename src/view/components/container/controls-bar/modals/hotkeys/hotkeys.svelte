@@ -17,10 +17,16 @@
 
 <style>
     .groups {
+        min-width: 430px;
         display: flex;
         flex-direction: column;
         gap: var(--size-4-2);
         max-height: 360px;
         overflow-y: auto;
+    }
+    @media (max-width: 720px) {
+        .groups {
+            min-width: unset;
+        }
     }
 </style>

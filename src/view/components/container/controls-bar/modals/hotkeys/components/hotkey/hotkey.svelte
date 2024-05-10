@@ -16,8 +16,13 @@
     const view = getView();
     const editing = writable(false);
     onMount(() => {
+        let initialRun = true;
         return editing.subscribe(() => {
-            focusContainer(view);
+            if (initialRun) {
+                initialRun = false;
+            } else {
+                focusContainer(view);
+            }
         });
     });
 </script>
@@ -65,7 +70,7 @@
     }
 
     .hotkey--is-custom {
-        background-color:var(--custom-hotkey-bg);
+        background-color: var(--custom-hotkey-bg);
     }
     .obsidian-conflict {
         background-color: var(--color-red);
