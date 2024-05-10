@@ -10,7 +10,11 @@
     <span class="label">{hotkeysLang[commandHotkeys.name]}</span>
     <div class="hotkeys">
         {#each commandHotkeys.hotkeys as hotkey, i}
-            <Hotkey {hotkey} commandName={commandHotkeys.name} isPrimary={i === 0} />
+            <Hotkey
+                {hotkey}
+                commandName={commandHotkeys.name}
+                isPrimary={i === 0}
+            />
         {/each}
     </div>
 </div>
@@ -25,16 +29,15 @@
         gap: 8px;
         background-color: var(--color-base-30);
     }
-    :global(.is-mobile){
-        & .command {
+    @media (max-width: 720px) {
+        .command {
             flex-direction: column;
             align-items: start;
-            width: 190px
+            width: 190px;
         }
-        & .hotkeys{
+        .hotkeys {
             align-self: center;
         }
-
     }
     .hotkeys {
         display: flex;

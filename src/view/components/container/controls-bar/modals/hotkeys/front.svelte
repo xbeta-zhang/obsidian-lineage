@@ -37,7 +37,6 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        padding:0 var(--size-4-2);
     }
 
     .search-input-container {

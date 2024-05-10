@@ -20,7 +20,7 @@
         });
         clearTimeout(focusTimeout);
         focusTimeout = setTimeout(() => {
-            e.currentTarget.focus();
+            if (e.currentTarget) e.currentTarget.focus();
         }, 500);
     };
 </script>

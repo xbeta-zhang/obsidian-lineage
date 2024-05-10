@@ -16,6 +16,5 @@
     .conflicts-indicator {
         font-size: 12px;
         color: var(--color-red);
-        padding-left: 18px;
     }
 </style>

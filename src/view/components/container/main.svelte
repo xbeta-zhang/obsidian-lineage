@@ -41,7 +41,7 @@
 
 <style>
     .lineage-main {
-        --sidebar-right: 50px;
+
         --z-index-breadcrumbs: 10;
         background-color: var(--background-container);
         display: flex;

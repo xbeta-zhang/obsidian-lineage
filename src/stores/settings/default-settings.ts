@@ -13,7 +13,7 @@ export const DEFAULT_SETTINGS = (): Settings => ({
         scrolling: {
             horizontalOffset: 0,
             verticalOffset: 0,
-            horizontalScrollingMode: 'reveal-active-card-and-direct-child',
+            horizontalScrollingMode: 'keep-active-card-at-center',
         },
         limitPreviewHeight: true,
     },

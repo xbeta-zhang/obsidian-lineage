@@ -8,7 +8,7 @@
     const history = historyStore(view)
 </script>
 
-<div class="sidebar" tabindex="0">
+<div class="lineage-modal" tabindex="0">
     <div
         class="snapshots-list"
         use:updateRelativeTime
@@ -24,16 +24,7 @@
 </div>
 
 <style>
-    .sidebar {
-        min-width: 165px;
-		width: fit-content;
-        background-color:var(--background-primary);
-        position: absolute;
-        right: var(--sidebar-right);
-        top: var(--size-4-2);
-        padding: var(--size-4-2);
-        z-index: 10;
-    }
+
 
     .snapshots-list {
         display: flex;
