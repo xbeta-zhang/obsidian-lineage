@@ -6,6 +6,8 @@
     const view = getView();
     const viewStore = view.viewStore;
     const search = searchStore(view);
+
+    let focusTimeout: ReturnType<typeof setTimeout>;
     const onInput = (
         // eslint-disable-next-line no-undef
         e: Event & { currentTarget: EventTarget & HTMLInputElement },
@@ -16,6 +18,10 @@
                 query: e.currentTarget.value,
             },
         });
+        clearTimeout(focusTimeout);
+        focusTimeout = setTimeout(() => {
+            if (e.currentTarget) e.currentTarget.focus();
+        }, 500);
     };
 </script>
 
@@ -46,9 +52,8 @@
     ></div>
     <div
         aria-label="Fuzzy search"
-        class={"input-right-decorator clickable-icon" +(
-            $search.fuzzySearch?" is-active":""
-        )}
+        class={'input-right-decorator clickable-icon' +
+            ($search.fuzzySearch ? ' is-active' : '')}
         on:click={() => {
             viewStore.dispatch({
                 type: 'SEARCH/TOGGLE_FUZZY_MODE',
@@ -69,10 +74,10 @@
     .search-input-element {
         height: 34px;
         padding-right: 64px;
-        padding-left: 12px
+        padding-left: 12px;
     }
 
-    @media(max-width: 568px){
+    @media (max-width: 568px) {
         .search-input-element {
             width: 100%;
         }
@@ -85,7 +90,7 @@
         max-width: 100%;
     }
 
-    .search-input-container::before{
+    .search-input-container::before {
         display: none;
     }
 </style>

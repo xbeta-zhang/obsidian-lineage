@@ -30,7 +30,7 @@ export type ViewUIAction =
     | ToggleHelpSidebarAction
     | ToggleHistorySidebarAction
     | ToggleSettingsSidebarAction
-    | { type: 'CLOSE_MODALS' };
+    | { type: 'CLOSE_MODALS'; payload?: { closeAllModals: boolean } };
 
 export type ViewDocumentAction =
     | DisableEditModeAction
@@ -59,7 +59,7 @@ type SetActiveNodeAction = {
         id: string;
     };
     context?: {
-        ctrlKey: boolean;
+        modKey: boolean;
     };
 };
 export type NodeSelectionAction =

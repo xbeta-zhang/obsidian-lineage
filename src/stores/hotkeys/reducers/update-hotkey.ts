@@ -1,4 +1,4 @@
-import { HotkeyState } from 'src/stores/hotkeys/hotkey-store';
+import { ExtendedHotkey, HotkeyState } from 'src/stores/hotkeys/hotkey-store';
 import { hotkeyToString } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/hotkey-to-string';
 import { Hotkey } from 'obsidian';
 import { CommandName } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
@@ -15,26 +15,27 @@ export const updateHotkey = (
     state: HotkeyState,
     action: UpdateHotkeyAction,
 ) => {
-    const commandHotkeys = state.hotkeys.find(
+    const commandToUpdate = state.hotkeys.find(
         (hotkey) => hotkey.name === action.payload.command,
     );
-    if (!commandHotkeys) return;
+    if (!commandToUpdate) return;
 
-    let customHotkeys = state.customHotkeys[action.payload.command];
-    if (!customHotkeys) {
-        customHotkeys = {};
-        state.customHotkeys[action.payload.command] = customHotkeys;
+    let existingCustomHotkey = state.customHotkeys[action.payload.command];
+    if (!existingCustomHotkey) {
+        existingCustomHotkey = {};
+        state.customHotkeys[action.payload.command] = existingCustomHotkey;
     }
     const newHotkey = {
         modifiers: action.payload.hotkey.modifiers,
         key: action.payload.hotkey.key,
         string_representation: hotkeyToString(action.payload.hotkey),
-    };
-    const index = action.payload.primary ? 0 : 1;
-    commandHotkeys.hotkeys[index] = newHotkey;
+        isCustom: true,
+    } satisfies ExtendedHotkey;
+    const hotkeyPosition = action.payload.primary ? 0 : 1;
+    commandToUpdate.hotkeys[hotkeyPosition] = newHotkey;
     if (action.payload.primary) {
-        customHotkeys.primary = action.payload.hotkey;
+        existingCustomHotkey.primary = action.payload.hotkey;
     } else {
-        customHotkeys.secondary = action.payload.hotkey;
+        existingCustomHotkey.secondary = action.payload.hotkey;
     }
 };

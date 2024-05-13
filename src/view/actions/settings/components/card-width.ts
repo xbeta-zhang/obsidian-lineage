@@ -16,7 +16,7 @@ export const CardWidth = (
         .setName('Card width')
         .addSlider((cb) => {
             input = cb;
-            cb.setLimits(200, 1000, 1);
+            cb.setLimits(200, 1000, 10);
             cb.onChange((width) => {
                 settingsStore.dispatch({
                     type: 'SET_CARD_WIDTH',

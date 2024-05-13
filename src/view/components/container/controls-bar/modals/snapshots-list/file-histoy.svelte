@@ -8,7 +8,7 @@
     const history = historyStore(view)
 </script>
 
-<div class="sidebar">
+<div class="lineage-modal" style="padding-left: 0; padding-right:0" tabindex="0">
     <div
         class="snapshots-list"
         use:updateRelativeTime
@@ -18,23 +18,13 @@
                 {snapshot}
                 active={$history.items.length - index - 1 ===
                     $history.state.activeIndex}
-                reverseIndex={$history.items.length - index}
             />
         {/each}
     </div>
 </div>
 
 <style>
-    .sidebar {
-        min-width: 165px;
-		width: fit-content;
-        background-color:var(--background-primary);
-        position: absolute;
-        right: var(--sidebar-right);
-        top: var(--size-4-2);
-        padding: var(--size-4-2);
-        z-index: 10;
-    }
+
 
     .snapshots-list {
         display: flex;
@@ -43,5 +33,7 @@
         height: fit-content;
         max-height: 400px;
         overflow-y: auto;
+        padding-left: var(--size-4-2);
+        padding-right: var(--size-4-2);
     }
 </style>

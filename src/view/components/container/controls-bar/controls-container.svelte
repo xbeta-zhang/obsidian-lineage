@@ -31,7 +31,7 @@
     const history = historyStore(view);
     const handleNextClick = () => {
         if (viewStore.getValue().document.editing.activeNodeId)
-            new Notice('cannot apply snapshot while editing');
+            new Notice(lang.error_apply_snapshot_while_editing );
         else
             documentStore.dispatch({
                 type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
@@ -40,7 +40,7 @@
 
     const handlePreviousClick = () => {
         if (viewStore.getValue().document.editing.activeNodeId)
-            new Notice('cannot apply snapshot while editing');
+            new Notice(lang.error_apply_snapshot_while_editing);
         else
             documentStore.dispatch({
                 type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',

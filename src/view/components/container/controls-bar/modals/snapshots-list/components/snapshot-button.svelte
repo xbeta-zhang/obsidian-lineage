@@ -7,10 +7,10 @@
     import { getView } from '../../../../context';
     import { Notice } from 'obsidian';
     import invariant from 'tiny-invariant';
+    import { lang } from 'src/lang/lang';
 
     export let snapshot: Snapshot;
     export let active: boolean;
-    export let reverseIndex: number;
 
     const view = getView();
     const documentStore = view.documentStore;
@@ -33,7 +33,7 @@
     class:selected={active}
     on:click={() => {
         if (viewStore.getValue().document.editing.activeNodeId)
-            new Notice('cannot apply snapshot while editing');
+            new Notice(lang.error_apply_snapshot_while_editing);
         else
             documentStore.dispatch({
                 type: 'HISTORY/SELECT_SNAPSHOT',

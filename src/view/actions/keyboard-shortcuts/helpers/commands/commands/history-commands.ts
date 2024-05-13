@@ -13,7 +13,7 @@ export const historyCommands = () => {
                         type: 'HISTORY/APPLY_PREVIOUS_SNAPSHOT',
                     });
             },
-            hotkeys: [{ key: 'Z', modifiers: ['Ctrl', 'Shift'] }],
+            hotkeys: [{ key: 'Z', modifiers: ['Mod', 'Shift'] }],
         },
         {
             name: 'redo_change',
@@ -25,7 +25,7 @@ export const historyCommands = () => {
                         type: 'HISTORY/APPLY_NEXT_SNAPSHOT',
                     });
             },
-            hotkeys: [{ key: 'Y', modifiers: ['Ctrl', 'Shift'] }],
+            hotkeys: [{ key: 'Y', modifiers: ['Mod', 'Shift'] }],
         },
     ] satisfies PluginCommand[];
 };

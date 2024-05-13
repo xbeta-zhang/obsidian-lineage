@@ -6,6 +6,7 @@ import {
     updateCommandsDictionary,
 } from 'src/view/actions/keyboard-shortcuts/helpers/commands/update-commands-dictionary';
 import { Notice } from 'obsidian';
+import { handleEscapeKey } from 'src/view/actions/on-escape/helpers/handle-escape-key';
 
 /* using native obsidian hotkeys is not practical because (1) the plugin uses too many basic
  * hotkeys such as 'Arrow keys' and 'Enter' and (2) the plugin only listens to hotkeys in its
@@ -32,6 +33,11 @@ export const keyboardShortcuts = (
     );
     const keyboardEventHandler = (event: Event) => {
         if (!(event instanceof KeyboardEvent)) return;
+        if (event.key === 'Escape') {
+            const contain = handleEscapeKey(view);
+            if (contain) return;
+        }
+        if ((event.target as HTMLElement).localName === 'input') return;
         const command = commandsDictionary.current[eventToString(event)];
         if (command) {
             if (command.check(view)) {

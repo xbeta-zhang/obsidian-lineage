@@ -1,6 +1,5 @@
 <script lang="ts">
     import Column from './column/column.svelte';
-    import { keyboardShortcuts } from 'src/view/actions/keyboard-shortcuts/keyboard-shortcuts';
     import { getView } from 'src/view/components/container/context';
     import { scrollOnDndX } from 'src/view/actions/dnd/scroll-on-dnd-x';
     import { columnsStore } from 'src/stores/document/derived/columns-store';
@@ -43,7 +42,7 @@
     tabindex="0"
     use:closeModalsWhenClickingOutside={view}
     use:contextMenu={view}
-    use:keyboardShortcuts={{ view }}
+
     use:scrollOnDndX
 >
     <div class="columns">

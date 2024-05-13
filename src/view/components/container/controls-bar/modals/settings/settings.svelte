@@ -1,26 +1,13 @@
 <script lang="ts">
-    import { renderSettings } from '../../../../../actions/settings/render-settings';
+    import { renderSettings } from 'src/view/actions/settings/render-settings';
 </script>
 
-<div class="sidebar" id="lineage-view-settings">
+<div class="lineage-modal" id="lineage-view-settings" tabindex="0">
     <div class="setting-items" use:renderSettings></div>
 </div>
 
 <style>
-    .sidebar {
-        min-width: 165px;
 
-        width: 500px;
-        background-color: var(--background-primary);
-        position: absolute;
-        right: var(--sidebar-right);
-        top: var(--size-4-2);
-        padding: var(--size-4-2);
-        display: flex;
-        flex-direction: column;
-        gap: var(--size-4-2);
-        z-index: 10;
-    }
 
     .setting-items {
         display: flex;
@@ -31,9 +18,7 @@
         }
     }
     :global(.is-mobile) {
-        & .sidebar {
-            width: fit-content;
-        }
+
         & .setting-items {
             padding: 5px 10px;
         }

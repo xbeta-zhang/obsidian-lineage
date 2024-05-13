@@ -51,7 +51,8 @@ const viewEffectsAndActions = (
         }
         updateStatusBar(view);
         // effects
-        if (view.isActive && container)
+        if (view.isActive && container) {
+            focusContainer(view);
             alignBranchDebounced(
                 documentState,
                 viewState,
@@ -60,6 +61,7 @@ const viewEffectsAndActions = (
                 undefined,
                 true,
             );
+        }
     } else if (action) {
         const type = action.type;
 
@@ -137,9 +139,10 @@ const viewEffectsAndActions = (
         if (
             action.type === 'DOCUMENT/DISABLE_EDIT_MODE' ||
             e.content ||
-            structuralChange
+            structuralChange ||
+            action.type === 'SEARCH/TOGGLE_INPUT'
         ) {
-            focusContainer(container);
+            focusContainer(view);
         }
         if (
             activeNodeChange ||
@@ -150,7 +153,7 @@ const viewEffectsAndActions = (
         ) {
             const skipAligning =
                 action.type === 'DOCUMENT/SET_ACTIVE_NODE' &&
-                action.context?.ctrlKey;
+                action.context?.modKey;
             if (!skipAligning)
                 alignBranchDebounced(
                     documentStore.getValue(),
@@ -189,6 +192,7 @@ export const viewSubscriptions = (view: LineageView) => {
             (action.type === 'WORKSPACE/SET_ACTIVE_LINEAGE_VIEW' ||
                 action.type === 'WORKSPACE/RESIZE')
         ) {
+            focusContainer(view);
             alignBranchDebounced(
                 view.documentStore.getValue(),
                 view.viewStore.getValue(),

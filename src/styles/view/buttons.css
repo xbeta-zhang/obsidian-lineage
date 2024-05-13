@@ -8,9 +8,13 @@
     --icon-size: var(--icon-s);
     --icon-stroke: var(--icon-s-stroke-width);
     cursor: pointer;
-    border-radius:0;
+    border-radius: 0;
     border: none;
     box-shadow: none !important;
+}
+
+.lineage-view-button:disabled {
+    cursor: not-allowed;
 }
 
 .lineage-view-button:hover {
@@ -25,18 +29,16 @@
 .theme-dark {
     & .lineage-view-button[data-active='true'] {
         background-color: var(--color-base-40);
-
     }
 }
 
 .theme-light {
     & .lineage-view-button[data-active='true'] {
         background-color: var(--color-base-25);
-
     }
 }
 
-.buttons-group{
+.buttons-group {
     border-radius: var(--radius-s);
     overflow: hidden;
     box-shadow: var(--input-shadow);
@@ -44,6 +46,6 @@
     background-color: var(--interactive-normal);
 }
 
-.buttons-group--vertical{
-    flex-direction:column
+.buttons-group--vertical {
+    flex-direction: column;
 }

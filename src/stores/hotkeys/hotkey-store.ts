@@ -11,6 +11,7 @@ export type ExtendedHotkey = Hotkey & {
     string_representation: string;
     obsidianConflict?: string;
     pluginConflict?: string;
+    isCustom?: boolean;
 };
 export type CommandHotkeys = {
     name: CommandName;

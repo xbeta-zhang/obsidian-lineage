@@ -1,9 +1,9 @@
 {
 	"id": "lineage",
 	"name": "Lineage",
-	"version": "0.5.0-dev",
+	"version": "0.5.1",
 	"minAppVersion": "0.15.0",
-	"description": "Gingko writing experience.",
+	"description": "A writing interface that combines structure and content. Inspired by Gingko Writer.",
 	"author": "ycnmhd",
 	"isDesktopOnly": false
 }

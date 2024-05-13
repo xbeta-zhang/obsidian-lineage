@@ -10,6 +10,7 @@ import { openFile } from 'src/obsidian/commands/helpers/open-file';
 import { extractBranch } from 'src/obsidian/commands/helpers/extract-branch/extract-branch';
 import { isActiveAndNotEditing } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
 import { onPluginError } from 'src/helpers/store/on-plugin-error';
+import { customIcons } from 'src/helpers/load-custom-icons';
 
 const createCommands = (plugin: Lineage) => {
     const commands: Omit<Command, 'id'>[] = [];
@@ -22,7 +23,7 @@ const createCommands = (plugin: Lineage) => {
     };
     commands.push({
         name: lang.toggle_lineage_view,
-        icon: 'list-tree',
+        icon: customIcons.cards.name,
         checkCallback: (checking) => {
             const file = getActiveFile();
             if (file) {
@@ -36,7 +37,7 @@ const createCommands = (plugin: Lineage) => {
 
     commands.push({
         name: lang.create_new_file,
-        icon: 'list-tree',
+        icon: customIcons.cards.name,
         callback: async () => {
             try {
                 const file = getActiveFile();
@@ -60,7 +61,7 @@ const createCommands = (plugin: Lineage) => {
 
     commands.push({
         name: lang.toggle_lineage_view,
-        icon: 'list-tree',
+        icon: customIcons.cards.name,
         checkCallback: (checking) => {
             const file = getActiveFile();
             if (file) {
@@ -71,7 +72,7 @@ const createCommands = (plugin: Lineage) => {
     });
     commands.push({
         name: lang.export_document,
-        icon: 'list-tree',
+        icon: customIcons.cards.name,
         checkCallback: (checking) => {
             const file = getActiveFile();
             if (file) {

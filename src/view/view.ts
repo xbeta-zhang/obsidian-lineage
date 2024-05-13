@@ -22,6 +22,7 @@ import { onPluginError } from 'src/helpers/store/on-plugin-error';
 import { InlineEditor } from 'src/obsidian/helpers/inline-editor';
 import { id } from 'src/helpers/id';
 import invariant from 'tiny-invariant';
+import { customIcons } from 'src/helpers/load-custom-icons';
 
 export const FILE_VIEW_TYPE = 'lineage';
 
@@ -109,7 +110,7 @@ export class LineageView extends TextFileView {
     }
 
     getIcon(): IconName {
-        return 'list-tree';
+        return customIcons.cards.name;
     }
 
     getDisplayText() {
@@ -185,9 +186,7 @@ export class LineageView extends TextFileView {
     };
 
     private loadInitialData = async () => {
-        if (!this.file) {
-            throw new Error('view does not have a file');
-        }
+        invariant(this.file);
 
         const fileHasAStore =
             this.plugin.documents.getValue().documents[this.file.path];
@@ -210,14 +209,12 @@ export class LineageView extends TextFileView {
             },
         });
         this.container = this.contentEl.querySelector('#columns-container');
-        if (!this.container) throw new Error('could not find container');
+        invariant(this.container);
         this.onDestroyCallbacks.add(viewSubscriptions(this));
     };
 
     private createStore = () => {
-        if (!this.file) {
-            throw new Error('view does not have a file');
-        }
+        invariant(this.file);
 
         this.plugin.documents.dispatch({
             type: 'DOCUMENTS/ADD_DOCUMENT',

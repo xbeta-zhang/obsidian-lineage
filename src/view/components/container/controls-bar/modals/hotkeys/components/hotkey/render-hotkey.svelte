@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Pen } from 'lucide-svelte';
     import { Hotkey } from 'obsidian';
+    import { modKeyDictionary } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/mod-key-dictionary';
 
     export let enableEditing: () => void;
     export let hotkey: Hotkey;
@@ -13,7 +14,7 @@
 </div>
 <kbd class="hotkey-key">{hotkey.key}</kbd>
 {#each hotkey.modifiers as modifier}
-    <kbd>{modifier}</kbd>
+    <kbd>{modKeyDictionary[modifier]}</kbd>
 {/each}
 
 <style>

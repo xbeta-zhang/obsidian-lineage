@@ -4,6 +4,7 @@
     import { ActiveStatus } from 'src/view/components/container/column/components/group/components/active-status.enum';
     import Bridges from '../bridges/bridges.svelte';
     import clx from 'classnames';
+    import { isMacLike } from 'src/view/actions/keyboard-shortcuts/helpers/keyboard-events/mod-key';
 
     export let nodeId: string;
     export let active: ActiveStatus | null;
@@ -19,7 +20,7 @@
                 type: 'DOCUMENT/SET_ACTIVE_NODE',
                 payload: { id: nodeId },
                 context:{
-                    ctrlKey: e.ctrlKey
+                    modKey: isMacLike ? e.metaKey : e.ctrlKey,
                 }
             });
     };
