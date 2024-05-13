@@ -1,5 +1,6 @@
 import { parseDelimiter } from 'src/stores/view/helpers/json-to-md/markdown-to-json/helpers/delimiter';
 import { TreeNode } from 'src/stores/view/helpers/json-to-md/columns-to-json/columns-to-json-tree';
+import { lang } from 'src/lang/lang';
 
 const depthLevel = (number: string) => {
     if (number.includes('.')) {
@@ -46,7 +47,7 @@ export const markdownToJson = (text: string) => {
                     depthLevel(parent) > depthLevel(currentParentNumber);
                 if (isChild) {
                     if (!currentNode) {
-                        throw new Error(`could not find parent of ${full}`);
+                        throw new Error(lang.error_parent_not_found(full));
                     }
                     trimCurrentNode(currentNode);
                     currentNode.children.push(newNode);
@@ -59,7 +60,7 @@ export const markdownToJson = (text: string) => {
                     } else {
                         const parentNode = map[parent];
                         if (!parentNode) {
-                            throw new Error(`could not find parent of ${full}`);
+                            throw new Error(lang.error_parent_not_found(full));
                         }
                         if (currentNode) trimCurrentNode(currentNode);
                         parentNode.children.push(newNode);

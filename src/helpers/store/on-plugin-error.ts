@@ -1,5 +1,6 @@
 import { SilentError } from 'src/stores/view/helpers/errors';
 import { Notice } from 'obsidian';
+import { lang } from 'src/lang/lang';
 
 export const onPluginError = (
     error: Error,
@@ -11,6 +12,8 @@ export const onPluginError = (
         console.error(`[${location}] action: `, action);
         // eslint-disable-next-line no-console
         console.error(`[${location}]`, error);
-        new Notice('Lineage plugin: ' + error.message);
+        const message = error.message.replace(/Invariant failed(: )?/, '');
+        if (message) new Notice(message);
+        else new Notice(lang.error_generic);
     }
 };

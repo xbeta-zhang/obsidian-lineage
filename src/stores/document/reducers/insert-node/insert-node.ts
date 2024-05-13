@@ -30,14 +30,13 @@ export const insertNode = (
             payload.activeNodeId,
         );
         const column = document.columns[columnIndex];
+        invariant(column);
         const group = findGroupByNodeId([column], payload.activeNodeId);
         invariant(group, 'could not find group of ' + payload.activeNodeId);
 
         const groupIndex = group.nodes.findIndex(
             (c) => c === payload.activeNodeId,
         );
-        if (columnIndex === -1 || groupIndex === -1)
-            throw new Error('could not find node index');
 
         const insertionIndex =
             action.payload.position === 'up' ? groupIndex : groupIndex + 1;

@@ -8,7 +8,7 @@
     const history = historyStore(view)
 </script>
 
-<div class="lineage-modal" tabindex="0">
+<div class="lineage-modal" style="padding-left: 0; padding-right:0" tabindex="0">
     <div
         class="snapshots-list"
         use:updateRelativeTime
@@ -33,5 +33,7 @@
         height: fit-content;
         max-height: 400px;
         overflow-y: auto;
+        padding-left: var(--size-4-2);
+        padding-right: var(--size-4-2);
     }
 </style>

@@ -7,4 +7,10 @@ export const lang = {
     new_file: 'New lineage document',
     format_headings: 'Format headings',
     extract_branch: 'Extract branch to a new document',
+    error_apply_snapshot_while_editing: 'Cannot apply a snapshot while editing',
+    error_delete_last_node: 'Cannot delete the last card',
+    error_generic:
+        'Something went wrong\nFurther details may be available in the developer console',
+    error_parent_not_found: (full: string) =>
+        `Could not find the parent section of ${full}`,
 };
