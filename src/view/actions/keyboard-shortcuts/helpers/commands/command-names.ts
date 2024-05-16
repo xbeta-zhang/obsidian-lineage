@@ -5,6 +5,8 @@ export const hotkeysLang = {
     save_changes_and_exit_card: 'Save changes and exit card',
     // toggle_edit_mode: 'Toggle edit',
     enable_edit_mode: 'Edit card',
+    enable_edit_mode_and_place_cursor_at_start:
+        'Edit card and place cursor at the start',
     disable_edit_mode: 'Cancel changes',
     add_child: 'Add child',
     add_below: 'Add card below',
@@ -33,6 +35,8 @@ export const hotkeysLang = {
     copy_node: 'Copy branch',
     cut_node: 'Cut branch',
     paste_node: 'Paste branch',
+    navigate_back: 'Navigate back',
+    navigate_forward: 'Navigate forward',
 };
 export type PluginCommand = {
     check: (view: LineageView) => boolean;
@@ -53,6 +57,7 @@ export const groupedHotkeys = {
     ]),
     'Edit cards': new Set([
         'enable_edit_mode',
+        'enable_edit_mode_and_place_cursor_at_start',
         'disable_edit_mode',
         'save_changes_and_exit_card',
     ]),
@@ -73,6 +78,8 @@ export const groupedHotkeys = {
         'go_to_end_of_group',
         'go_to_beginning_of_column',
         'go_to_end_of_column',
+        'navigate_back',
+        'navigate_forward',
     ]),
     History: new Set(['undo_change', 'redo_change']),
     Search: new Set(['toggle_search_input']),

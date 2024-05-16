@@ -32,11 +32,11 @@ export const addNodeAndSplitAtCursor = (
         firstHalf = value.substring(0, cursor);
         secondHalf = value.substring(cursor);
         if (direction === 'up') {
-            view.inlineEditor.setContent(secondHalf);
-            text = firstHalf;
+            view.inlineEditor.setContent(secondHalf.trimStart());
+            text = firstHalf.trimEnd();
         } else {
-            view.inlineEditor.setContent(firstHalf);
-            text = secondHalf;
+            view.inlineEditor.setContent(firstHalf.trimEnd());
+            text = secondHalf.trimStart();
         }
     }
 

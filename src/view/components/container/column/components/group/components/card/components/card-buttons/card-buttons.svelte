@@ -8,6 +8,7 @@
     export let editing: boolean;
     export let active: ActiveStatus | null;
 	export let nodeId: string
+    export let section: string;
 </script>
 
 {#if active === ActiveStatus.node}
@@ -19,4 +20,4 @@
     {/if}
     <EditNodeButton {editing} {nodeId} />
 {/if}
-    <TreeIndex activeStatus={active} {nodeId}/>
+    <TreeIndex activeStatus={active} {nodeId} {section}/>

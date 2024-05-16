@@ -10,7 +10,11 @@ export const updateSearchResults = (
 
         const query = viewState.search.query;
         if (query) {
-            const results = performSearch(documentStore, query);
+            const results = performSearch(
+                documentStore,
+                query,
+                viewState.search.fuzzySearch,
+            );
             viewStore.dispatch({
                 type: 'SEARCH/SET_RESULTS',
                 payload: {

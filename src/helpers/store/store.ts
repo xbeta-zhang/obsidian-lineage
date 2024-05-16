@@ -1,4 +1,4 @@
-import { Invalidator, Unsubscriber, Updater, Writable } from 'svelte/store';
+import { Unsubscriber, Updater, Writable } from 'svelte/store';
 
 export type Subscriber<T, U> = (
     value: T,
@@ -46,10 +46,7 @@ export class Store<T, U> implements Writable<T> {
         this.notifySubscribers();
     }
 
-    subscribe(
-        run: Subscriber<T, U>,
-        invalidate?: Invalidator<T>,
-    ): Unsubscriber {
+    subscribe(run: Subscriber<T, U>): Unsubscriber {
         this.subscribers.add(run);
         try {
             run(this.value, undefined, true);
@@ -86,6 +83,7 @@ export class Store<T, U> implements Writable<T> {
     private readonly onError: OnError<U> = (error) => console.error(error);
 
     private notifySubscribers(action?: U): void {
+        // console.log('notifying ' + this.subscribers.size);
         for (const subscriber of this.subscribers) {
             try {
                 subscriber(this.value, action);

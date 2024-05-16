@@ -7,7 +7,6 @@
     import Content from './components/content/content.svelte';
     import CardButtons
         from 'src/view/components/container/column/components/group/components/card/components/card-buttons/card-buttons.svelte';
-    import { getView } from 'src/view/components/container/context';
 
     export let node: NodeId;
     export let editing: boolean;
@@ -15,9 +14,7 @@
     export let hasChildren: boolean;
     export let parentId: string;
     export let disableEditConfirmation: boolean
-    const view = getView()
-    const store = view.documentStore
-
+    export let section: string;
 </script>
 
 <Droppable {active}{disableEditConfirmation} {editing} {hasChildren} nodeId={node} {parentId}>
@@ -25,10 +22,10 @@
         <InlineEditor nodeId={node} />
     {:else}
         <Draggable nodeId={node}>
-            <Content {active} content={$store.document.content[node]?.content || ''} />
+            <Content nodeId={node} />
         </Draggable>
     {/if}
-    <CardButtons {active} {editing} nodeId={node}/>
+    <CardButtons {active} {editing} nodeId={node} {section}/>
 </Droppable>
 
 

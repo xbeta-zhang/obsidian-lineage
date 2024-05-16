@@ -5,7 +5,7 @@ import {
 
 export const removeOldHistoryItems = (
     history: NavigationHistory | DocumentHistory,
-    MAX_ITEMS = 20,
+    MAX_ITEMS: number,
 ) => {
     if (history.items.length >= MAX_ITEMS) {
         const numSnapshotsToRemove = history.items.length - MAX_ITEMS + 1;

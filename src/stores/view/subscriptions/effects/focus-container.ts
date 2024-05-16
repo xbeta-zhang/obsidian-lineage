@@ -1,3 +1,5 @@
-export const focusContainer = (container: HTMLElement) => {
-    container?.focus();
+import { LineageView } from 'src/view/view';
+
+export const focusContainer = (view: LineageView) => {
+    if (view.container) view.container.focus();
 };

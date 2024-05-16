@@ -5,8 +5,9 @@ import { hotkeyToString } from 'src/view/actions/keyboard-shortcuts/helpers/keyb
 
 export enum Modifiers {
     'Alt' = 'Alt',
-    'Ctrl' = 'Ctrl',
+    'Mod' = 'Mod',
     'Shift' = 'Shift',
+    'Ctrl' = 'Ctrl',
 }
 
 export const commandsDictionary: { current: Record<string, PluginCommand> } = {

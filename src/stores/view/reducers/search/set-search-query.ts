@@ -11,4 +11,5 @@ export const setSearchQuery = (state: ViewState, query: string) => {
     state.search.query = query;
     state.search.results = new Set();
     state.search.searching = query.length > 0;
+    state.search = { ...state.search };
 };

@@ -7,10 +7,6 @@ export type ClipboardBranch = {
     mode: 'cut' | 'copy';
 };
 
-export type Clipboard = {
-    branch: ClipboardBranch | null;
-};
-
 export type Sections = {
     section_id: Record<string, string>;
     id_section: Record<string, string>;
@@ -24,7 +20,6 @@ export type DocumentState = {
     };
 
     history: DocumentHistory;
-    clipboard: Clipboard;
 };
 
 // document
@@ -47,7 +42,7 @@ export type NodeId = string;
 
 export type Columns = Column[];
 export type Content = {
-    [nodeId: string]: null | {
+    [nodeId: string]: {
         content: string;
     };
 };
@@ -55,15 +50,23 @@ export type Content = {
 // document change history
 export type DocumentHistory = History<Snapshot, { activeSection: string }>;
 
+export type SnapshotContext = {
+    affectedSection: string;
+    newActiveSection: string;
+    numberOfSections: number;
+    action: UndoableAction;
+    contentOfAffectedSection: string;
+    numberOfCharacters: number;
+};
+
 export type Snapshot = {
     data: {
         content: string;
         columns: string;
-        activeSection: string;
     };
+    context: SnapshotContext;
     created: number;
     id: string;
-    action: UndoableAction;
 };
 
 // navigation history

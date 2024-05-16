@@ -1,44 +1,44 @@
 import { insertNode } from 'src/stores/document/reducers/insert-node/insert-node';
-import {
-    ClipboardBranch,
-    Column,
-    Content,
-} from 'src/stores/document/document-state-type';
+import { LineageDocument } from 'src/stores/document/document-state-type';
 import { pastChildGroups } from 'src/stores/document/reducers/clipboard/paste-node/helpers/past-child-groups';
 import { cleanAndSortColumns } from 'src/stores/document/reducers/move-node/helpers/clean-and-sort-columns';
-import { SilentError } from 'src/stores/view/helpers/errors';
-import { cloneBranch } from 'src/stores/document/reducers/clipboard/paste-node/helpers/clone-branch';
+import { textToBranches } from 'src/stores/document/reducers/clipboard/paste-node/helpers/text-to-branches';
+import invariant from 'tiny-invariant';
+import { Direction } from 'src/stores/document/document-store-actions';
 
 export type PasteNodeAction = {
     type: 'DOCUMENT/PASTE_NODE';
     payload: {
         targetNodeId: string;
-        branch?: ClipboardBranch | null;
+        text: string;
+        position?: Direction;
     };
 };
 
 export const pasteNode = (
-    columns: Column[],
-    content: Content,
+    document: LineageDocument,
     action: Pick<PasteNodeAction, 'payload'>,
 ) => {
-    if (!action.payload.branch) throw new SilentError('clipboard is empty');
-    const branch = cloneBranch(action.payload.branch);
-
-    const nextNode = branch.nodeId;
-    insertNode(
-        columns,
-        content,
-        {
-            payload: {
-                activeNodeId: action.payload.targetNodeId,
-                position: 'down',
-                content: branch.content[branch.nodeId]?.content,
+    const branches = textToBranches(action.payload.text);
+    const nextNode = branches[branches.length - 1].nodeId;
+    const targetNode = action.payload.targetNodeId;
+    const position = action.payload.position || 'down';
+    // branches are reversed to allow using a const targetNodeId argument
+    for (const branch of branches.reverse()) {
+        insertNode(
+            document,
+            {
+                payload: {
+                    activeNodeId: targetNode,
+                    position: position,
+                    content: branch.content[branch.nodeId]?.content,
+                },
             },
-        },
-        branch.nodeId,
-    );
-    pastChildGroups(columns, content, branch);
-    cleanAndSortColumns(columns);
+            branch.nodeId,
+        );
+        pastChildGroups(document, branch);
+    }
+    cleanAndSortColumns(document);
+    invariant(nextNode);
     return nextNode;
 };

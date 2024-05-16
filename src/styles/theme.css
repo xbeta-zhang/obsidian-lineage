@@ -6,12 +6,14 @@
     --background-active-node: var(--background-primary);
     --background-active-parent: #5b637a;
     --background-inactive-node: var(--background-container);
+    --lineage-accent-faint: #628c8c;
 }
 .theme-light {
     --background-container: #899cb3;
     --background-active-node: var(--background-primary);
     --background-active-parent: #cedbeb;
     --background-inactive-node: var(--background-container);
+    --lineage-accent-faint: #adccca;
 }
 
 /* node */
@@ -34,9 +36,8 @@
 .active-sibling {
     background-color: var(--background-active-parent);
     filter: opacity(0.8);
-    --scrollbar-thumb-bg:var(--text-muted);
-    --scrollbar-active-thumb-bg: var(--text-normal);
-    --scrollbar-bg: var(--background-active-parent);
+    --scrollbar-thumb-bg: var(--text-muted) !important;
+    --scrollbar-active-thumb-bg: var(--text-normal) !important;
 }
 .inactive-node {
     filter: opacity(0.2);
@@ -66,5 +67,12 @@
     background-color: var(--background-active-node);
 }
 
+/* hotkeys */
+.theme-light {
+    --custom-hotkey-bg: #a0c6dd
+}
 
+.theme-dark {
+    --custom-hotkey-bg: #5f7f93
+}
 

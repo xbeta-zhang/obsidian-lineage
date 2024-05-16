@@ -8,8 +8,10 @@ import {
     EditingState,
 } from 'src/stores/view/default-view-state';
 
-export type ActiveNodeOfGroup = {
-    [groupId: string]: string;
+export type ActiveNodesOfColumn = {
+    [columnId: string]: {
+        [groupId: string]: string;
+    };
 };
 
 export type DocumentViewState = {
@@ -17,7 +19,7 @@ export type DocumentViewState = {
     activeBranch: ActiveBranch;
     dnd: DNDState;
     activeNode: string;
-    activeNodeOfGroup: ActiveNodeOfGroup;
+    activeNodesOfColumn: ActiveNodesOfColumn;
 };
 export type ViewState = {
     search: {
@@ -25,12 +27,15 @@ export type ViewState = {
         results: Set<NodeId>;
         searching: boolean;
         showInput: boolean;
+        fuzzySearch: boolean;
     };
     ui: {
-        showHistorySidebar: boolean;
-        showHelpSidebar: boolean;
+        controls: {
+            showHistorySidebar: boolean;
+            showHelpSidebar: boolean;
+            showSettingsSidebar: boolean;
+        };
         zoomLevel: number;
-        showSettingsSidebar: boolean;
     };
     document: DocumentViewState;
     navigationHistory: NavigationHistory;

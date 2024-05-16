@@ -21,6 +21,13 @@ import { DocumentsState } from 'src/stores/documents/documents-state-type';
 import { DocumentsStoreAction } from 'src/stores/documents/documents-store-actions';
 import { documentsReducer } from 'src/stores/documents/documents-reducer';
 import { DefaultDocumentsState } from 'src/stores/documents/default-documents-state';
+import { StatusBar } from 'src/obsidian/status-bar/status-bar';
+import { documentsStoreSubscriptions } from 'src/stores/documents/subscriptions/documents-store-subscriptions';
+import { onPluginError } from 'src/helpers/store/on-plugin-error';
+import { registerActiveLeafChange } from 'src/obsidian/events/workspace/register-active-leaf-change';
+import { registerWorkspaceResize } from 'src/obsidian/events/workspace/register-workspace-resize';
+import { registerLayoutReady } from 'src/obsidian/events/workspace/register-layout-ready';
+import { loadCustomIcons } from 'src/helpers/load-custom-icons';
 
 export type SettingsStore = Store<Settings, SettingsActions>;
 export type DocumentsStore = Store<DocumentsState, DocumentsStoreAction>;
@@ -28,22 +35,26 @@ export type DocumentsStore = Store<DocumentsState, DocumentsStoreAction>;
 export default class Lineage extends Plugin {
     settings: SettingsStore;
     documents: DocumentsStore;
+    statusBar: StatusBar;
     async onload() {
         await this.loadSettings();
         this.documents = new Store<DocumentsState, DocumentsStoreAction>(
             DefaultDocumentsState(),
             documentsReducer,
+            onPluginError,
         );
+        loadCustomIcons();
         this.registerView(
             FILE_VIEW_TYPE,
             (leaf) => new LineageView(leaf, this),
         );
         // @ts-ignore
         this.register(around(WorkspaceLeaf.prototype, { setViewState }));
+        this.registerEffects();
         this.registerEvents();
         addCommands(this);
         loadCommands(this);
-        this.registerEffects();
+        this.statusBar = new StatusBar(this);
     }
 
     async saveSettings() {
@@ -55,6 +66,7 @@ export default class Lineage extends Plugin {
         this.settings = new Store<Settings, SettingsActions>(
             deepMerge(settings, DEFAULT_SETTINGS()),
             settingsReducer,
+            onPluginError,
         );
         this.settings.subscribe(() => {
             this.saveSettings();
@@ -66,9 +78,13 @@ export default class Lineage extends Plugin {
         registerFileMenuEvent(this);
         registerFileRenameEvent(this);
         registerFileDeleteEvent(this);
+        registerActiveLeafChange(this);
+        registerWorkspaceResize(this);
+        registerLayoutReady(this);
     }
 
     private registerEffects() {
         hotkeySubscriptions(this);
+        documentsStoreSubscriptions(this);
     }
 }

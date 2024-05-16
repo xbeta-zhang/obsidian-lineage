@@ -1,10 +1,7 @@
-import {
-    Column,
-    NavigationHistory,
-} from 'src/stores/document/document-state-type';
+import { Column } from 'src/stores/document/document-state-type';
 import { updateActiveNode } from 'src/stores/view/reducers/document/helpers/update-active-node';
 import { findNextActiveNode } from 'src/stores/view/reducers/document/helpers/find-next-node/find-next-active-node';
-import { DocumentViewState } from 'src/stores/view/view-state-type';
+import { DocumentViewState, ViewState } from 'src/stores/view/view-state-type';
 
 export type JumpTarget =
     | 'start-of-group'
@@ -20,16 +17,16 @@ export type JumpToNodeAction = {
 };
 
 export const jumpToNode = (
-    state: DocumentViewState,
-    navigationHistory: NavigationHistory,
+    documentViewState: DocumentViewState,
+    state: Pick<ViewState, 'navigationHistory'>,
     action: JumpToNodeAction,
 ) => {
     const nextNode = findNextActiveNode(
         action.payload.columns,
-        state.activeNode,
+        documentViewState.activeNode,
         action,
     );
     if (nextNode) {
-        updateActiveNode(state, nextNode, navigationHistory);
+        updateActiveNode(documentViewState, nextNode, state);
     }
 };

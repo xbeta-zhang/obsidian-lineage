@@ -1,9 +1,11 @@
-import { ViewState } from 'src/stores/view/view-state-type';
+import { DocumentViewState } from 'src/stores/view/view-state-type';
 
 export type DisableEditModeAction = {
     type: 'DOCUMENT/DISABLE_EDIT_MODE';
 };
-export const disableEditMode = (editing: ViewState['document']['editing']) => {
-    editing.activeNodeId = '';
-    editing.disableEditConfirmation = false;
+export const disableEditMode = (state: Pick<DocumentViewState, 'editing'>) => {
+    state.editing = {
+        activeNodeId: '',
+        disableEditConfirmation: false,
+    };
 };

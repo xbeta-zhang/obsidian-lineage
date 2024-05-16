@@ -8,7 +8,7 @@
     & .inline-title,
     & .embedded-backlinks,
     & .cm-gutters {
-        display: none;
+        display: none !important;
     }
     & .cm-editor .cm-scroller {
         padding: 6px !important;
@@ -17,4 +17,6 @@
     & .cm-contentContainer div {
         padding-bottom: 0 !important;
     }
+
+    --file-line-width: 100%;
 }

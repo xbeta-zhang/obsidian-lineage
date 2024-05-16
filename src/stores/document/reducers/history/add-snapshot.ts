@@ -4,14 +4,11 @@ import { NodePosition } from 'src/stores/view/helpers/search/find-node-position'
 import {
     DocumentHistory,
     LineageDocument,
-    NodeId,
-    Sections,
+    SnapshotContext,
 } from 'src/stores/document/document-state-type';
 import { createSnapshot } from 'src/stores/document/reducers/history/helpers/create-snapshot';
-import { UndoableAction } from 'src/stores/document/document-store-actions';
 import { removeOldHistoryItems } from 'src/stores/document/reducers/history/helpers/remove-old-history-items';
 import { removeObsoleteHistoryItems } from 'src/stores/document/reducers/history/helpers/remove-obsolete-history-items';
-import { getSectionOfId } from 'src/stores/view/subscriptions/actions/get-section-of-id';
 
 export type AddSnapshotAction = {
     type: 'HISTORY/ADD_SNAPSHOT';
@@ -25,19 +22,17 @@ export type AddSnapshotAction = {
 
 export const addSnapshot = (
     document: LineageDocument,
-    sections: Sections,
     history: DocumentHistory,
-    action: UndoableAction,
-    activeNodeId: NodeId,
+    context: SnapshotContext,
 ) => {
     const items = history.items;
 
     const activeIndex = history.state.activeIndex;
     const activeSnapshot = items[activeIndex];
     removeObsoleteHistoryItems(history);
-    removeOldHistoryItems(history);
+    removeOldHistoryItems(history, 50);
     // identical content after loading a file
-    if (activeSnapshot && action.type === 'DOCUMENT/LOAD_FILE') {
+    if (activeSnapshot && context.action.type === 'DOCUMENT/LOAD_FILE') {
         const snapshotContent = JSON.stringify(
             Object.values(JSON.parse(activeSnapshot.data.content)),
         );
@@ -47,11 +42,16 @@ export const addSnapshot = (
             history.items.splice(history.state.activeIndex, 1);
         }
     }
-    const activeSection = getSectionOfId(sections, activeNodeId);
+    /* if (activeSnapshot) {
+        const affectedSectionStillExists =
+            context.affectedSection === context.newActiveSection;
+        if (affectedSectionStillExists)
+            activeSnapshot.context.newActiveSection = context.affectedSection;
+    }*/
 
-    const snapshot = createSnapshot(document, action, activeSection);
+    const snapshot = createSnapshot(document, context);
     items.push(snapshot);
     history.state.activeIndex = items.length - 1;
-    history.context.activeSection = activeSection;
+    history.context.activeSection = context.newActiveSection;
     updateNavigationState(history);
 };

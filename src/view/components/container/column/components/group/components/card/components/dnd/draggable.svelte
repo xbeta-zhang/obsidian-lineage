@@ -44,4 +44,7 @@
             transparent 40%
         );
     }
+    .content {
+        width: 100%
+    }
 </style>

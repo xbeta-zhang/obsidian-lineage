@@ -5,6 +5,7 @@ import { updateHotkey } from 'src/stores/hotkeys/reducers/update-hotkey';
 import { Hotkey } from 'obsidian';
 import { CustomHotkeys } from 'src/stores/settings/settings-type';
 import { commandToHotkeys } from 'src/stores/hotkeys/reducers/helpers/command-to-hotkeys';
+import invariant from 'tiny-invariant';
 
 export type LoadCustomHotkeysAction = {
     type: 'SETTINGS/LOAD_CUSTOM_HOTKEYS';
@@ -24,8 +25,7 @@ export const loadCustomHotkeys = (
             state.customHotkeys[name as CommandName] = customHotkey;
         }
     }
-    if (!pluginCommands.current)
-        throw new Error('plugin commands are undefined');
+    invariant(pluginCommands.current);
     state.hotkeys = [];
     for (const pluginCommand of pluginCommands.current) {
         const hotkey: CommandHotkeys = commandToHotkeys(pluginCommand);

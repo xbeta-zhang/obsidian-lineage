@@ -1,11 +1,12 @@
 # Lineage
-Lineage is an Obsidian plugin that aims to provide a fully local [gingko-like](https://gingkowriter.com/) writing experience.  
+Lineage is an Obsidian plugin that allows you to edit markdown files within a [gingko](https://gingkowriter.com/) interface.
 
-![](https://raw.githubusercontent.com/ycnmhd/obsidian-lineage/media/docs/media/screenshot.png)
+![](https://raw.githubusercontent.com/ycnmhd/obsidian-lineage/docs/docs/media/screenshot.png)
 
 ## Installation
-The plugin is currently in early development and is not available in the community plugin store.  
-You can test it using [BRAT](https://tfthacker.com/brat-quick-guide#Testing+Plugins).
+The plugin is not currently available in the community plugin store.
+To test it, you can use [BRAT](https://tfthacker.com/brat-quick-guide#Testing+Plugins).
+
 
 ## File Format
 The plugin add HTML comments like this into original markdown files, to show the sections and strutures.
@@ -27,4 +28,3 @@ ps. with command "Lineage: Export doctument" you can get a clean version without
    - work with clipboard;
    - history
    - more, see "Keyboard Shorcuts"
-  

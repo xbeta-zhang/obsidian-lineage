@@ -1,5 +1,8 @@
 import { PluginCommand } from 'src/view/actions/keyboard-shortcuts/helpers/commands/command-names';
-import { isActiveAndNotEditing } from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
+import {
+    isActive,
+    isActiveAndNotEditing,
+} from 'src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/is-editing';
 
 export const navigateCommands = () => {
     const commands: PluginCommand[] = [];
@@ -139,6 +142,28 @@ export const navigateCommands = () => {
                 });
             },
             hotkeys: [{ key: 'End', modifiers: [] }],
+        },
+        {
+            name: 'navigate_back',
+            check: isActive,
+            callback: (view, event) => {
+                event.preventDefault();
+                view.viewStore.dispatch({
+                    type: 'NAVIGATION/NAVIGATE_BACK',
+                });
+            },
+            hotkeys: [{ key: 'ArrowLeft', modifiers: ['Mod', 'Alt'] }],
+        },
+        {
+            name: 'navigate_forward',
+            check: isActive,
+            callback: (view, event) => {
+                event.preventDefault();
+                view.viewStore.dispatch({
+                    type: 'NAVIGATION/NAVIGATE_FORWARD',
+                });
+            },
+            hotkeys: [{ key: 'ArrowRight', modifiers: ['Mod', 'Alt'] }],
         },
     );
     return commands;
